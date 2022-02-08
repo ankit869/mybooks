@@ -20,6 +20,7 @@ const passport = require('./routes/passport.js');
 const execShellCommand =require('./routes/execute_shell_cmd.js');
 const exec = require("child_process").exec;
 app.use(cors());
+
 app.use(compression())
 app.use(express.static(path.join(__dirname, '../public')));
 app.set('views', path.join(__dirname, '../views'));
