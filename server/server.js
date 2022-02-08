@@ -49,9 +49,9 @@ app.get("/services/deploy",(req,res)=>{
     }
 })
 
-if (!fs.existsSync(path.join(__dirname,'../tmp'))) {
-    fs.mkdirSync(path.join(__dirname,'../tmp'));
-    console.log("/server/temp -empty dir initialized successfully")
+if (!fs.existsSync(path.join(__dirname,'./tmp'))) {
+    fs.mkdirSync(path.join(__dirname,'./tmp'));
+    console.log("/server/tmp -empty dir initialized successfully")
 }
 
 app.use('/',require('./routes/client_panel.js'))
