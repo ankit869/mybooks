@@ -1,6 +1,6 @@
 FROM node:14
 RUN apt-get update 
-RUN apt install python3.8
+RUN apt install python
 RUN apt-get install -y libreoffice 
 RUN apt-get install -y unoconv 
 COPY . /app
