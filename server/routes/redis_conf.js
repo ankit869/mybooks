@@ -10,9 +10,9 @@ https://app.redislabs.com/ for cloud redis-data
 // });
 
 client = redis.createClient({
-     host: 'containers-us-west-2.railway.app'
-    ,port: 7242
-    ,auth_pass:'KrQ7XpTIb3fmApkZZqx8'
+     host: 'containers-us-west-28.railway.app'
+    ,port: 8051
+    ,auth_pass:'HzY7yNiLhpKWdHJUFZxi'
 });
 
 // schedule.scheduleJob("*/60 * * * *",async function() {
