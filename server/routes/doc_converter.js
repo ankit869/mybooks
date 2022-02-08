@@ -91,16 +91,17 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
         if(req.query.ismerge=="true"){ 
 
             var merger = new PDFMerger();
-            for(fileName in files){
+            for(i=0;i<files.length;i++){
+                fileName=files[i]
                 filepath=path.join(directory,`/${fileName}`)
                 result=await convert_to_pdf(filepath)
+                console.log(result)
                 if(!result){
-                    rimraf(directory, function () { });
-
+                    // rimraf(directory, function () { });
                     return res.sendStatus(503);
                 }else{
                     merger.add(result);
-                    if(fileName==files.pop()){
+                    if(fileName==files[files.length-1]){
                         sendMerged()
                     }
                 }
@@ -108,19 +109,21 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
             
         }else{ 
 
-            for(fileName in files){
+            for(i=0;i<files.length;i++){
+                fileName=files[i]
                 filepath=path.join(directory,`/${fileName}`)
                 result=await convert_to_pdf(filepath)
+                console.log(result)
                 if(!result){
-                    rimraf(directory, function () { });
+                    // rimraf(directory, function () { });
                     return res.sendStatus(503);
                 }else{
                     file={
-                        name:fileName,
+                        name:path.relative(directory,result),
                         path:result
                     }
                     archive.append(fs.createReadStream(file.path), { name: file.name });
-                    if(fileName==files.pop()){
+                    if(fileName==files[files.length-1]){
                         sendConverted()
                     }
                 }
@@ -134,7 +137,7 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
             archive.finalize().then(()=>{
                 setTimeout(()=>{
                     res.sendFile(path.join(directory,'/output/outputpdf.zip'))
-                    rimraf(directory, function () { });
+                    // rimraf(directory, function () { });
                 },300)
             })
         }
@@ -144,7 +147,7 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
             archive.finalize().then(()=>{
                 setTimeout(()=>{
                     res.sendFile(path.join(directory,'/output/outputpdf.zip'))
-                    rimraf(directory, function () { });
+                    // rimraf(directory, function () { });
                 },300)
             })
         }
