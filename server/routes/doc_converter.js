@@ -7,7 +7,7 @@ const log = require('log-to-file');
 const router = express.Router();
 const path = require("path");
 const PDFMerger = require('pdf-merger-js');
-
+var rimraf = require("rimraf");
 router.get("/doc-converter",async (req, res) => {
     if (req.isAuthenticated()) {
         res.render('webapps/doc_converter.ejs', { status: "none" })
@@ -51,28 +51,35 @@ router.post('/doc-converter/upload_doc_files', upld.any('doc_file'), (req, res) 
 
 async function convert_to_pdf(inputpath) {
     try {
-        converter.generatePdf(inputpath, function(err, result) { 
-            if(err){
-                log(err.stack, path.join(__dirname,'../error.log'))
-                return false;
-            }else{
-                return result;
-            }
+        return new Promise(resolve => {
+            converter.generatePdf(inputpath, function(err, result) { 
+                if(err){
+                    log(err.stack, path.join(__dirname,'../error.log'))
+                    resolve(false);
+                }else{
+                    resolve(result.outputFile);
+                }
+            });
         });
     }catch(error){
         log(error.stack, path.join(__dirname,'../error.log'))
     }
 }
-router.get("/doc-converter/convert_to_pdf",async (req, res) => {
+router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
     try {
         var files=req.query.filesToBeConverted
-
         files = files.replace(/'/g, '"');
         files = JSON.parse(files);
         directory=path.join(__dirname,`../tmp/PDFfolder_${(req.ip).replace(/[.: ]/g, '')}`)
 
         if (!fs.existsSync(directory+"/output")) {
             fs.mkdirSync(directory+"/output");
+        }
+
+        mergepdf_name="merged.pdf"
+
+        if(req.query.mergepdfName){
+            mergepdf_name=req.query.mergepdfName;
         }
 
         const output = fs.createWriteStream(path.join(directory,'/output/outputpdf.zip'));
@@ -82,52 +89,67 @@ router.get("/doc-converter/convert_to_pdf",async (req, res) => {
         });
 
         if(req.query.ismerge=="true"){ 
-            mergepdf_name="merged.pdf"
-
-            if(req.query.mergepdfName){
-                mergepdf_name=req.query.mergepdfName;
-            }
 
             var merger = new PDFMerger();
-            files.forEach(async(fileName)=>{
-            
+            for(fileName in files){
                 filepath=path.join(directory,`/${fileName}`)
                 result=await convert_to_pdf(filepath)
                 if(!result){
-                    closeFunction()
+                    rimraf(directory, function () { });
+
+                    return res.sendStatus(503);
                 }else{
                     merger.add(result);
+                    if(fileName==files.pop()){
+                        sendMerged()
+                    }
                 }
-            })
-            await merger.save(path.join(directory,`/output/${mergepdf_name}`))
-            archive.append(fs.createReadStream(path.join(directory,`/output/${mergepdf_name}`)),{ name: mergepdf_name });
+            }
             
         }else{ 
-            files.forEach(async(fileName)=>{
+
+            for(fileName in files){
                 filepath=path.join(directory,`/${fileName}`)
                 result=await convert_to_pdf(filepath)
                 if(!result){
-                closeFunction()
+                    rimraf(directory, function () { });
+                    return res.sendStatus(503);
                 }else{
                     file={
                         name:fileName,
                         path:result
                     }
                     archive.append(fs.createReadStream(file.path), { name: file.name });
+                    if(fileName==files.pop()){
+                        sendConverted()
+                    }
                 }
+            }
+        }
+
+        async function sendMerged(){
+            await merger.save(path.join(directory,`/output/${mergepdf_name}`))
+            archive.append(fs.createReadStream(path.join(directory,`/output/${mergepdf_name}`)),{ name: mergepdf_name });
+            archive.pipe(output);
+            archive.finalize().then(()=>{
+                setTimeout(()=>{
+                    res.sendFile(path.join(directory,'/output/outputpdf.zip'))
+                    rimraf(directory, function () { });
+                },300)
             })
         }
 
-        function closeFunction(){
-        return res.sendStatus(503);
+        async function sendConverted(){
+            archive.pipe(output);
+            archive.finalize().then(()=>{
+                setTimeout(()=>{
+                    res.sendFile(path.join(directory,'/output/outputpdf.zip'))
+                    rimraf(directory, function () { });
+                },300)
+            })
         }
+        
 
-        archive.pipe(output);
-        archive.finalize().then(()=>{
-            setTimeout(()=>{
-                res.sendFile(path.join(directory,'/output/outputpdf.zip'))
-            },300)
-        })
     }catch(error){
         log(error.stack, path.join(__dirname,'../error.log'))
     }

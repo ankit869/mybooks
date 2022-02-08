@@ -5,6 +5,7 @@ const fs = require('fs');
 const log = require('log-to-file');
 const router = express.Router();
 const path = require("path")
+var rimraf = require("rimraf");
 // const HummusRecipe = require('hummus-recipe');
 
 router.get("/doc_scanner", (req, res) => {
@@ -37,9 +38,7 @@ const upld = multer({
 router.post('/upload_PDF_IMG', upld.array('images', 1000), (req, res) => {
     try {
         if (!req.files) {
-            console.log("No file received");
             res.send("No-files-received")
-
         } else {
 
             const directory = path.join(__dirname,'../tmp/PDFfolder_') + (req.ip).replace(/[.: ]/g, '');
@@ -82,7 +81,12 @@ router.post('/upload_PDF_IMG', upld.array('images', 1000), (req, res) => {
                     right: 10
                 }
             })
-            writeStream = fs.createWriteStream(directory + '/NewDocument.pdf')
+
+            if (!fs.existsSync(path.join(directory,'/output'))) {
+                fs.mkdirSync(path.join(directory,'/output'));
+            }
+
+            writeStream = fs.createWriteStream(path.join(directory,'/output/NewDocument.pdf'))
             doc.pipe(writeStream);
 
             for (i = 0; i < parseInt(req.body.total_images); i++) {
@@ -109,38 +113,9 @@ router.post('/upload_PDF_IMG', upld.array('images', 1000), (req, res) => {
             })
 
             function sendFile() {
-                res.sendFile(path.join(directory,'/NewDocument.pdf'))
-                fs.readdir(directory, (err, files) => {
-                    if (err) log(err.stack, path.join(__dirname,'../error.log'));
-                    files.forEach((file) => {
-                        fs.unlink(path.join(directory, file), err => {
-                            if (err) log(err.stack, path.join(__dirname,'../error.log'));
-                        });
-                    })
+                res.sendFile(path.join(directory,'/output/NewDocument.pdf'))
+                rimraf(directory, function () { });
 
-                    cleanTmpFolder()
-
-                    function cleanTmpFolder() {
-                        setTimeout(() => {
-                            if (isEmpty(directory)) {
-                                fs.rmdir(directory, (err) => { 
-                                    if (err) log(err.stack, path.join(__dirname,'../error.log'));
-                                });
-                            } else {
-                                console.log("directory not empty !!")
-                                cleanTmpFolder()
-                            }
-                        }, 100)
-                    }
-
-                    function isEmpty(path) {
-                        if (fs.readdirSync(path).length === 0) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                })
             }
         }
     } catch (err) {
@@ -149,8 +124,6 @@ router.post('/upload_PDF_IMG', upld.array('images', 1000), (req, res) => {
     }
 
 });
-
-
 
 
 
