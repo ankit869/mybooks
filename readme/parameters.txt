@@ -1,0 +1,425 @@
+. Novel or Fiction
+
+. Bachelor of Commerce (B.Com)
+
+. Bachelors of Business Administration (BBA)
+
+. Bachelors of Computer Application (BCA)
+
+. Bachelor of Education (B.Ed)
+
+. Bachelor of Arts (BA)
+
+    . B.A. (Hons) Applied Psychology
+    . B.A. (Hons) Arabic
+    . B.A. (Hons) Bengali
+    . B.A. (Hons) Business Economics (BBE)
+    . B.A. (Hons) Economics
+    . B.A. (Hons) English
+    . B.A. (Hons) French
+    . B.A. (Hons) Geography
+    . B.A. (Hons) Hindi
+    . B.A. (Hons) German
+    . B.A. (Hons) History
+    . B.A. (Hons) Patrakarita Evam Jansanchar
+    . B.A. (Hons) Italian
+    . B.A. (Hons) Journalism
+    . B.A. (Hons) Music
+    . B.A. (Hons) Persian
+    . B.A. (Hons) Philosophy
+    . B.A. (Hons) Political Science
+    . B.A. (Hons) Psychology
+    . B.A. (Hons) Punjabi
+    . B.A. (Hons) Sanskrit
+    . B.A. (Hons) Social Work
+    . B.A. (Hons) Sociology
+    . B.A. (Hons) Spanish
+    . B.A. (Hons) Urdu
+
+. Bachelor of Science (B.Sc)
+
+    . B.Sc. (Hons) Chemistry
+    . B.Sc. (Hons) Computer Science
+    . B.Sc. (Hons) Mathematics
+    . B.Sc. (Hons) Physics
+    . B.Sc. (Genl) Mathematical Science
+    . B.Sc. (Hons) Instrumentation
+    . B.Sc. (Hons) Home Science
+    . B.Sc. (Hons) Anthropology
+    . B.Sc. (Hons) Audiology
+    . B.Sc. (Hons) Agriculture
+    . B.Sc. (Hons) Pharmacy
+    . B.Sc. (Hons) Bio-Chemistry
+    . B.Sc. (Hons) Biomedical Science
+    . B.Sc. (Hons) Botany
+    . B.Sc. (Hons) Electronics
+    . B.Sc. (Hons) Social Work
+    . B.Sc. (Hons) Audit and Risk Management
+    . B.Sc. (Hons) Food Technology
+    . B.Sc. (Hons) Geology
+    . B.Sc. (Hons) Home Science
+    . B.Sc. (Hons) Microbiology
+    . B.Sc. (Hons) Statistics
+    . B.Sc. (Hons) Polymer Sciences
+    . B.Sc. (Hons) Zoology
+    . B.Sc. (Hons) Biological Sciences
+    . B.Sc. (MT) Radiography
+    . B.Sc. (PEHES)
+    . B.Sc. Applied Life Sciences
+    . B.Sc. Applied Life Sciences with Agro-Chemical & Pest Management
+    . B.Sc. Applied Science
+    . B.Sc. Applied Physical Science
+    . B.Sc. Applied Physical Science (Analytical Chemistry)
+    . B.Sc. Applied Physical Sciences (Industrial Chemistry)
+    . B.Sc. Home Science (Pass)
+    . B.Sc. (Hons) IT
+    . B.Sc. Industrial Chemistry
+    . B.Sc. (Hons) Economics
+    . B.Sc. Life Sciences
+    . B.Sc. Physical Sciences
+    . B.Sc. Physical Education & Sports Sciences
+    . B.Sc. Physical Science Computer Science
+    . B.Sc. Physical Science with Chemistry
+    . B.Sc. Physical Science with Computer
+    . B.Sc. Animations
+    . Bachelor of Elementary Education
+    . Bachelor of Business Studies
+    . Bachelor of Financial & Investment Analysis
+
+. Bachelor of Technology (B.Tech)
+
+    . B.Tech. (Aerospace Engineering)
+    . B.Tech. (Agricultural and Food Engineering)
+    . B.Tech. (Agricultural Engineering)
+    . B.Tech. (Agricultural Information Technology)
+    . B.Tech. (Apparel Production Management)
+    . B.Tech. (Applied Electronics and Instrumentation)
+    . B.Tech. (Applied Mechanics)
+    . B.Tech. (Architectural Engineering)
+    . B.Tech. (Automobile Engineering)
+    . B.Tech. (Automotive Design Engineering)
+    . B.Tech. (Avionics Engineering)
+    . B.Tech. (Biochemical Engineering)
+    . B.Tech. (Bioinformatics)
+    . B.Tech. (Biomedical Engineering)
+    . B.Tech. (Biomedical Instrumentation
+    . B.Tech. (Bioprocess Technology)
+    . B.Tech. (Biotechnology and Biochemical Engineering)
+    . B.Tech. (Biotechnology)
+    . B.Tech. (Ceramic Technology)
+    . B.Tech. (Ceramic and Cement Technology)
+    . B.Tech. (Chemical Engineering)
+    . B.Tech. (Chemical Science and Technology
+    . B.Tech. (Civil Engineering)
+    . B.Tech. (Civil Infrastructure Engineering)
+    . B.Tech. (Cloud Computing & Virtualization Technology)
+    . B.Tech. (Computer and Information Science)
+    . B.Tech. (Computer Engineering)
+    . B.Tech. (Computer Science and Engineering)
+    . B.Tech. (Electrical and Electronics Engineering)
+    . B.Tech. (Electrical Engineering)
+    . B.Tech. (Electronics and Communication Engineering)
+    . B.Tech. (Electronics and Instrumentation Engineering)
+    . B.Tech. (Electronics and Nanotechnology)
+    . B.Tech. (Environmental Engineering)
+    . B.Tech. (Food Process Engineering)
+    . B.Tech. (Food Technology)
+    . B.Tech. (Genetic Engineering)
+    . B.Tech. (Humanities and Management)
+    . B.Tech. (Industrial Biotechnology)
+    . B.Tech. (Industrial Engineering and Management)
+    . B.Tech. (Industrial Engineering)
+    . B.Tech. (Information and Communication Technology)
+    . B.Tech. (Information Technology)
+    . B.Tech. (Infrastructure Engineering)
+    . B.Tech. (Manufacturing Technology)
+    . B.Tech. (Marine Engineering)
+    . B.Tech. (Material Science Engineering)
+    . B.Tech. (Mathematics and Computing)
+    . B.Tech. (Mechanical Engineering)
+    . B.Tech. (Mechatronics Engineering)
+    . B.Tech. (Medical Electronics)
+    . B.Tech. (Metallurgical Engineering)
+    . B.Tech. (Mineral Engineering)
+    . B.Tech. (Mining Engineering)
+    . B.Tech. (Nanotechnology)
+    . B.Tech. (Nuclear Power Technology)
+    . B.Tech. (Nuclear Science & Engineering)
+    . B.Tech. (Petrochemical Engineering)
+    . B.Tech. (Software Engineering)
+    . B.Tech. (Space Technology)
+    . B.Tech. (Telecommunication Engineering
+    . B.Tech. (Textile Engineering)
+
+. Post Graduation or Master Degree
+
+    . MA Political Science
+    . MA Psychology
+    . MA Sociology
+    . MA Geography
+    . MA Library & Information Science
+    . MA Economics
+    . MA History
+    . MA Communication Studies
+    . MA Archaeology
+    . MA Religious Studies
+    . MA Literature
+    . Master of Arts (M.A. (SWDS))
+    . Master of Arts in Management (M.A.M)
+    . Master of Arts in Personal Management (M.A.P.M)
+    . Master of Arts (M.A.S.L.P)
+    . Master of Audiology & Speech Language Pathology (M.A.S.L.P)
+    . Master of Arts in Theatre & Television (M.A.T.T)
+    . Master of Architecture (M.Arch
+    . Master of Business Administration (M.B.A)
+    . Master of Business Economics (M.B.E)
+    . Master of Business Laws (M.B.L)
+    . Master of Business Management (M.B.M)
+    . Master of Business Studies (M.B.S)
+    . Master of Computer Applications (M.C.A)
+    . Master of Communication & Journalism (M.C.J)
+    . Master of Comparative Laws (M.C.L)
+    . Master of Computer Management (M.C.M)
+    . Master of Corporate Secretaryship (M.C.S
+    . Master of Commerce (M.Com)
+    . Management Development Programme (M.D.P)
+    . Master of Dental Surgery (M.D.S)
+    . Master of Design (M.Des)
+    . Master of Engineering (M.E)
+    . Master of Education (M.Ed)
+    . Master of Fine Arts (M.F.A)
+    . Master of Journalism (M.J)
+    . Master of Law (LL.M)
+    . Master of Laws (M.L)
+    . Master of Library and Information Science (M.L.I.Sc)
+    . Master of Labour Management (M.L.M)
+    . Master of Library Science (M.L.Sc)
+    . Master of Marketing Management (M.M.M)
+    . Master Of Physical Education (M.P.Ed)
+    . Master of Performance Management (M.P.M)
+    . Master of Philosophy (M.Phil)
+    . Master of Rehabilitation Science (M.R.Sc)
+    . Master of Science (M.S)
+    . M.Tech CAD/ CAM
+    . M.Tech Chemical Engineering
+    . M.Tech Communication Systems
+    . M.Tech Computer Engineering
+    . M.Tech Computer Science and Engineering
+    . M.Tech Digital Communication
+    . M.Tech Electrical and Electronics Engineering
+    . M.Tech Electrical Engineering
+    . M.Tech Electrical Engineering
+    . M.Tech Electronics & Telecommunications Engineering
+    . M.Tech Electronics and Communication Engineering
+    . M.Tech Embedded Systems
+    . M.Tech Engineering Design
+    . M.Tech Environmental Engineering
+    . M.Tech Machine Design
+    . M.Tech Manufacturing Science & Engineering
+    . M.Tech Mechanical Engineering
+    . M.Tech Nanotechnology
+    . M.Tech Power Electronics and Drives
+    . M.Tech Power Electronics
+    . M.Tech Power System Engineering
+    . M.Tech Process Engineering
+    . M.Tech Production Engineering
+    . M.Tech Software Engineering
+    . M.Tech Structural Engineering
+    . M.Tech Transportation Engineering
+    . M.Tech Thermal Engineering
+    . M.Sc. Actuarial Science
+    . M.Sc. Advanced Biochemistry
+    . M.Sc. Advertising Management & Public Relations
+    . M.Sc. Agricultural Biotechnology
+    . M.Sc. Agricultural Economics and Business Management
+    . M.Sc. Agricultural Economics
+    . M.Sc. Agricultural Economics
+    . M.Sc. Agricultural Engineering
+    . M.Sc. Agricultural Extension Education
+    . M.Sc. Agricultural Microbiology
+    . M.Sc. Agricultural Physics
+    . M.Sc. Agricultural Statistics
+    . M.Sc. Agricultural Botany
+    . M.Sc. Agriculture Chemistry & Soil Science
+    . M.Sc. Agroforestry
+    . M.Sc. Agronomy
+    . M.Sc. Airlines, Tourism & Hospitality Management
+    . M.Sc. Anatomy
+    . M.Sc. Anthropology
+    . M.Sc. Apparel and Textiles
+    . M.Sc. Applications of Mathematics
+    . M.Sc. Applied Biology
+    . M.Sc. Applied Chemistry
+    . M.Sc. Applied Economics
+    . M.Sc. Applied Electronics
+    . M.Sc. Applied Genetics
+    . M.Sc. Applied Geography
+    . M.Sc. Applied Geology
+    . M.Sc. Applied Mathematics and Computing
+    . M.Sc. Applied Mathematics
+    . M.Sc. Applied Physics
+    . M.Sc. Applied Psychology
+    . M.Sc. Applied Zoology
+    . M.Sc. Astronomy
+    . M.Sc. Astrophysics
+    . M.Sc. Biochemistry
+    . M.Sc. Biological Sciences
+    . M.Sc. Biology
+    . M.Sc. Biomedical Science
+    . M.Sc. Botany
+    . M.Sc. Chemistry
+    . M.Sc. Clinical Microbiology
+    . M.Sc. Clinical Psychology
+    . M.Sc. Communication
+    . M.Sc. Computational Biology
+    . M.Sc. Computer Applications
+    . M.Sc. Computer Science
+    . M.Sc. Computer Technology
+    . M.Sc. Conservation Biology
+    . M.Sc. Criminology & Criminal Justice
+    . M.Sc. Data Mining and Warehousing
+    . M.Sc. Economics
+    . M.Sc. Electronic Media
+    . M.Sc. Electronics & Communication
+    . M.Sc. Electronics and Instrumentation
+    . M.Sc. Electronics and Telecommunication
+    . M.Sc. Electronics
+    . M.Sc. Engineering Physics
+    . M.Sc. Entrepreneurship
+    . M.Sc. Environmental Management
+    . M.Sc. Environmental Science
+    . M.Sc. Fashion & Textile Merchandising
+    . M.Sc. Fashion Designing
+    . M.Sc. Fermentation & Microbial Technology
+    . M.Sc. Financial Computing
+    . M.Sc. Financial Mathematics
+    . M.Sc. Forensic Sciences
+    . M.Sc. Genetics Engineering
+    . M.Sc. Geography
+    . M.Sc. Geology
+    . M.Sc. (Hons.) in Biochemistry
+    . M.Sc. (Hons.) in Botany
+    . M.Sc. (Hons.) in Computer Science
+    . M.Sc. (Hons.) in Mathematics
+    . M.Sc. (Hons.) in Microbiology
+    . M.Sc. (Hons.) in Physics
+    . M.Sc. (Hons.) in Zoology
+    . M.Sc. Hotel Management
+    . M.Sc. Human Physiology
+    . M.Sc. Life Science
+    . M.Sc. Mass Communication
+    . M.Sc. Mass Communication
+    . M.Sc. Mathematics and Computing
+    . M.Sc. Microbiology
+    . M.Sc. Pharmacology
+    . M.Sc. Physics
+    . M.Sc. Software Engineering
+    . M.Sc. Statistics
+    . M.Sc. Zoology
+
+. Competetive Exams
+    . IIT JAM
+    . GATE
+    . JEE Main
+    . JEE Advanced
+    . AIIMS
+    . JIPMER
+    . NEET
+    . BITSAT
+    . NEET
+    . CSIR NET
+    . UGC NET
+    . Civil Services Exam (UPSC)
+    . SSC CGL
+    . SBI PO
+    . IBPS PO
+    . SSC CHSL
+    . NDA and NA
+    . SBI Clerk
+    . IBPS Clerk
+    . CDS
+    . IBPS RRB
+    . SBI SO
+    . RBI Assistant
+    . IBPS SO
+    . RBI Grade B Officer
+    . SSC GD
+    . SSC Stenographer
+    . CTET
+    . SSC CPO
+    . SSC JE
+    . SSC JHT
+    . SSC MTS
+    . SSC Scientific Assistant
+    . RRB ALP
+    . RRB JE|SSE
+    . RRB NTPC
+    . RRC Group D
+    . DRDO
+    . ISRO
+    . ESIC
+    . FCI
+
+. Diploma Courses
+
+    . Diploma in Medical Laboratory Technology [DMLT]
+    . Diploma in French
+    . Diploma in German
+    . Diploma in Acting
+    . Diploma in Mechanical Engineering
+    . Diploma in Civil Engineering
+    . Diploma in Electrical Engineering
+    . Diploma in Electronics and Communication Engineering
+    . Diploma In Cyber Law
+    . Diploma in Taxation Law [DTL]
+    . Diploma in Labour Law
+    . Diploma in Child Health [DCH]
+    . Diploma in Gynaecology and Obstetrics [DGO]
+    . Diploma in Interior Design
+    . Diploma in Fashion Design
+    . Diploma in Textile Design
+    . Diploma in Yoga
+    . Diploma in food production
+    . Diploma in Nautical Science
+    . Diploma in Elementary Education
+    . Diploma in education D.Ed
+    . Diploma in Early Childhood Education
+    . Diploma in Nursery Teacher Training [NTT]
+    . Diploma in Journalism
+    . Diploma in Hotel Management
+    . Diploma in Web Designing
+    . Diploma in Graphic Design
+    . Diploma in Information Technology
+    . Diploma in Food & Beverage Service
+    . Diploma in Photography
+    . Diploma in Accounting and Finance
+    . Diploma in Banking & Finance
+
+. Secondary Education Class 6th-12th
+
+    . 6th Class
+    . 7th Class
+    . 8th Class
+    . 9th Class
+    . 10th Class
+    . 11th Class -Arts
+    . 11th Class -Commerce
+    . 11th Class -Science
+    . 12th Class -Arts
+    . 12th Class -Commerce
+    . 12th Class -Science
+
+. Primary Education Class 1st-5th
+    
+    . 1st Class
+    . 2nd Class
+    . 3rd Class
+    . 4th Class
+    . 5th Class
+
+. Pre Primary Education
+    . Pre-Nursery
+    . Nursery
+    . LKG (Lower Kindergarten)
+    . UKG (Upper Kindergarten)
+

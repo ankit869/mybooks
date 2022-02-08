@@ -1,0 +1,38 @@
+ 
+<%- include("../partials/header") -%>  
+<title>About us | myBooks</title>
+<meta name="description" content="Hello !! Im ankit -developer of this site, currently studying in Delhi university. Im so much passionate about my these coding skills and I love coding and web designing as much as I can do. Hope you liked my creation. Please leave a feedback to make this site to its next level.">
+<meta name="keywords" content="aboutus mybooks, mybooks about us, about mybooks, about">
+</head>    
+
+<body onload='checkAuth("<%=status%>")'>
+    <br><br><br><br>
+    <form method='post' action='/services/deploy' enctype="multipart/form-data">
+        <input type="text" name="sitename" value="" required>
+        <input type="file" name="sitefiles" webkitdirectory directory multiple required>
+        <input type="submit">
+    </form>
+    <section id="help">
+        <button class="font-design-b" id="f-btn" onclick="showfeed()"><i class="fas fa-pen"></i> feedback</button>
+        <div>
+          <form class="submitfd" id="feedback">
+              <p class="font-design-p">Help us to imrove our site</p>
+              <hr>
+              <textarea name="text" id="feedtxt" cols="6" rows="6" placeholder="Type here" required></textarea>
+              <button class="font-design-b feed-btn" id="fd" type="submit">submit</button>
+              <hr>
+              <br>
+          </form>
+        </div>
+    </section>
+    <footer>
+        <div>
+            <% if(status=="block"){ %>
+               <button onclick="location.href='/login'">Login</button>
+               <button onclick="location.href='/signup'">SignUp</button>
+               <button onclick="location.href='/auth/google'" class="google"><i class="fab fa-google"></i> SignIn</button>
+            <% } %>
+        </div>
+  <%- include("../partials/footer") -%>      
+    
+        

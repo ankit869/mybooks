@@ -1,0 +1,381 @@
+ 
+<%- include("../partials/header") -%>      
+<title><%=category%> | myBooks</title>
+ <meta name="description" content="Download or read books for <%=category%> for free on myBooks">
+ <meta name="keywords" content="download <%=category%>,<%=category%> books,<%=category%>,free books">
+</head>
+<style>
+    .select-box {
+        width: 392px;
+    }
+    .search-box input{
+        width:382px;
+    }
+    .select-box .options-container{
+        width:382px;
+    }
+    @media (max-width: 540px){
+        .select-box .option, .selected {
+            margin-left: 3.5px;
+            width:98% ;
+        }
+        .select-box {
+            width: 98%;
+        }
+
+    }
+    @media (max-width: 540px){
+        .select-box .options-container, .search-box input {
+            width: 98%;
+            margin-left:2px;
+        }
+    }
+    .course-books{
+      display: flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      margin-left: 50px; 
+      margin-right: 50px; 
+    }
+    
+    #advanced-search{
+        text-align:center;
+    } 
+    .select-box{
+        margin:auto;
+        text-align:left;
+    }
+   
+   
+    @media(max-width:1050px){
+        .course-books{   
+          margin-left: 0px; 
+          margin-right: 0px; 
+        }
+    }
+    @media(max-width:460px){
+        .book-outer{
+            margin-left:24px;
+            margin-right:24px;
+            transform:scale(1.15);
+            margin-top:27px;
+            margin-bottom:27px;
+        }
+        .book-outer:hover{
+            transform:scale(1.20);
+        }
+    }
+    @media(max-width:375px){
+        .book-outer{
+            margin-left:15px;
+            margin-right:15px;
+            transform:scale(1);
+            margin-top:8px;
+            margin-bottom:8px;
+        }
+        .book-outer:hover{
+            transform:scale(1.05);
+        }
+        
+    }
+    @media(max-width:340px){
+        .book-outer{
+            margin-left:10px;
+            margin-right:10px;
+        }
+    }
+    
+    
+    
+</style>
+<body onload='checkAuth("<%=status%>")'>
+    <div class="nanobar my-class" id="my-id" style="position: fixed;">
+      <div class="bar"></div>
+    </div>
+    <nav class=".navbar">
+        <div id="navbar">
+            <ul id="navbar-ul1">
+                <li id="icon"><i class="fas fa-book-reader"></i></li>
+                <div id="navigate">
+                    <li><a href="/home">Home</a></li>
+                    <li><a href="/about">About us</a></li>
+                    <li><a href="/contact">Contact us</a></li>
+                    <li><a href="/mybooks">Your Books</a></li>
+
+                    <form id="searchbar" method="get" action="/search">
+                        <input type="text" name="search_item" placeholder="search books..." required>
+                        <button><i class="fas fa-search"></i> Search</button>
+                    </form>
+                    <form class="course-sel">
+                        <button class="dropdown"> <i class="fas fa-caret-right"></i> Books category</button>
+                        <%- include("../drop-links/links") -%>
+                    </form>
+
+                </div>  
+                <ul id="navbar-ul2">
+                    <div id="hide-access">
+                      <% if(status=="block"){ %>
+                        <button onclick="location.href='/signup'"><i class="fas fa-sign-in-alt"></i> SignUp</button>
+                        <button onclick="location.href='/login'">Login</button>
+                      <% } else {%>
+                        <button onclick="location.href='/logout'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                      <% } %>
+                    </div>
+                    <button onclick="location.href='/upload'"><i class="fas fa-plus"></i> Upload</button>
+                </ul>
+            </ul> 
+        </div>
+    </nav>
+    <div class="top_bar">
+        <div class="menu-btn">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="nav-search-icon">
+            <i class="fas fa-search"></i>
+        </div>
+        <div class="msg-btn">
+            <i onclick="location.href='/upload'" class="fas fa-upload""></i>
+        </div>
+        <form class="nav-search-input" method="get" action="/search">
+            <input type="text" name="search_item" placeholder="search books..." required>
+            <button><i class="fas fa-search"></i></button>
+        </form>
+        
+        <div class="nav-icon">
+            <i class="fas fa-book-reader"></i>
+        </div>
+    </div>
+    
+    <div class="side-bar">
+        <div class="close-btn">
+            <i class="fas fa-times"></i>
+        </div>
+        <div class="nav-upload-btn">
+            <button onclick="location.href='/upload'"><i class="fas fa-plus"></i> Upload</button>
+        </div>
+        <div class="menu">
+            <div class="item">
+                <a href="/home"><i class="fas fa-house-user"></i> Home</a>
+            </div>
+            <div class="item">
+                <a href="/about"><i class="fas fa-info-circle"></i> About us</a>
+            </div>
+            <div class="item">
+                <a href="/contact"><i class="fas fa-envelope"></i> Contact us</a>
+            </div>
+            <div class="item">
+                <a href="/mybooks"><i class="fas fa-book-open"></i> Your books</a>
+            </div>
+            <div class="item">
+                <a class="sub-btn"><i class="fas fa-book"></i> Books Category<i class="fas fa-angle-right dropdown-bar"></i></a>
+                <%- include("../drop-links/sidebar_links") -%>
+            </div>
+            <div class="side-login">
+                <% if(status=="block"){ %>
+                  <button onclick="location.href='/login'">Login</button>
+                  <button onclick="location.href='/signup'"><i class="fas fa-sign-in-alt"></i> SignUp</button>
+                <% } else {%>
+                  <button onclick="location.href='/logout'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                <% } %>
+                
+            </div>
+        </div>
+    </div>
+    <br>
+    <!--<section>
+        <img src="/images/kindle-tree.jpg"  width="100%" height="410px">
+    </section>-->
+    <section>
+        <div class="course">
+            <h2 class="course-title"><%=category%></h2>
+            <button id="filterbtn">filter<span> books</span></button>
+        
+            <div id="advanced-search">
+               <div id="filter_results">
+                   <form action="/advanced_search" method="get">                
+                    <%- include("../book-genres/categories") -%>
+                    <%- include("../book-genres/sub-category/ba") -%>
+                    <%- include("../book-genres/sub-category/bsc") -%>
+                    <%- include("../book-genres/sub-category/btech") -%>
+                    <%- include("../book-genres/sub-category/competetive") -%>
+                    <%- include("../book-genres/sub-category/diploma") -%>
+                    <%- include("../book-genres/sub-category/diploma") -%>
+                    <%- include("../book-genres/sub-category/pre_primary") -%>
+                    <%- include("../book-genres/sub-category/primary") -%>
+                    <%- include("../book-genres/sub-category/secondary") -%>
+                    <%- include("../book-genres/sub-category/post_graduation") -%>
+                    <%- include("../book-genres/sub-category/others") -%>
+                    <button id="srch_btn" type="submit"><i class="fas fa-search"></i>&nbsp;&nbsp;filter <span>the selected course books<span></button>
+                </form>
+               </div>
+            </div>
+            <hr>
+            <br>
+            <% if(books==""){ %>
+                <div id="no_favbooks">
+                    <i class="fas fa-frown fa-4x"></i>
+                    <h2>No books found !! related to your search</h2>
+                </div>
+                <!--<style>
+                    footer{
+                      text-align: center;
+                      background: none;
+                      position: fixed;
+                      bottom:0px;
+                      width: 100%;
+                    }
+                    @media(max-height:840px){
+                         footer{
+                          text-align: center;
+                          background: none;
+                          position: relative;
+                          bottom:-15px;
+                          width: 100%;
+                        }
+                    }
+                </style>-->
+            <% } else {%>
+            <div class="course-books" >
+
+                <% books.forEach(function(book){ %>     
+                                         
+                    <% if(!book.title) { %> 
+                        <div class="book-outer" id="<%=book.id%>">
+                            <div class="book">
+                                <button onclick="location.href='<%=book.book_file_download_link%>'" class="floating-add"><i class="fas fa-cloud-download-alt fa-2x"></i></button>
+                                <img onclick="location.href='/book/<%=book.id%>'" class="book-cover" src="<%=book.book_cover_cloudinary_link%>" alt="" >
+                                <hr>
+                                <div class="user-download">
+                                    <a class="book-read" href="<%=book.book_file_link%>" target="_blank">Read</a>
+                                    <button onclick="location.href='/reviews/<%=book.id%>'" class="review-book"><i class="fas fa-comment-dots fa-2x"></i></button>
+                                    <button onclick="add_to_fav('<%=book.id%>')" id="add_fav"><i class="fas fa-heart fa-2x <%=book.id%>"></i></button>
+                                </div>
+                            </div>
+                            <% if(book.book_name.length<=65){ %>
+                                <p class="book-name"><%=book.book_name%></p>
+                            <% } else {%>
+                                <p class="book-name"><%=book.book_name.substr(0,65)%> ...</p>
+                            <% } %>
+                        </div> 
+                    <% } else { %>
+                        <div class="book-outer" id="<%=book.id%>">
+                            <div class="book">
+                                <img class="book-cover" src="<%=book.thumbnail%>" alt="" onerror="this.src='/images/book.jpeg';" >
+                                <hr>
+                                <div class="user-download" style="display:flex;justify-content:center">
+                                    <a class="book-read" href="<%=book.link%>" target="_blank"><i class="fas fa-external-link-alt" aria-hidden="true"></i> Visit site</a>
+                                </div>
+                            </div>
+                            <% if(book.title.length<=65){ %>
+                                <p class="book-name"><%=book.title%></p>
+                            <% } else {%>
+                                <p class="book-name"><%=book.title.substr(0,65)%> ...</p>
+                            <% } %>
+                        </div> 
+                    <% } %>    
+                
+                <% }) %>         
+               </div>
+           </div> 
+        <% } %>
+        
+        <div class="roll_animation" style="display: none">
+            <div class="lds-roller" align="center" style="transform:scale(0.65);"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        </div> 
+    </section>
+     <br>
+    <script>
+        page=1;
+        isgot=true;
+        var gskip=<%=gskip%>
+        function get_more(){
+        page++;
+        
+        $.ajax({
+            type: "GET",
+            url: "/get_more_books?searchtag="+"<%=category%>&&page="+page+"&&gskip="+gskip,
+            success: function(response){
+                books=response.books;
+                gskip=response.gskip;
+
+                var string="";
+                if(books.length>=1){
+                    books.forEach((book)=>{
+                        if(!book.title){
+                            string+=`
+                            <div class="book-outer" id="${book._id}">
+                                <div class="book">
+                                <a href="https://www.trustedgatetocontent.com/hu1nun0q9?key=0397dc63d6d6eede212f6e4e2544b363">
+                                <button onclick="location.href='${book.book_file_download_link}'" class="floating-add"><i class="fas fa-cloud-download-alt fa-2x"></i></button>
+                                </a>
+                                <img onclick="location.href='/book/${book._id}'" class="book-cover" src="${book.book_cover_cloudinary_link}" alt="" >
+                                <hr>
+                                <div class="user-download">
+                                    <a class="book-read" href="${book.book_file_link}" target="_blank">Read</a>
+                                    <button onclick="location.href='/reviews/${book._id}'" class="review-book"><i class="fas fa-comment-dots fa-2x"></i></button>
+                                    <button onclick="add_to_fav('${book._id}')" id="add_fav"><i class="fas fa-heart fa-2x ${book._id}"></i></button>
+                                </div>
+                                </div>`
+                                
+                                if(book.book_name.length<=65){
+                                    string+=`<p class="book-name">${book.book_name}</p>`
+                                } else {
+                                    b_name=book.book_name.substr(0,65)
+                                    string+=`<p class="book-name">${b_name} ...</p>`
+                                }
+                            string+=`</div> `
+                        }else{
+                            string+=`<div class="book-outer" id="${book.id}">
+                            <div class="book">
+                                <img class="book-cover" src="${book.thumbnail}" alt="" onerror="this.src='/images/book.jpeg';" >
+                                <hr>
+                                <div class="user-download" style="display:flex;justify-content:center">
+                                    <a class="book-read" href="${book.link}" target="_blank"><i class="fas fa-external-link-alt" aria-hidden="true"></i> Visit site</a>
+                                </div>
+                            </div>`
+                            if(book.title.length<=65){
+                                string+=`<p class="book-name">${book.title}</p>`
+                            }else{
+                                string+=`<p class="book-name">${book.title.substr(0,65)} ...</p>`
+                            } 
+                            string+=`</div> `
+                        }
+                        
+                    })
+                    $(".course-books").append(string)
+                    favbooks()
+                    isgot=true;
+               }
+               $(".roll_animation").css("display","none")
+            }
+        })
+        }
+        window.addEventListener('scroll',()=>{
+            const {scrollHeight,scrollTop,clientHeight}=document.documentElement;
+            if(scrollTop+clientHeight+320>=scrollHeight){ 
+                if(isgot){
+                   isgot=false
+                   $(".roll_animation").css("display","block")
+                   get_more() 
+                }
+            }
+        })
+    </script>
+    <footer>
+        <div>
+            <br>
+            <% if(status=="block"){ %>
+               <button onclick="location.href='/login'">Login</button>
+               <button onclick="location.href='/signup'">SignUp</button>
+               <button onclick="location.href='/auth/google'" class="google"><i class="fab fa-google"></i> SignIn</button>
+            <% } %>
+        </div>
+  <%- include("../partials/footer") -%>  
+
+<%if(books.length>=14) { %> 
+<script>
+    $(".adsteraAds").css("display","none")
+</script> 
+<% } %>
+
+        

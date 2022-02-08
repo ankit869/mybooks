@@ -1,0 +1,157 @@
+
+#about { 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin:50px;
+}
+#about i{
+    font-size: 15rem;
+    color:rgba(86,117,248,.5);
+    position: relative;
+    right:50px;
+
+}
+#about-content{
+    width: 700px;
+    margin:30px;
+    background-color: rgba(86, 117, 248,.5);
+    padding:20px;
+    border-radius: 20px;
+
+}
+#about-content p{
+    color:#fafaff !important;
+    font-size: 20px;
+}
+#about-content h2{
+    color:#fafaff !important;
+    background-color: #496cce;
+    font-size: 36px;
+    display: inline-block;
+    padding: 2px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 20px;
+}
+#feature-section{
+    margin:50px;
+    border-radius:20px;
+    position:relative;
+}
+.feature-h{
+    color:#6083e4;
+    font-family: 'Sacramento', cursive;
+    font-size:4rem;
+}
+#feature-section .feature{
+   display:flex;
+   padding:5px;
+   align-items:center;
+   justify-content:center;
+}
+#feature-section .feature .ft img{
+   width:180px;
+   margin:5px;
+   margin-bottom:10px;
+}
+#feature-section .feature .ft{
+   margin-right:4%;
+   margin-left:4%;
+}
+#feature-section .feature .ft p{
+   font-size:20px;
+   color:#d4d4e0;
+
+}
+
+
+.carousel{
+    background:none;
+    position: relative;
+    text-align:center !important;
+ }
+ .carousel-item{
+   padding:2% 20% 4% 20%; 
+ }
+ .carousel-item p{
+   font-size:18px;
+   margin-bottom:50px;
+   color: #d4d4e0;
+   text-decoration:none;
+ }
+ .carousel-item img{
+   width:170px;
+   
+ }
+
+ .testimonial-image{
+   width: 20%;
+   padding: 10px;
+ }
+ #carouselExampleIndicators{
+    display: none;
+ }
+ 
+@media(max-width:1169px){
+    #feature-section{
+        display:none;
+    }
+    #carouselExampleIndicators{
+        display: block;
+    }
+    #about-content{
+        width:80%;
+    }
+    .feature-h{
+        color:#6083e4;
+        font-family: 'Sacramento', cursive;
+        font-size:3.3rem;
+    }
+}
+@media(max-width:1290px){
+    #about{
+        flex-direction: column;
+    }
+    #about-content{
+        left:0px;
+    }
+    #about i{
+        font-size: 10rem;
+        right:0px;
+    
+    }
+    #about{
+        margin:20px;
+    }
+    #about-content{
+        margin:20px;
+        padding: 15px;
+        margin-top:30px;
+    }
+    #about-content p {
+        color: #fafaff !important;
+        font-size: 20px;
+        margin:0px
+    }
+    #about-content h2{
+        font-size: 28.5px;
+    }
+}
+@media(max-width:550px){
+    #about-content{
+        margin:20px;
+        margin-top:30px;
+        width:94%;
+    }
+    #about i{
+        font-size: 7rem;
+        right:0px;
+    }
+    #about-content p {
+        color: #fafaff !important;
+        font-size: 20px !important;
+        margin:0px
+    }
+}

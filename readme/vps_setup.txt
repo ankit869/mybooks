@@ -1,0 +1,54 @@
+sudo apt update 
+sudo apt upgrade
+sudo apt install nginx firewalld xrdp xfce4 
+echo xfce4-session >~/.xsession
+firewall-cmd --zone=public --permanent --add-port=80/tcp 
+firewall-cmd --zone=public --permanent --add-port=443/tcp 
+firewall-cmd --zone=public --permanent --add-port=8080/tcp 
+firewall-cmd --zone=public --permanent --add-port=3000/tcp 
+firewall-cmd --zone=public --permanent --add-port=3389/tcp 
+firewall-cmd --zone=public --permanent --add-port=5000/tcp 
+firewall-cmd --reload
+
+sudo passwd ubuntu
+
+adduser ankit
+usermod -aG sudo ankit
+su - ankit
+mkdir ~/.ssh
+chmod 700 ~/.ssh
+nano ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+sudo service ssh restart
+
+sudo apt install gnome-software firefox chromium-browser
+
+wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
+sudo apt-get update & sudo apt-get install sublime-text
+
+sudo apt-get install synaptic
+
+sudo apt-get install unity-tweak-tool
+
+sudo apt-get install vim
+
+sudo apt install redis-server
+sudo nano /etc/redis/redis.conf    (change- supervised no --> supervised systemd)
+sudo systemctl restart redis.service
+sudo systemctl status redis
+
+ ######  RUN THIS COMMAND IN POWERSHELL WITH ADMINITRATOR ACCESS ######### 
+Get-Service -Name ssh-agent | Set-Service -StartupType Manual
+Get-Service ssh-agent
+Start-Service ssh-agent
+
+ssh-add "C:\Users\ankit\OneDrive\MY CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\auth_files\aws-ssh.pem"
+
+scp -r "C:\Users\ankit\OneDrive\MY CODES\WEB_DEVELOPMENT\PROJECTS\\PROJECT_13_MYBOOKS\auth_files\aws-ssh.pem" "C:\Users\ankit\OneDrive\MY CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\files_tobe_transfer" ubuntu@ec2-13-126-151-182.ap-south-1.compute.amazonaws.com:mybooks_files
+
+sudo apt update
+curl -sL https://deb.nodesource.com/setup_16.x -o nodesource_setup.sh
+sudo bash nodesource_setup.sh
+sudo apt-get install nodejs
+auth_files\mb-public

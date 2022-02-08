@@ -1,0 +1,315 @@
+
+<%- include("../partials/header") -%> 
+<link rel="stylesheet" href="/css/client/user.css">
+<link rel="stylesheet" href="/css/admin/admin.css">   
+<title>members detail | myBooks</title>
+</head>
+<style>
+   .search-user input{
+       border-radius: 20px;
+       background-color:#27272b;
+       color:white;
+       outline:none;
+       border:none;
+       padding:8px;
+       padding-left:15px;
+       padding-right:15px;
+       transform:scale(1.1)
+   }
+   .search-user i{
+       position:relative;
+       left:20px;
+       top:5px;
+       color:#6083e4;
+   }
+   .search-user{
+       margin:3px
+   }
+    @media (max-width:856px){
+        .search-user input{
+         transform:scale(1)
+        }
+        .search-user i{
+            margin-left:2px;
+            left:0px;
+        }
+    }
+    @media (max-width:291px){
+        .search-user i{
+            display:none;
+        }
+    }
+</style> 
+<body>
+    
+    <a onclick="history.back()" style="position:relative;left:30px;top:6px;" id="arrow" ><i style="color:#6083e4;" class="fas fa-long-arrow-alt-left fa-4x"></i></a>
+    <form align="center" class="search-user" method="get" action="/admin/members">
+        <input type="text" name="searchtag" placeholder="Search user .. " ><button style="background:none;border:none;"><i class="fab fa-searchengin fa-2x"></i></button>
+    </form>
+    <div id="members">
+    <% if(members==""){ %>
+        <div id="no_favbooks">
+            <i class="fas fa-frown fa-4x"></i>
+            <h2>No user found !! related to your search</h2>
+        </div>
+        <!--<style>
+            footer{
+              text-align: center;
+              background: none;
+              position: fixed;
+              bottom:0px;
+              width: 100%;
+            }
+            @media(max-height:840px){
+                 footer{
+                  text-align: center;
+                  background: none;
+                  position: relative;
+                  bottom:-15px;
+                  width: 100%;
+                }
+            }
+        </style>-->
+    <% } else {%>
+
+    <% members.forEach((user)=>{ %> 
+    <div id="user_details" class="<%=user.id%>" style="position:relative;">
+    <% if(!user.ismember){ %>
+         <button class="member_btn" onclick="addmember('<%=user.id%>')" style="position:absolute;margin-top:-20px;margin-left:-10px;border-radius:10px;border:none;font-size:22px;"><i class="fas fa-user-plus"></i></button>
+    <% } else { %>
+         <button class="member_btn" onclick="removemember('<%=user.id%>','<%=user.unicode%>')" style="position:absolute;margin-top:-20px;margin-left:-10px;border-radius:10px;border:none;font-size:22px;"><i class="fas fa-user-minus"></i></button>
+    <% } %>
+    <% if(user.api_key!=null){ %>
+        <div class="user_api_status">
+            <% if(user.api_status){ %>
+                <code>Books API is enabled</code>
+            <% }else{ %>
+                <code>Books API is disabled</code>
+            <% } %>
+            <code><%= user.api_requests %> requests</code>
+        </div>
+        <div class="details" style="margin-top:18px;">
+    <% } else { %>
+        <div class="details">
+    <% } %>
+            <img src="<%=user.userimage%>" alt="">
+            <div style="margin-top:10px;" class="usrdetail">
+                <h3 style="color:#6083e4;display:inline-block"><%=user.name%></h3>
+                <% if(user.unicode) { %>
+                    <span>&nbsp;&nbsp;( Admin )</span>
+                <% } else if(user.ismember) { %>
+                    <span>&nbsp;&nbsp;( member )</span>
+                <% } %>
+                <p class="dont-break-out"><i style="color:#6083e4;" class="fas fa-envelope"></i>&nbsp; <%=user.username%></p> 
+            </div>
+        </div>
+        <hr>
+        <div class="stats">
+            <div style="display: inline-block"> 
+                <p class="credits"><img src="/images/coin.png" alt=""><%=user.credits%> credits</p> 
+            </div>
+            <div style="display: inline-block"> 
+                <p><img src="/images/upload.png" alt=""><%=user.booksUploaded%> books</p>
+            </div>
+            <div style="display: inline-block"> 
+                <p><img src="/images/referrals.png" alt=""><%=user.refferals%> referrals</p>
+            </div>
+            <% if(user.unicode) { %>
+            <div style="display: inline-block"> 
+                <p><img src="/images/reply.png" alt=""><%=user.q_resolved%> query</p>
+            </div>
+            <% } %>
+        </div>
+        <div align="center" class="user_referral_link">
+            <a  style="font-size:20px;color:#6083e4;cursor:pointer;" onclick="copy_referral('<%=user.id%>')"><i class="fas fa-link"></i> Referral link</a>
+        </div>
+        <br>
+        <div style="display:flex" >
+            <% if((user.unicode || user.ismember)&&(currentAdmin=="ankitkohli181@gmail.com" || currentAdmin=="ankitkholi2002@gmail.com" || currentAdmin=="mybooks.webmaster@gmail.com")){ %>
+                <div id="help" class="editCredits">
+                    <button class="font-design-b" id="f-btn" onclick="showcredit('<%=user.id%>')"><i class="fas fa-edit"></i> Edit user</button>
+                    <div class="submitusr">
+                    <form  onsubmit="event.preventDefault(); return submitusr('<%=user.id%>');" id="feedback">
+                        
+                        <p class="font-design-p">Edit credits</p>
+                        <hr>
+                        <input name="name" value="<%=user.name%>" hidden></input>
+                        <input name="userid" value="<%=user.id%>" hidden></input>
+                        <input name="username" value="<%=user.username%>" hidden></input>
+                        <input style="transform:scale(1.05);padding:5px;padding-left:8px;border-radius:8px;" type="number"  value="<%=user.credits%>" style="margin:10px;border-radius: 15px;outline:none;padding:10px;background-color: #fafaff;border:none;" name="credits" id="feedtxt"  placeholder="Enter  credits " required></input><br>
+                        <button style="transform:scale(1.1);" class="font-design-b feed-btn" id="fd" type="submit">&nbsp;Update&nbsp;</button>
+                            <br>
+                        <hr>
+                    </form>
+                    </div>
+                </div>
+            <% } %>
+            <div id="help" class="sendMsg">
+                <button class="font-design-b" id="f-btn" onclick="shownotify('<%=user.id%>')"><i class="far fa-comment-dots"></i> Message  </button>
+                <div class="submitusr">
+                <form onsubmit="event.preventDefault(); return submitmsg('<%=user.id%>');" id="feedback">
+                    <p class="font-design-p">Send a message to <%=user.name%></p>
+                    <hr>
+                    <input name="name" value="<%=user.name%>" hidden></input>
+                    <input name="userid" value="<%=user.id%>" hidden></input>
+                    <input name="username" value="<%=user.username%>" hidden></input>
+                    <textarea style="transform:scale(1.05);font-size:20px;padding:5px;padding-left:8px;border-radius:8px;"  style="margin:10px;border-radius: 15px;outline:none;padding:10px;background-color: #fafaff;border:none;" name="message" id="feedtxt"  rows="5" placeholder="Write a message " required></textarea><br>
+                    <button style="transform:scale(1.1);" class="font-design-b feed-btn" id="fd" type="submit">&nbsp;Send&nbsp;</button>
+                        <br>
+                    <hr>
+                </form>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <% }) %>
+
+    <% } %>
+    </div>
+
+    <div class="roll_animation" style="display: none">
+        <div class="lds-roller" align="center" style="transform:scale(0.65);"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    </div> 
+    <div id="snackbar">Successfully updated the credits</div>
+    <script>
+        
+        page=1;
+        isgot=true;
+        function get_more(){
+        page++;
+        searchtag='<%=searchtag%>'
+        currentAdmin='<%=currentAdmin%>'
+        $.ajax({
+            type: "GET",
+            url: "/admin/get_more_user?page="+page+"&searchtag="+searchtag,
+            success: function(members){
+                var string="";
+                if(members.length>=1){
+                    members.forEach((user)=>{
+                        string+=`
+                        <div id="user_details" class="${user._id}" style="position:relative">`
+                        if(!user.ismember){ 
+                            string+=` <button class="member_btn"  onclick="addmember('${user._id}')" style="position:absolute;margin-top:-20px;margin-left:-10px;border-radius:10px;border:none;font-size:22px;"><i class="fas fa-user-plus"></i></button>`
+                        }else{ 
+                            string+=` <button class="member_btn" onclick="removemember('${user.id}','${user.unicode}')" style="position:absolute;margin-top:-20px;margin-left:-10px;border-radius:10px;border:none;font-size:22px;"><i class="fas fa-user-minus"></i></button>`
+                        }
+                        if(user.api_key!=null){
+                            string+=`<div class="user_api_status">`
+                                if(user.api_status){
+                                    string+=`<code>Books API is enabled</code>`
+                                }else{
+                                    string+=`<code>Books API is disabled</code>`
+                                }
+                                string+=`<code>${user.api_requests} requests</code>
+                            </div>
+                                <div class="details" style="margin-top:18px;">`
+                        } else {
+                            string+=`<div class="details">`
+                        }
+                        
+                        string+=`
+                                <img src="${user.userimage}" alt="">
+                                <div style="margin-top:10px;" class="usrdetail">
+                                    <h3 style="color:#6083e4;display:inline-block">${user.name}</h3>`
+                                    if(user.unicode) { 
+                                        string+=`<span>&nbsp;&nbsp;( Admin )</span>`
+                                    }
+                                    else if(user.ismember) {
+                                        string+=`<span>&nbsp;&nbsp;( member )</span>`
+                                    } 
+                                    string+=`<p class="dont-break-out"><i style="color:#6083e4;" class="fas fa-envelope"></i>&nbsp; ${user.username}</p> 
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="stats">
+                                <div style="display: inline-block"> 
+                                    <p class="credits"><img src="/images/coin.png" alt="">${user.credits} credits</p> 
+                                </div>
+                                <div style="display: inline-block"> 
+                                    <p><img src="/images/upload.png" alt="">${user.booksUploaded} books</p>
+                                </div>
+                                <div style="display: inline-block"> 
+                                    <p><img src="/images/referrals.png" alt="">${user.refferals} referrals</p>
+                                </div>`
+                                 if(user.unicode) { 
+                                string+=`<div style="display: inline-block"> 
+                                    <p><img src="/images/reply.png" alt="">${user.q_resolved} query</p>
+                                </div>`
+                                 }
+                                 string+=`
+                            </div>
+                            <div align="center" class="user_referral_link">
+                                <a  style="font-size:20px;color:#6083e4;cursor:pointer;" onclick="copy_referral('${user._id}')"><i class="fas fa-link"></i> Referral link</a>
+                            </div>
+                            <br>
+                           <div style="display:flex" >`
+                            if((user.unicode || user.ismember)&&(currentAdmin=="ankitkohli181@gmail.com" || currentAdmin=="ankitkholi2002@gmail.com" || currentAdmin=="mybooks.webmaster@gmail.com")){
+                                string+=`<div id="help" class="editCredits">
+                                    <button class="font-design-b" id="f-btn" onclick="showcredit('${user._id}')"><i class="fas fa-edit"></i> Edit user</button>
+                                    <div class="submitusr">
+                                    <form  onsubmit="event.preventDefault(); return submitusr('${user._id}');" id="feedback">
+                                        
+                                        <p class="font-design-p">Edit credits</p>
+                                        <hr>
+                                        <input name="name" value="${user.name}" hidden></input>
+                                        <input name="userid" value="${user._id}" hidden></input>
+                                        <input name="username" value="${user.username}" hidden></input>
+                                        <input style="transform:scale(1.05);padding:5px;padding-left:8px;border-radius:8px;" type="number"  value="${user.credits}" style="margin:10px;border-radius: 15px;outline:none;padding:10px;background-color: #fafaff;border:none;" name="credits" id="feedtxt"  placeholder="Enter  credits " required></input><br>
+                                        <button style="transform:scale(1.1);" class="font-design-b feed-btn" id="fd" type="submit">&nbsp;Update&nbsp;</button>
+                                            <br>
+                                        <hr>
+                                    </form>
+                                    </div>
+                                </div>`
+                            }
+                                string+=`
+                                <div id="help" class="sendMsg">
+                                    <button class="font-design-b" id="f-btn" onclick="shownotify('${user._id}')"><i class="far fa-comment-dots"></i> Message  </button>
+                                    <div class="submitusr">
+                                    <form onsubmit="event.preventDefault(); return submitmsg('${user._id}');" id="feedback">
+                                        <p class="font-design-p">Send a message to ${user.name}</p>
+                                        <hr>
+                                        <input name="name" value="${user.name}" hidden></input>
+                                        <input name="userid" value="${user._id}" hidden></input>
+                                        <input name="username" value="${user.username}" hidden></input>
+                                        <textarea style="transform:scale(1.05);font-size:20px;padding:5px;padding-left:8px;border-radius:8px;"  style="margin:10px;border-radius: 15px;outline:none;padding:10px;background-color: #fafaff;border:none;" name="message" id="feedtxt"  rows="5" placeholder="Write a message " required></textarea><br>
+                                        <button style="transform:scale(1.1);" class="font-design-b feed-btn" id="fd" type="submit">&nbsp;Send&nbsp;</button>
+                                            <br>
+                                        <hr>
+                                    </form>
+                                    </div>
+                                 </div>
+                            </div>`
+                            
+                            string+=`</div>`;
+                    })
+                    isgot=true;
+                    $("#members").append(string)
+                        
+                }
+                $(".roll_animation").css("display","none")
+
+            }
+            
+        });
+        }
+        window.addEventListener('scroll',()=>{
+            const {scrollHeight,scrollTop,clientHeight}=document.documentElement;
+            if(scrollTop+clientHeight+250>=scrollHeight){
+                if(isgot){
+                   isgot=false;
+                   $(".roll_animation").css("display","block")
+                   get_more() 
+                }
+            }
+        })
+    </script>
+    <footer>
+    
+<%- include("../partials/footer") -%>     
+<%if(members.length>=5) { %> 
+<script>
+    $(".adsteraAds").css("display","none")
+</script> 
+<% } %>

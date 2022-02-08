@@ -1,0 +1,180 @@
+#user_details{
+    background-color:#151517;
+    border-radius:10px;
+    margin:auto;
+    margin-top:30px;
+    margin-bottom:20px;
+    width:60%;
+    padding:10px;
+}
+#user_details .details{
+    display:flex;
+    align-items:center;
+    color:#d4d4e0;
+}
+#user_details .details p,#user_details .stats p{
+    font-size:20px;
+}
+#user_details .details img{
+    width:120px;
+    margin:10px;
+    margin-right:30px;
+    border-radius:50%;
+}
+#user_details .stats img{
+    width:40px;
+    margin-right:10px;
+}
+#user_details .stats{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#d4d4e0;
+}
+#user_details .stats div{
+    margin:10px;
+}
+.dont-break-out {
+    /* These are technically the same, but use both */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+
+    -ms-word-break: break-all;
+    /* This is the dangerous one in WebKit, as it breaks things wherever */
+    word-break: break-all;
+    /* Instead use this non-standard one: */
+    word-break: break-word;
+
+    /* Adds a hyphen where the word breaks, if supported (No Blink) */
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}
+
+.user_api_status{
+    position: absolute;
+    right:3px;
+    top:10px; 
+}
+@media(max-width:345px){
+    .user_api_status{
+        display: none;
+    }
+}
+.user_api_status code {
+    padding: 5px 10px;
+    margin:5px;
+    font-size: 100%;
+    font-weight:bold;
+    color: #095531 !important;
+    background-color: #c1e0d2;
+    border-radius: 6px;
+}
+.notificationCenter {
+    background-color:#151517;
+    border-radius:10px;
+    margin:auto;
+    margin-top:30px;
+    margin-bottom:20px;
+    width:60%;
+    padding:10px;
+    display:flex;
+    flex-direction:column;
+    color:#6083e4;
+    max-height:400px;
+    overflow:auto;
+}
+.notificationCenter::-webkit-scrollbar {
+    width: 8px;
+    background: #0d141f;
+    border-radius: 0 5px 5px 0;
+}
+
+.notificationCenter::-webkit-scrollbar-thumb {
+    background: rgba(86,117,248,.5);
+    border-radius: 0 5px 5px 0;
+}
+
+.notificationCenter .notification{
+    text-align:left;
+    padding:10px;
+    color:#d4d4e0;
+    background-color:#222425;
+    margin:8px;;
+    border-radius:10px;
+    position:relative;
+
+}
+.notificationCenter .notification p{
+    margin:2px;
+    font-size:18px;
+}
+.notificationCenter .notification span{
+    color:#6083e4;;
+    padding-left:2px;
+    font-size:16px;
+}
+.notificationCenter .notification i{
+    position:absolute;
+    right:5px;
+    font-size:23px;
+    color:#6083e4;
+    top:-8px;
+}
+@media(max-width:1100px){
+    .notificationCenter{
+        width:80%;
+    }
+}
+@media(max-width:850px){
+    .notificationCenter{
+        width:95%;
+    }
+}
+@media(max-width:1100px){
+    #user_details{
+        width:80%;
+    }
+}
+@media(max-width:850px){
+    #user_details{
+        width:95%;
+    }
+    #user_details .details p,#user_details .stats p{
+        font-size:19px;
+    }
+    #user_details .details h3{
+        font-size:22px;
+    }
+    #user_details .details img{
+        width:70px;
+        margin:6px;
+        margin-right:20px;
+    }
+    #user_details .stats img{
+        width:25px;
+    }
+    #arrow{
+        font-size:13px;
+    }
+    .user_api_status code {
+        padding: 3px 8px;
+        margin:3px;
+        font-size: 85%;
+    }
+    .user_api_status{
+        top:3px; 
+        right: 4px;
+    }
+}
+@media(max-width:590px){
+    #user_details .details p{
+        font-size:15px;
+    }
+}
+@media(max-width:380px){
+    #user_details .stats p{
+        font-size:16px;
+    }
+}

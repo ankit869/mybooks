@@ -1,0 +1,95 @@
+#help{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width:100%;
+    margin:auto;
+    color: #fafaff;
+    font-size: 1.3rem;
+    font-weight: 500;
+    align-items: center;
+}
+#f-btn{
+    display: inline-block;
+    margin: auto;
+    outline:none;
+    padding:4px;
+    margin-bottom: 15px;
+    border-radius: 20px;
+    color:#2f4ea5;
+    background-color: #fafaff;
+    border:none;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 20px;
+}
+#feedback{
+    display: none;
+    flex-direction: column;
+    text-align: center;
+    width:350px;
+    margin:auto;
+}
+#feedback p{
+    margin:0px;
+}
+#feedback input,#feedback button,#feedback textarea{
+    margin:10px;
+    border-radius: 25px;
+    outline:none;
+    padding:10px;
+    background-color: #fafaff;
+    border:none;
+    resize:none;
+    
+}
+#feedback button {
+    color: #3859b4;
+    font-weight: 600;
+    width: 120px;
+    margin: auto;
+    padding: 2px;
+    font-size: 20px;
+}
+#feedback button:hover{
+    transform: scale(0.95);
+}
+#f-btn:hover{
+    transform: scale(0.95);
+}
+@media(max-width:1050px){
+    #feedback button {
+        font-size: 18px;
+        width: 100px;
+    }
+    #f-btn{
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+        padding:2px;
+        margin-bottom: 20px;
+    }
+    /* #feedback{
+        width:350px
+    } */
+}
+@media(max-width:380px){
+    #feedback{
+        width:320px;
+    }
+    
+}
+@media(max-width:340px){
+    #feedback{
+        width:300px;
+    }
+}
+@media(max-width:310px){
+    #feedback{
+        width:280px;
+    }
+}
+@media(max-width:290px){
+    #feedback{
+        width:260px;
+    }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "mybooks-322610",
+  "private_key_id": "fcca86c4f40c260497f5c206f58c8d6b96d1c1ee",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDK+IYd0IRA2IVP\nIWe94P9x9IhsEAYHmnliriz+gJ7Q1QEVpylbNku27Ic58yGAOirGDDLqtOf72typ\nbM1TWZT2BXIRjCMxNhcraU/URDr2+HXysYHLMR95qhHnJg9fP8kkq3R4HXfFgxth\nMcwkDtJe+VhugLJOB5UNV8OzDJJRDoEVV06S4GUW6qhy/kDES/1+LJMRRCoM5I2D\nGb7KVsSZ+zAduXWTaOA2AlHs16CrFPaxrlIh/0x1WWEBteAByCCmcCeijJxvFPF9\nN60GYif+huBLJ3m9AZMkoIUcnCw+axUz61w+wmxHOZYCyHqiw1G3NvkzEEuVB4H1\nhqc6kc+FAgMBAAECggEABU3w7VsLdcli1IJWPH1il6cRIKfbjHvSQ8yzAtS4MdN7\nQ4Zam5Zj7KwqTY6n17rNbt8XPpCLRob+ANSF2jGLZdGXHVPJAKp9+QW3zx+YXed4\n56aRco6+WJbkAGM7gB0B4/oyIUh93pTSVJwxTljv0QkZsUuePVFP6SkbxXRk54ba\nUIWPqplquL3egm6L7wPlXwPidRpWW7mJq2ZOL5AzscVxh3e1wXdw9/MJIbMrhbYv\neIxPZ9IoewycBA3msDyQydWeyVP22vPKlg1x9Cn5CFoypNMUSfIgin5g+1WKLg0f\nMIKdo5lMZfEbV0AsCHG2Z+a5m0YpgVCAjJNRrWnhSQKBgQD1uPuQQt3aqanKIAvF\nUvaMrmbysbl7nI7YFPyvOycs6t4soJ2zKl563FdyZyRcAkvcGD50kUNipak3V1qh\nz3V0aKn/thgv1Q28qaNwdqputaUfU7V+eQXj/WjmicKO2ejcRLhPBIwOUoxuqO9U\n1iDMNzXRK4HM4oLKYt+EiNFGaQKBgQDTdclP6DFGqDRjRHpUpY+GkobkRUQjf+6q\ntxg6SglnCVVkgZgVMFNiCnyQRPkl9iQjuCXZSTRWvezpVSwpb/pCW9Si3kFakOOD\n6wDcZnnHD9NePXmDPVgrRIZa3tnWQFRzDrD+LIISlp+VrdjOaxuv5PM3piN41ZFB\nXruTIje0vQKBgF01mleSxc1YZovBtDVZzyR2U57kQ9PcA2N8Mo3WBnpHbZfIJYn9\nHHHGe3VuIqC0Tkpi9+4H3GPjK1lOzZZrt8Y8nZ/eVzZtvxQ91T2oBeaRCN3lRwd+\nqPle+xfYUfEWP/quJqvysZ4NOjAP7RllUHOmzcdWlZo+ohZbgyYnMBthAoGARm+n\nnOxU7Zo9yQsYTHXRdxv7vrGr3r9QeqD+evwKYb3kKdRZGkW8oJ2pnEy9SP3ST+uY\n/+W4f2RIM/jg+vSHwe7gx1eNIWO9xUVURhYEXmBRIcUMYsDeS5tJvZ8ZpJpNBv5P\nynp84UA27B66ZxeaY165/UFj824AMmwhwwLU12kCgYEAk9EEoq+y6aoTOioDDRkv\n/ucL3sgKS19pu5hzKcIA5x3oj/3YTSxXDJpxLAtH823FYto28TfHwTHubb/StYZO\nZlFFa1eupVkoYLqpDDRiukt2eq0hKRhgez0wnHyqrRK3CukUjWSzZwm7pv0sYDKH\nU2XUMFjJSi5viWPQu7DnaQA=\n-----END PRIVATE KEY-----\n",
+  "client_email": "gstorage-auth@mybooks-322610.iam.gserviceaccount.com",
+  "client_id": "104636663838416999128",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/gstorage-auth%40mybooks-322610.iam.gserviceaccount.com"
+}

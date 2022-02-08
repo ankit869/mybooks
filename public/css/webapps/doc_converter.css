@@ -1,0 +1,268 @@
+.doc_files{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content:center;
+  align-items: center;
+  background-color:#151517c2;
+  border-radius: 8px;
+  padding:15px;
+  overflow-y:auto;
+  max-height:600px;
+}
+.doc_files::-webkit-scrollbar {
+  width: 8px;
+  background: #0d141f;
+  border-radius: 0 5px 5px 0;
+}
+
+.doc_files::-webkit-scrollbar-thumb {
+  background: rgba(86,117,248,.5);
+  border-radius: 0 5px 5px 0;
+}
+.doc_files .file .upload_done_icon{
+  right:-9px;
+  top:-18px;
+  position: absolute;
+}
+
+.doc_files .file .file_delete{
+  right:36px;
+  top:-18px;
+  position: absolute;
+}
+.doc_files .file .file_delete:hover{
+  transform:scale(1.1);
+  cursor:pointer;
+}
+.doc_files .file .file_sequence_no{
+  left:-8px;
+  top:-18.5px;
+  position: absolute;
+  color:#6990F2;
+  font-weight:bold;
+  background-color: white;
+  border-radius:5px;
+  padding:2px;
+  font-size:20px;
+  padding-left:7.8px;
+  padding-right:7.8px;
+
+}
+.doc_files .file .upload_done_icon img{
+  width:34px;
+}
+
+.doc_files .file .file_delete img{
+  width:34px;
+}
+
+.doc_files .file{
+  background-color: #212123c4;
+  margin:18px;
+  position:relative;
+  padding:17px;
+  border-radius: 8px;
+  display: inline-block;
+  text-align:left;
+}
+.doc_files .file_view{
+  display:flex;
+  flex-direction: column;
+}
+.doc_files .file_view .file_data{
+  color:#6990F2;
+  font-size:17px;
+}
+.doc_files .file_view .file_data .file_icon{
+  width:34px;
+  margin:2.5px;
+  margin-bottom:4px
+}
+.doc_files .file_view .file_data .percent{
+  color:#cdd0d8;
+}
+.doc_files .file_view .file_data .m-percent{
+  color:#cdd0d8;
+  display:none;
+}
+.doc_files .file_view .file_data .percent img{
+  margin-left:5px;
+}
+.file_convertor .convertor_type{
+  background-color: #151517;
+  padding:15px;
+  margin:15px;
+  border-radius: 10px;
+}
+.file_convertor .convertor_type:hover{
+  transform:scale(1.1);
+  cursor:pointer;
+}
+.file_convertor .convertor_graphics img{
+  width:60px;
+}
+.selectedFile{
+  background-color:#1d1d3dc4 !important;
+}
+
+@media (max-width: 1000px) {
+  .doc_files .file_view .file_data{
+      font-size:16px;
+  }
+  .doc_files .file_view .file_data .file_icon{
+      width:30px;
+  }
+}
+@media (max-width: 575px) {
+  .file_convertor .convertor_type{
+      padding:10px;
+      margin:10px;
+  }
+  .file_convertor .convertor_graphics img{
+      width:50px;
+  }
+}
+@media (max-width: 475px) {
+  .doc_files .file_view .file_data{
+      font-size:16px;
+  }
+  .doc_files .file_view .file_data .percent{
+      display:none;
+  }
+  .doc_files .file_view .file_data .m-percent{
+      display:block;
+  }
+}
+@media (max-width: 410px) {
+  .file_convertor .convertor_graphics img{
+      width:45px;
+  }
+  
+}
+@media (max-width: 375px) {
+  .file_convertor .convertor_graphics img{
+      width:40px;
+  }
+  .file_convertor .convertor_type{
+      padding:6px;
+      margin:6px;
+  }
+}
+
+
+
+.convertedFiles{
+  text-align:center;
+  margin:auto;
+  display:none;
+}
+.convertedFiles .files {
+  text-align:center;
+  overflow-y:auto;
+  width:480px;
+  margin:auto;
+  border-radius:10px;
+  max-height:500px;
+  background-color:#21212333;
+}
+.convertedFiles .files .fileData{
+  display:inline-block;
+  background-color:#212123c4;
+  margin:20px;
+  padding:10px;
+  position:relative;
+  border-radius:10px;
+  position:relative;
+}
+.convertedFiles .files .fileData .file_icon{
+  width:90px;
+}
+.convertedFiles .files .fileData .file_name{
+  padding:5px;
+  margin:5px;
+  font-size:20px;
+  color:#cdd0d8;
+}
+.convertedFiles .files .fileData .file_size{
+  position:absolute;
+  right:20px;
+  bottom:5px;
+  color:#6990F2;
+}
+.convertedFiles .files::-webkit-scrollbar {
+  width: 8px;
+  background: #0d141f;
+  border-radius: 0 5px 5px 0;
+}
+.convertedFiles .files::-webkit-scrollbar-thumb {
+  background: rgba(86,117,248,.5);
+  border-radius: 0 5px 5px 0;
+}
+.convertedFiles .files .circle_share_icon{
+  position: absolute;
+  right:10px;
+  top:-12px;
+  width:35px;
+}
+.convertedFiles .files .circle_download_icon{
+  position: absolute;
+  right:60px;
+  top:-12px;
+  width:35px;
+}
+.convertedFiles .files .circle_share_icon:hover,.convertedFiles .files .circle_download_icon:hover{
+  transform:scale(1.1);
+  cursor:pointer;
+}
+@media(max-width:580px){
+  .convertedFiles .files{
+      width:90%;
+  }
+  .convertedFiles .files .fileData{
+      margin:15px;
+      padding:5px;  
+  }
+  .convertedFiles .files .fileData .file_icon{
+      width:65px;
+  }
+  .convertedFiles .files .circle_share_icon{
+      width:30px;
+  }
+  .convertedFiles .files .circle_download_icon{
+      width:30px;
+  }
+  .convertedFiles .files .fileData .file_name{
+      font-size:15px;
+  }
+  .convertedFiles .files .fileData .file_size{
+      font-size:75%;
+  }
+}
+@media(max-width:435px){
+  .convertedFiles .files .fileData .file_icon{
+      width:60px;
+  }
+  .convertedFiles .files .circle_share_icon{
+      width:25px;
+  }
+  .convertedFiles .files .circle_download_icon{
+      width:25px;
+  }
+  .convertedFiles .files .fileData .file_name{
+      font-size:14px;
+  }
+  .convertedFiles .files .fileData .file_size{
+      font-size:70%;
+  }
+
+}
+@media(max-width:378px){
+  .convertedFiles .files{
+      width:95%;
+  }
+}
+@media(max-width:358px){
+  .convertedFiles .files .fileData .file_size{
+      display: none;
+  }
+}

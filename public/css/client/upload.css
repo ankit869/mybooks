@@ -1,0 +1,176 @@
+#upload{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#upload-img1 i,#upload-img2 i{
+  color:rgba(86,117,248,.55);
+}
+#upload-img1{
+  position: relative;
+  right:20px;
+}
+#upload-img2{
+  position: relative;
+  left:20px;
+}
+.drag-area{
+  border: 2px dashed #fafaff;
+  height: 260px;
+  width: 180px;
+  text-align: center;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  margin:30px;
+}
+#cancle-image{
+position: absolute;
+top:2px;
+right:4px;
+background: none;
+}
+
+#cancle-image i{
+font-size:27px;
+}
+#cancle-image i:hover{
+transform: scale(1.05);
+}
+#show_IMG{
+display: none;
+}
+.drag-area.active-img{
+border: 2px solid #fafaff;
+}
+.drag-area .icon{
+font-size: 50px;
+color: #fafaff;
+}
+.drag-area header{
+font-size: 16px;
+margin-left: 10px;
+margin-right: 10px;
+font-weight: 500;
+color: #fafaff;
+}
+.drag-area p{
+font-size: 15px;
+font-weight: 500;
+color: #fafaff;
+margin: 5px 0 5px 0;
+}
+.drag-area button{
+padding: 2px 8px;
+font-size: 18px;
+font-weight: 500;
+border: none;
+outline: none;
+background: #fafaff;
+color: #5673c4;
+border-radius: 5px;
+cursor: pointer;
+}
+.drag-area button:hover{
+  transform: scale(1.03);
+}
+.drag-area img{
+/* height: 100%; */
+/* width: 100%; */
+/* object-fit: cover; */
+height: 257.5px;
+width: 177.5px;
+border-radius: 5px;
+}
+#upld-form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#upld-form .upload-input{
+  margin:7px;
+  border-radius:10px;
+  text-decoration: none;
+  border: none;
+  padding:8px;
+  outline: none;
+  font-size: 20px;
+  background-color:#f5f6fa;
+  width: 500px;
+}
+
+#upload-btn{
+  background:#6083e4;
+  border:none;
+  border-radius:20px;
+  width:120px;
+  font-size: 25px;
+  padding:1.5px;
+  
+  margin:auto;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color:#fafaff;
+}
+#upload-btn:hover{
+  top:8px;
+}
+#file-input{
+  background: rgba(86, 123, 238, 0.6) !important;
+  color:#fafaff !important;
+  margin:8px;
+}
+#upload-form{
+text-align: center;
+}
+#upload-form h1{
+  text-align: center;
+  color:#fafaff;
+}
+#progress-percent{
+color:#fafaff;
+font-size: 20px;
+}
+@media(max-width:1000px){
+  #upload-img1 i,#upload-img2 i{
+     display: none;
+  }
+
+}
+@media(max-width:600px){
+.select-box{
+  font-size: 18px;
+}
+}
+
+@media(max-width:540px){
+.select-box .options-container,.search-box input{
+  width: 100% ;
+  margin:auto;
+  margin-top:5px;
+}
+.select-box {
+  width:100%;
+}
+#upload-form{
+  width:95%;
+}
+#upld-form .upload-input{
+  width:95%;
+}
+.select-box .option, .selected {
+  margin-left: 10px;
+  margin-right: 10px;
+} 
+
+}
+@media(max-width:320px){
+.select-box .option, .selected {
+  margin-left: 13px;
+  margin-right: 13px;
+}
+}

@@ -1,0 +1,18 @@
+<svg width="233" height="375" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+
+ <g>
+  <title>background</title>
+  <rect fill="#c9d0d6" id="canvas_background" height="377" width="235" y="-1" x="-1"/>
+  <g display="none" overflow="visible" y="0" x="0" height="100%" width="100%" id="canvasGrid">
+   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <path stroke="null" id="svg_4" d="m138.383975,60.072877c0,-12.190666 -9.798148,-22.072877 -21.885115,-22.072877s-21.885115,9.882211 -21.885115,22.072877s9.798148,22.072877 21.885115,22.072877s21.885115,-9.882211 21.885115,-22.072877zm-26.993921,33.362234c-13.525457,-8.350905 -35.433369,-10.645565 -46.457996,-11.277861c-3.704512,-0.211532 -6.793504,2.63495 -6.793504,6.22869l0,51.227469c0,3.294837 2.642172,6.04245 6.038924,6.219493c9.953168,0.52653 30.089753,2.455608 44.007319,9.525826c2.136078,1.08525 4.668825,-0.393173 4.668825,-2.729219l0,-56.559449c-0.00228,-1.073754 -0.52889,-2.057836 -1.463567,-2.63495zm56.675609,-11.277861c-11.022347,0.629997 -32.932539,2.926955 -46.455716,11.277861c-0.934677,0.577114 -1.461287,1.600284 -1.461287,2.674037l0,56.513464c0,2.342944 2.539585,3.823666 4.682503,2.736117c13.915286,-7.063321 34.040472,-8.992398 43.991361,-9.518928c3.396752,-0.179342 6.038924,-2.926955 6.038924,-6.221792l0,-51.232068c-0.00228,-3.59374 -3.091272,-6.440222 -6.795784,-6.22869z" fill="#4c4c4c"/>
+  <g id="svg_5"/>
+  <text stroke="null" transform="matrix(2.158404817054985,0,0,1.5111435404481721,-70.75310974869842,-121.85059130610992) " font-weight="normal" xml:space="preserve" text-anchor="start" font-family="'League Gothic', sans-serif" font-size="24" id="svg_7" y="221.384669" x="40.273612" stroke-opacity="null" stroke-width="0" fill="#4c4c4c">No Book Cover</text>
+  <text stroke="null" transform="matrix(2.3439168078305017,0,0,1.4780723456240301,-85.60205477914114,-147.44544359709155) " font-weight="normal" xml:space="preserve" text-anchor="start" font-family="'League Gothic', sans-serif" font-size="24" id="svg_9" y="283.452872" x="53.684258" stroke-opacity="null" stroke-width="0" fill="#4c4c4c">Availaible</text>
+ </g>
+</svg>

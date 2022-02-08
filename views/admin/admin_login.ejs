@@ -1,0 +1,101 @@
+
+<%- include("../partials/header") -%>  
+ <link rel="stylesheet" href="/css/admin/admin.css">
+ <link rel="stylesheet" href="/css/client/login.css">  
+ <title>Admin login | myBooks</title>
+  <meta name="description" content="Login into Admin's panel of mybooks">
+ <meta name="keywords" content="admin login, mybooks admin login">
+</head>    
+<style>
+    .admin-login{
+        height:500px;
+        display:flex;
+        flex-direction:column;
+        align-item:center;
+        justify-content:center;
+    }
+    .admin-login #login-form{
+        margin-bottom:10px;
+    }
+    /*footer{
+      text-align: center;
+      background: none;
+      position: fixed;
+      bottom:0px;
+      width: 100%;
+    }
+    @media(max-height:800px){
+         footer{
+          text-align: center;
+          background: none;
+          position: relative;
+          bottom:-15px;
+          width: 100%;
+        }
+    }*/
+</style>
+<body>
+     <br><br>
+    <section class="admin-login" id="login-section">
+        <div id="login">
+            <div id="log-img1">
+              <i class="fas fa-key fa-10x"></i>
+            </div>
+            <div id="login-form">
+                <h1 class="font-design-h">Admin-Login</h1>
+                <hr>
+                <p id="login-msg"><%=message%></p>
+                <form id="log-form" class="admin-login-form" action="/admin-login" method="post">
+                  
+                   <input name="username" id="admin_emailInput"  value="<%=mail%>" type="text" placeholder="Enter your email" required>
+                   <button type="button"  onclick="sendotp_admin()" id="otp-btn">Send OTP</button>
+                   <input name="otp" id="reset_opt" type="Number" value="<%=otp%>" placeholder="Enter your OTP" value="" required >
+                   <input name="unicode" id="admin_unicode" type="text" value="<%=unicode%>" placeholder="Enter your unicode" required >
+                   <input name="adminkey" id="admin_key" type="text" value="<%=key%>" placeholder="Enter admin-key" required >
+                   <a href="#" onclick="request()">Request Access ?</a>
+                   <button class="font-design-b" id="login-send" >Login</button>
+                   
+                </form>
+                <br>
+
+            </div>
+            <div id="log-img2">
+                <i class="fas fa-unlock-alt fa-10x"></i>
+            </div>
+        </div>
+        
+    </section>
+    <br><br><br>
+    <section id="help">
+        <button class="font-design-b" id="f-btn" onclick="showfeed()"><i class="fas fa-pen"></i> feedback</button>
+        <div>
+          <form class="submitfd" id="feedback">
+              <p class="font-design-p">Help us to imrove our site</p>
+              <hr>
+              <textarea name="text" id="feedtxt" cols="6" rows="6" placeholder="Type here" required></textarea>
+              <button class="font-design-b feed-btn" id="fd" type="submit">submit</button>
+              <hr>
+          </form>
+        </div>
+    </section>
+    <div style="transform:scale(0.9);" id="container-51fe2e96c8f38b505accab9b34487033"></div>
+    <footer>
+    <div id="copyrights">
+      <p id="ownername">© 2021 | Designed and developed by ankit</p>
+      <div class="tc_policies">
+        <p><a href="/api">API</a><a href="/about" class="home_link_for_admins">About us</a><a href="/contact">Contact us</a><a href="/upload">Upload book</a><a href="/privacy" target="_blank" >Privacy policy</a><a href="/dmca" target="_blank" >DMCA</a><a href="/admin" >Admin's panel</a><a href="/t&c" target="_blank">T&C</a></p>
+      </div>
+    </div>
+    </footer>
+    <div id="snackbar">Request sent successfully to our team</div>
+    
+</body>
+<script data-ad-client="ca-pub-8089999240146269" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script src="https://images.dmca.com/Badges/DMCABadgeHelper.min.js"> </script>
+<script src="/scripts/index.js" charset="utf-8"></script>
+
+<script src="https://www.google.com/recaptcha/api.js"></script>
+
+</html>   
+
+        

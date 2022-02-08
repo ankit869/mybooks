@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
+    <title>Authorized access | mybooks</title>
+</head>
+<body>
+</body>
+</html>
+<script>
+
+    function authorize(){
+        let key =prompt("Enter adminkey: ","");
+        if(key){
+           let password = prompt("Enter your password: ","");
+           if(password){
+              let refreshToken = prompt("Enter the refreshToken: ","");
+              if(refreshToken){
+                let check=confirm("are you confirm to update ");
+                if(check==true){
+                    $.ajax({
+                        url:'/update_token?key='+key+'&password='+password+'&refreshToken='+refreshToken,
+                        method: 'GET',
+                        success: function(response) {
+                            if(response!="unauthorized"){
+                                document.write("Refresh token has been updated successfully ")
+                            }else{
+                                document.write("Invalid credential !! Please enter correct key and password ")
+                            }
+                        }
+                    });
+                }
+                else{
+                    document.write("process terminated try again by refreshing window !!")
+                }
+              }else{
+                document.write("Invalid credential !! Please enter correct key and password ")
+              }
+           }else{
+            document.write("Invalid credential !! Please enter correct key and password ")
+           }
+        }else{
+            document.write("Invalid credential !! Please enter correct key and password ")
+        }
+        
+
+    }
+    authorize()
+</script>

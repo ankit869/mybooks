@@ -1,0 +1,307 @@
+<%- include("../partials/header") -%>
+
+<link rel="stylesheet" href="/css/webapps/doc_scanner.css">      
+<title>Online DocScanner | myBooks</title>
+</head>
+
+<body onload='checkAuth("<%=status%>")'>
+<style>
+    
+</style>
+<div align="center" id="finalReadyPdf" style="display:none" >
+    <br><br>
+    <div style="margin:30px;">
+        <img style="transform:scale(1.3);width: 65px;" src="/images/pdf_icon.png" alt="">
+        <h4 style="display:inline-block;color:#d4d4e0;margin:20px;" id="newpdfName">NewDocument.pdf</h4>
+    </div>
+    <div class="pdfLink">
+        <div class="pdf_download" >
+            <img src="/images/file-download.png" width="80px"></img>
+            <h5> Click here to download your pdf file </h5>
+        </div>
+    </div>
+    <div class="pdfLink"">
+        <div class="pdf_sharing">
+            <img src="/images/sharing.png" width="80px"></img>
+            <h5>Share this pdf file with your friends</h5>
+        </div>
+    </div>
+    
+</div>
+
+<div id="pdfCreator" >
+    <br>
+    <div class="take_a_shot" align="center">
+        <a onclick="close_camera()" style="position:absolute;left:30px;top:8px;transform:scale(0.9)" ><i style="color:#6083e4;" class="fas fa-long-arrow-alt-left fa-4x"></i></a>
+        <br>
+        <div class="form-check" align="center" style="display:inline-block;color:#6083e4;font-size:120%;margin:13px;margin-bottom:0px;">
+            <input class="form-check-input" type="checkbox" value="" id="multipleSnapCkeck">
+            <label class="form-check-label" for="flexCheckChecked">
+                Enable multiple snaps
+            </label>
+        </div>
+        <br>
+        <div style="position:relative;display:inline-block;" >
+           <span id="multiSnapNo" style="position:absolute;display:none;top:30px;left:16px;padding:5px;padding-left:12px;padding-right:12px;z-index:10;background-color:#6083e4;color:white;font-weight:bold;border-radius:3px;font-size:120%;"> 123 </span>
+           <video id="camera" autoplay playsinline></video> 
+        </div>
+        <canvas id="canvas" class="d-none"></canvas>
+        <audio id="snapSound" src="/sounds/snap.mp3" preload = "auto"></audio>
+
+        <br>
+        <div align="center">
+            <button type="button" onclick="take_snapshot()" class="scanr_input_btn"><i class="fas fa-camera"></i> Take Snapshot</button>
+        </div>
+        
+    </div>
+    <section id="scanner_section">
+        <div class="top_scanr_heading">
+            <h1>Convert images to PDF files</h1>
+            <h5>Easily convert your image files to PDF with Online DocScanner for free</h5>
+        </div>
+        <div class="scanr_input">
+            <div class="drop_btns">
+                <p class="dragStatus">Drag or Drop images here</p>
+                <button type="button" onclick="choose_photos()" class="scanr_input_btn"><i class="fas fa-images" ></i> Choose Images</button>
+                <button type="button" onclick="take_img_frm_camera()" class="scanr_input_btn"><i class="fas fa-camera"></i> Take new photo</button>
+                <p>( max • 150 images at a time )</p>
+            </div>
+            <input type="file" id="scan_input_imgs" accept=".jpg,.jpeg,.png,.webp" onchange="preview()" multiple hidden>
+        </div>
+        <br>
+        <div id="view-modal" class="view-modal">
+            <span class="close"><i class="fas fa-times"></i></span>
+            <img class="view-modal-content" id="view-modalImg">
+            <div id="caption"></div>
+        </div>
+        <div id="advanced_editing_dialog">
+            <style>
+                .modal-header{
+                    position:relative;
+                    border-bottom:2px solid #5b5b67;
+                }
+            </style>
+            <div id="advanced_editing">
+                <div class="modal-header">
+			    	<h5 class="modal-title">Image Editing tools</h5>
+			    	<button type="button" class="closedialog-btn" style="border:none;color:#6083e4;background:none;" data-bs-dismiss="modal" aria-label="Close">
+			    		<i class="far fa-window-close fa-2x"></i>
+			    	</button>
+			  	</div>
+                <div align="center" class="image_enhancer">
+                <div class="editor_canvas">
+                    <canvas id="editor_canvas" data-caman-hidpi-disabled="true"></canvas>
+                </div>
+                <div class="img_filters">
+                    <div class="range_crtls">
+                        <div class="range_grp">
+                            <div>
+                                <label for="brightness_rng" class="form-label">Brightness</label>
+                                <input type="range"  min="0.3" max="3" value="1" step="0.0375" id="brightness_rng">
+                            </div>
+                            <div>
+                                <label for="contrast_rng" class="form-label">Contrast</label>
+                                <input type="range"  min="0.3" max="3" value="1" step="0.0375" id="contrast_rng">
+                            </div>
+                        </div>
+                        <div class="range_grp">
+                            <div>
+                                <label for="saturation_rng" class="form-label">Saturation</label>
+                                <input type="range" min="0" max="10" value="0" step="0.3" id="saturation_rng">
+                            </div>
+                            <div>
+                                <label for="hue_rng" class="form-label">Hue</label>
+                                <input type="range" min="1" max="720" value="1" step="1" id="hue_rng">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter_crtls">
+                        <div class="filter_grp">
+                            <div>
+                                <button type="button" id="brownie-add" class="btn btn-outline-primary vintage-add">Brownie</button>
+                            </div>
+                            <div>
+                                <button type="button" id="polaroid-add" class="btn btn-outline-primary polaroid-add">Polaroid</button>
+                            </div>
+                            <div>
+                                <button type="button" id="pixelate-add" class="btn btn-outline-primary pixelate-add">pixelate</button>
+                            </div>
+                            <div>
+                                <button type="button" id="desaturate-add" class="btn btn-outline-primary desaturate-add">Desaturate</button>
+                            </div>
+                            
+                            
+                        </div>
+                        <div class="filter_grp">
+                            <div>
+                                <button type="button" id="detect-edges" class="btn btn-outline-primary detect-edges">Edges</button>
+                            </div>
+                            <div>
+                                <button type="button" id="sharpen-add" class="btn btn-outline-primary sharpen-add">Sharpen</button>
+                            </div>
+                            <div>
+                                <button type="button" id="emboss-add" class="btn btn-outline-primary emboss-add">Emboss</button>
+                            </div>
+                            <div>
+                                <button type="button" id="technicolor-add" class="btn btn-outline-primary technicolor-add">TechniColor</button>
+                            </div>
+                        </div>
+                        <div class="filter_grp">
+                            <div>
+                                <button type="button" id="pinhole-add" class="btn btn-outline-primary pinhole-add">Pinhole</button>
+                            </div>
+                            <div>
+                                <button type="button" id="sepia-add" class="btn btn-outline-primary lomo-add">Sepia</button>
+                            </div>
+                            
+                            <div>
+                                <button type="button" id="kodachrome-add" class="btn btn-outline-primary kodachrome-add">Kodachrome</button>
+                            </div>
+                            <div>
+                                <button type="button" id="negative-add" class="btn btn-outline-primary convolution-add">Negative</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="final_enhance_btns" align="right">
+                        <button type="button" id="editdone-btn" class="btn btn-primary">Edit</button>
+                        <button type="button" id="revert-btn" class="btn btn-primary">Remove Filters</button>
+                        <button type="button" class="btn btn-danger closedialog_btn">Close</button>
+                    </div>
+                </div>
+            </div>
+            <p align="center" class="filter_warning">*images having higher resolution can take time to apply some filters</p>
+
+            </div>
+
+        </div>
+        <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+            <style>
+                @media(max-width:768px){
+                    .row>*{
+                        padding-left:0px;
+                    }   
+                    .preview {
+                        display:none;
+                    }
+                    .modal-body{
+                        padding-bottom:5px;
+                    }
+                }
+                .modal-content{
+                    width:96%;
+                    margin:auto;
+                }
+                .modal-title {
+                    color:#6083e4
+                }
+                .modal{
+                    top: 10px;
+                }
+                .modal-header{
+                    position:relative;
+                    border-bottom:2px solid #5b5b67;
+
+                }
+                .modal-header .crop_ctrls{
+                    position:absolute;
+                    right:10px;
+                    display:flex;
+                }
+                .modal-header .crop_ctrls button{
+                    margin-left:10px;
+                }
+            
+            </style>
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content" style="background-color:#1f1f21;color:white;">
+
+			  		<div class="modal-header">
+			    		<h5 class="modal-title">Crop Image</h5>
+                        <div class="crop_ctrls">
+                            <button type="button" style="border:none;color:#6083e4;background:none;" id="crop">
+			      			    <i class="far fa-check-square fa-2x"></i>
+                            </button>
+                            <button type="button" style="border:none;color:#6083e4;background:none;" data-bs-dismiss="modal" aria-label="Close">
+                                <i class="far fa-window-close fa-2x"></i>
+                            </button>
+                        </div>
+                       
+			  		</div>
+			  		<div class="modal-body">
+			    		<div class="img-container">
+			        		<div class="row">
+			            		<div class="col-md-8">
+			                		<img src="" id="sample_image" style='height: 100%; width: 100%; object-fit: contain' />
+			            		</div>
+			            		<div class="col-md-4">
+			                		<div class="preview"></div>
+			            		</div>
+			        		</div>
+			    		</div>
+			  		</div>
+				</div>
+			</div>
+        </div>
+        
+        <div class="scanr_viewer" >
+            <div style="display:flex;flex-wrap:wrap;" class="pdf_naming" >
+               <p class="total_imgs" id="num-of-files"> </p>
+               <div class="file_name_input_div">
+                   <label for="pdfFileName">File Name</label>
+                   <input type="text" name="filename" value="" id="pdfFileName" placeholder="Enter pdf file name ..">
+               </div>
+            </div>
+
+            <hr>
+            <div id="scan_images" class="scan_images" align="center">
+                <!--<figure class="figure">
+                    <div class="image_no">1</div>
+                    <div onclick="toggle_dialog()" class="image_editor"><i class="far fa-edit"></i></div>
+                    <img class="scanned_img" src="/images/tempfile.webp" alt="">
+                    <div class="image_ctrls" align="center">
+                        <div onclick="show_img(this)" class="view_img"><i class="far fa-eye"></i></div>
+                        <div onclick="crop_img(this)" class="crop_img"><i class="material-icons" style="vertical-align:middle;position:relative;bottom:2px;">crop</i></div>
+                        <div class="dlt_img" onclick="delete_selected(this)"><i class="fas fa-trash-alt"></i></div>
+                    </div>
+                </figure> !-->
+            </div>
+            <br>
+
+        </div>
+        <div class="nothing_selected">
+            <p>No files selected</p>
+        </div>
+    </section>
+    <div style="display:none;text-align:center;flex-direction:column;align-items:center;justify-content:center" id="pdf_progress" style="display:none;">
+        <br>
+        <p id="progress-percent" style="display:none;margin-left:8px;margin-right:8px;">0%</p>
+        <div class="progress" style="display:none;margin-left:8px;margin-right:8px;">
+            <div class="progress-bar progress-bar-striped progress-bar-animated bar progress-width" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
+        </div>
+        <br>
+        <div class="alert alert-success status" style="display:block;margin-left:8px;margin-right:8px;" role="alert">
+            Uploading files !! please wait ...
+            <div class="lds-spinner-sm-green" style="transform: scale(0.4);"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        </div>
+        <br>
+    </div>
+    
+    <div align="center">
+       <button  class="scanr_input_btn create_pdf_btn" style="transform:scale(1.15);background-color:#6083e4;color:white;" align="center" onclick="create_pdf()" disabled><i class="fas fa-file-pdf"></i> Create Pdf</button> 
+       <br><br>
+    </div>
+</div>
+    
+<footer>
+
+<link href="https://unpkg.com/cropperjs/dist/cropper.css" rel="stylesheet"/>
+<script src="https://unpkg.com/cropperjs" defer></script>
+<script src="/scripts/webapps/image_filter.js" defer></script>
+<script src="/scripts/webapps/doc_scanner.js" defer></script>
+<script src="/scripts/webapps/webGL.encrypt.js" defer></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/browser-image-compression@1.0.17/dist/browser-image-compression.js"></script>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/webcam-easy/dist/webcam-easy.min.js"></script>
+<%- include("../partials/footer") -%>  

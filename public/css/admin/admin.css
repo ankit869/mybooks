@@ -1,0 +1,89 @@
+#msg-block{
+    background-color: #171718;
+    width: 80%;
+    margin:auto;
+    margin-top:15px;
+    border-radius: 10px;
+    padding: 20px;
+    padding-bottom:0px;
+    padding-top:10px;
+
+}
+.msg{
+    background-color: rgba(86,117,248,.45);
+    /* margin:30px; */
+    text-align: left;
+    padding:10px;
+    border-radius: 10px;
+    color:white;
+    font-size:18px;
+
+}
+.reply{
+    /* margin:30px; */
+    text-align: left;
+    
+    margin-top:15px;
+    border-radius: 10px;
+}
+.reply textarea{
+    width:92%;
+    outline:none;
+    padding:5px;
+    border-radius: 10px;
+    font-size:20px;
+
+}
+.reply-btn{
+    margin:10px;
+    border-radius: 8px;
+    position: relative;
+    bottom:25px;
+    font-size:21px;
+    border:2px solid #6083e4;
+    color: #6083e4;
+    background:none;
+    margin-right: 0px;
+}
+.msg span{
+    color:#6083e4 ;
+    font-size:19px;
+}
+.client_name{
+    color:white;
+    font-size:19px;
+}
+
+.msg p{
+    white-space: pre-wrap;
+}
+
+
+@media(max-width:1220px){
+    .reply textarea{
+    width: 88%;
+    }
+}
+@media(max-width:820px){
+    .reply textarea{
+        width: 100%;
+    }
+    .reply-btn{
+        margin:10px;
+        border-radius: 8px;
+        position: relative;
+        bottom:0px;
+        
+        font-size:20px;
+        margin-right: 3px;
+        margin-left: 0px;
+        margin-bottom:0px;
+    }
+    .client_name{
+        font-size:17px;
+    }
+    #msg-block{
+        width: 95%;
+        padding:12px
+    }
+}

@@ -1,0 +1,228 @@
+
+<%- include("../partials/header") -%>     
+ <title>Favourite books | myBooks</title>
+ <meta name="description" content="Your favourite on mybooks are here">
+ <meta name="keywords" content="favourite books, favourite">
+</head> 
+<style>
+    .course-books{
+        display: flex;
+        flex-wrap:wrap;
+        justify-content:center;
+        margin-left: 50px; 
+        margin-right: 50px; 
+    }
+    
+    @media(max-width:1050px){
+        .course-books{   
+          margin-left: 0px; 
+          margin-right: 0px; 
+        }
+    }
+    @media(max-width:460px){
+        .book-outer{
+            margin-left:24px;
+            margin-right:24px;
+            transform:scale(1.15);
+            margin-top:27px;
+            margin-bottom:27px;
+        }
+    }
+    @media(max-width:370px){
+        .book-outer{
+            margin-left:15px;
+            margin-right:15px;
+            transform:scale(1);
+            margin-top:8px;
+            margin-bottom:8px;
+        }
+        
+    }
+    @media(max-width:340px){
+        .book-outer{
+            margin-left:10px;
+            margin-right:10px;
+        }
+        
+    }
+   
+
+</style>
+<body onload='checkAuth("<%=status%>")'>
+    <div class="nanobar my-class" id="my-id" style="position: fixed;">
+      <div class="bar"></div>
+    </div>
+    <nav class=".navbar">
+        <div id="navbar">
+            <ul id="navbar-ul1">
+                <li id="icon"><i class="fas fa-book-reader"></i></li>
+                <div id="navigate">
+                    <li><a href="/home">Home</a></li>
+                    <li><a href="/about">About us</a></li>
+                    <li><a href="/contact">Contact us</a></li>
+                    <li class="nav-active"><a href="/mybooks">Your Books</a></li>
+
+                    <form id="searchbar" method="get" action="/search">
+                        <input type="text" name="search_item" placeholder="search books..." required>
+                        <button><i class="fas fa-search"></i> Search</button>
+                    </form>
+                    <form class="course-sel">
+                        <button class="dropdown"> <i class="fas fa-caret-right"></i> Books category</button>
+                        <%- include("../drop-links/links") -%>
+                    </form>
+
+                </div>  
+                <ul id="navbar-ul2">
+                    <div id="hide-access">
+                      <% if(status=="block"){ %>
+                        <button onclick="location.href='/signup'"><i class="fas fa-sign-in-alt"></i> SignUp</button>
+                        <button onclick="location.href='/login'">Login</button>
+                      <% } else {%>
+                        <button onclick="location.href='/logout'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                      <% } %>
+                    </div>
+                    <button onclick="location.href='/upload'"><i class="fas fa-plus"></i> Upload</button>
+                </ul>
+            </ul> 
+        </div>
+    </nav>
+    <div class="top_bar">
+        <div class="menu-btn">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="nav-search-icon">
+            <i class="fas fa-search"></i>
+        </div>
+        <div class="msg-btn">
+            <i onclick="location.href='/upload'" class="fas fa-upload""></i>
+        </div>
+        <form class="nav-search-input" method="get" action="/search">
+            <input type="text" name="search_item" placeholder="search books..." required>
+            <button><i class="fas fa-search"></i></button>
+        </form>
+        
+        <div class="nav-icon">
+            <i class="fas fa-book-reader"></i>
+        </div>
+    </div>
+    
+    <div class="side-bar">
+        <div class="close-btn">
+            <i class="fas fa-times"></i>
+        </div>
+        <div class="nav-upload-btn">
+            <button onclick="location.href='/upload'"><i class="fas fa-plus"></i> Upload</button>
+        </div>
+        <div class="menu">
+            <div class="item">
+                <a href="/home"><i class="fas fa-house-user"></i> Home</a>
+            </div>
+            <div class="item">
+                <a href="/about"><i class="fas fa-info-circle"></i> About us</a>
+            </div>
+            <div class="item">
+                <a href="/contact"><i class="fas fa-envelope"></i> Contact us</a>
+            </div>
+            <div class="item  side-active">
+                <a href="/mybooks"><i class="fas fa-book-open"></i> Your books</a>
+            </div>
+            <div class="item">
+                <a class="sub-btn"><i class="fas fa-book"></i> Books Category<i class="fas fa-angle-right dropdown-bar"></i></a>
+                <%- include("../drop-links/sidebar_links") -%>
+            </div>
+            <div class="side-login">
+                <% if(status=="block"){ %>
+                  <button onclick="location.href='/login'">Login</button>
+                  <button onclick="location.href='/signup'"><i class="fas fa-sign-in-alt"></i> SignUp</button>
+                <% } else {%>
+                  <button onclick="location.href='/logout'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <br>
+    <!--<section>
+        <img src="/images/kindle-tree.jpg"  width="100%" height="410px">
+    </section>-->
+    <section>
+        <div class="course">
+            <h2 class="course-title">Your favourite books</h2>
+            <hr><br>
+            <% if(favbooks==""){ %>
+                <div id="no_favbooks">
+                    <i class="fas fa-frown fa-4x"></i>
+                    <h2>No favourite books added to your list</h2>
+                </div>
+                <!--<style>
+                    footer{
+                      text-align: center;
+                      background: none;
+                      position: fixed;
+                      bottom:0px;
+                      width: 100%;
+                    }
+                    @media(max-height:840px){
+                         footer{
+                          text-align: center;
+                          background: none;
+                          position: relative;
+                          bottom:-15px;
+                          width: 100%;
+                        }
+                    }
+                </style>-->
+            <% } else {%>
+                <div class="course-books" id="list_fav_books">
+                    <% books.forEach(function(book){ %>
+                       <% favbooks.forEach(function(fav){ %>
+                            <% if(fav.book_id==book.id) {%>
+                                <div class="book-outer" id="<%=book.id%>" >
+                                    <div class="book">
+                                        <button onclick="location.href='<%=book.book_file_download_link%>'" class="floating-add"><i class="fas fa-cloud-download-alt fa-2x"></i></button>
+                                        <img onclick="location.href='/book/<%=book.id%>'" class="book-cover" src="<%=book.book_cover_cloudinary_link%>" alt="" >
+                                        <hr>
+                                        <div class="user-download">
+                                            <a class="book-read" href="<%=book.book_file_link%>" target="_blank">Read</a>
+                                            <button onclick="location.href='/reviews/<%=book.id%>'" class="review-book"><i class="fas fa-comment-dots fa-2x"></i></button>
+                                            <button onclick="add_to_fav('<%=book.id%>')" id="add_fav"><i class="fas fa-heart fa-2x <%=book.id%>"></i></button>
+                                        </div>
+                                    </div>
+                                    <% if(book.book_name.length<=65){ %>
+                                        <p class="book-name"><%=book.book_name%></p>
+                                    <% } else {%>
+                                        <p class="book-name"><%=book.book_name.substr(0,65)%>...</p>
+                                    <% } %>
+                                </div>  
+                            <% } %> 
+                       <% }) %>
+                <% }) %>   
+               </div>
+          <% } %>   
+        </div> 
+    <div id="snackbar">Book removed successfully</div>    
+    </section>
+    <br>
+    <section id="help">
+        <button class="font-design-b" id="f-btn" onclick="showfeed()"><i class="fas fa-pen"></i> feedback</button>
+        <div>
+          <form class="submitfd" id="feedback">
+              <p class="font-design-p">Help us to imrove our site</p>
+              <hr>
+              <textarea name="text" id="feedtxt" cols="6" rows="6" placeholder="Type here" required></textarea>
+              <button class="font-design-b feed-btn" id="fd" type="submit">submit</button>
+              <hr>
+              <br>
+          </form>
+        </div>
+    </section>
+    <footer>
+        <div>
+            <% if(status=="block"){ %>
+               <button onclick="location.href='/login'">Login</button>
+               <button onclick="location.href='/signup'">SignUp</button>
+               <button onclick="location.href='/auth/google'" class="google"><i class="fab fa-google"></i> SignIn</button>
+            <% } %>
+        </div>
+  <%- include("../partials/footer") -%>      
+
+        

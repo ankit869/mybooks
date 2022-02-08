@@ -1,0 +1,132 @@
+#wrapper {
+    transform:scale(0.8);
+}
+.documentation p,code{
+    font-size:18px;
+    text-align:left;
+    overflow-x:auto;
+}
+.documentation p{
+    color:#d4d4e0;
+    margin: 10px;
+    white-space: pre-wrap;
+
+}
+.documentation code{  
+    white-space: pre;
+}
+.documentation .copy_code{  
+    position: absolute;
+    right:15px;
+    top:15px;
+    color:#6083e4;
+    transform:scale(1.3)
+}
+.documentation span{
+    font-size:18px;
+}
+.documentation li{
+    color:#d4d4e0;
+}
+#api-section h1{
+    font-family: 'Sacramento', cursive;
+    font-size:3.5rem;
+    color:#d4d4e0;
+    margin-top:20px;
+    margin:10px;
+}
+#api-section h2{
+    color:#6083e4;
+}
+
+#api-section .apikey code{
+    background-color:#27272b;
+    display: inline-block;
+    padding:10px;
+    padding-left:18px;
+    padding-right:18px;
+    margin:20px;
+    border-radius:50px;
+    font-size:17px;
+    overflow-x:auto;
+    white-space: pre;
+    text-align:center;
+}
+#api-section .apikey span{
+    color:#6083e4;
+    margin-left:5px;
+    margin-right:5px;
+    display:none;
+}
+.documentation{
+    display:flex;
+    margin:auto;
+    width:1300px;
+    justify-content:center;
+}
+.code_block{
+    background-color:#27272b;
+    border-radius:15px;
+    margin:10px;
+    position:relative;
+}
+.doc_exp{
+    width:60%;
+}
+.doc_exp span{
+    color:#6083e4;
+    font-size:21px;
+}
+.multi_code{
+    display:flex;
+    flex-direction:column;
+    width:60%;
+}
+@media(max-width:1290px){
+    .multi_code{
+        display:flex;
+        flex-direction:column;
+        width:90%;
+    }
+    .doc_exp{
+        width:87%;
+    }
+    .documentation{
+        display:flex;
+        flex-direction:column;
+        margin:auto;
+        width:100%;
+        align-items:center;
+        justify-content:center;
+    }
+    #api-section h1{
+        font-size:2.6rem;
+    }
+}
+
+@media (max-width: 600px){
+    .documentation h3{
+        font-size:20px;
+    }
+    .documentation code{
+        font-size:16px;
+    }
+    .documentation p{
+        font-size:18px;
+    }
+    .doc_exp span{
+        font-size:20px;
+    }
+    #wrapper {
+        transform:scale(0.65);
+    }
+    
+    #api-section .apikey code{
+        font-size:16px;
+    }
+}
+@media (max-width:480px) {
+    #api-section .apikey code{
+        width:90%;
+    }
+}

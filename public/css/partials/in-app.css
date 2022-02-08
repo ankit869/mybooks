@@ -1,0 +1,633 @@
+.side-bar .menu .item a {
+    font-size: 19.5px;
+    line-height: 39px;
+}
+.side-login button {
+    font-size: 18px;
+}
+.nav-upload-btn button {
+    font-size: 18px;
+}
+.book-outer p {
+    font-size: 10.5px;
+}
+#getintouch {
+    font-size: 26px;
+}
+footer p {
+    font-size: 15px;
+}
+footer button {
+    font-size: 18px;
+}
+.carousel-item p{
+    font-size:17px;
+}
+.user-download .book-read {
+    padding-top: 2px;
+    font-size: 12.5px;
+}
+
+.review-book i {
+    font-size: 22.5px;
+    top:1.5px;
+}
+.user-download #add_fav {
+    font-size: 11.5px;
+}
+.floating-add i{
+    font-size: 27.5px;
+}
+#footer-links ul li {
+    font-size: 28px;
+}
+.side-bar .menu .item .sub-menu a {
+    padding-left: 15px;
+    font-size: 16px;
+    line-height:20px;
+}
+.top_bar {
+    height: 60px;
+}
+#about-content p {
+    font-size: 17px !important;
+}
+#about i {
+    font-size: 7.6rem;
+}
+.guide-arrow{
+    font-size: 25px;
+    margin-top: -41.5px;
+}
+.page_navigation_btn{        
+    font-size: 19px; 
+}
+.show_more_books a{
+    width:130px;
+    font-size: 19px;
+}
+.select-box {
+    font-size: 21px;
+}
+
+#no_favbooks h2{
+    font-size: 1.6rem;
+}
+#no_favbooks i{
+    font-size: 4.2rem;
+    margin:10px;
+}
+
+
+
+#login-form button {
+    font-size: 20px;
+}
+#progress-percent{
+    color:#fafaff;
+    font-size: 19px;
+}
+
+.floating-edit{
+    left:-17px;
+    top:-20px;
+    transform: scale(0.75)
+}
+.floating-edit i{
+    padding:5px;
+}
+.floating-edit i:hover{
+
+    transform: scale(1.15);
+}
+.floating-add2{
+  
+    right:-17px;
+    top:-20px;
+    transform: scale(0.75)
+}
+.floating-add2 i{
+    padding:5px;
+}
+.floating-add2 i:hover{
+
+    transform: scale(1.15);
+}
+.floating-delete{
+   
+    left:42px;
+    top:-20px;
+    transform: scale(0.75)
+}
+.floating-delete i{
+    padding:5px;
+}
+.floating-delete i:hover{
+    transform: scale(1.15);
+}
+#topbar-admin-text{
+    font-size: 20px;
+}
+#filterbtn {
+    font-size: 16px;
+    top:93px;
+}
+#success p {
+    font-size: 25px;
+}
+#success i {
+    font-size: 5.6rem;
+}
+.msg-btn i {
+    font-size: 25px;
+}
+.review-btn i {
+    font-size: 25px;
+}
+
+.client_name {
+    font-size: 16.5px;
+}
+.msg {
+    font-size: 17.5px;
+}
+.reply-btn{
+    font-size: 17.5px;
+}
+.reply textarea {
+    font-size: 17.5px;
+}
+.notificationCenter .notification p{  
+    font-size:17px;
+}
+.notificationCenter .notification span{
+    font-size:15px;
+}
+.documentation h3{
+    font-size:18px;
+}
+.documentation code{
+    font-size:14px;
+}
+.documentation p{
+    font-size:16px;
+}
+.doc_exp span{
+    font-size:18px;
+}
+@media(max-width:680px){
+    .book_detail p{
+        font-size:15px;
+    }
+    .book_btns{
+        margin-top:30px;
+        margin-bottom:30px;
+        font-size:21px;
+    }
+    .book_img{
+        height:315px;
+        width:218px;
+    }
+    .book_img img{
+        width:180px;
+        height:280px;
+    }
+    .book_detail h3{
+        font-size:21px;
+    }
+    .book_detail{
+        margin-top:20px;
+        margin-right:20px;
+        margin-left:20px;
+    }
+    .book_detail h3 span{
+        font-size:14px;
+    }
+}
+@media(max-width:340px){
+    .book_detail p{
+        font-size:13px;
+    }
+    .book_btns{
+        margin-top:30px;
+        margin-bottom:30px;
+        font-size:19px;
+    }
+    .book_img{
+        height:315px;
+        width:218px;
+    }
+    .book_img img{
+        width:180px;
+        height:280px;
+    }
+    .book_detail h3{
+        font-size:19px;
+    }
+    .book_detail h3 span{
+        font-size:13px;
+    }
+}
+
+@media(max-width:600px){
+    #no_favbooks h2{
+        font-size: 1.45rem;
+        margin:10px;
+    }
+    #no_favbooks i{
+        font-size: 3.95rem;
+        margin:10px;
+    }
+   
+}
+@media(max-width:550px){
+    #about-content p {
+        font-size: 18px;
+    }
+    #about i {
+        font-size: 6.1rem;
+    }
+}
+
+#upld-form input {
+    width: 100%;
+}
+.nav-search-input input, .nav-search-input button {
+    font-size: 19px;
+}
+@media(max-width:375px){
+    .nav-search-input input, .nav-search-input button {
+        font-size: 17px;
+    }
+}
+.nav-search-input {
+    padding-top: 0px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-bottom: 6px;
+    margin-top: 13px;
+}
+.course-title {
+    font-size: 19px;
+}
+#success i{
+    font-size: 6.1rem;
+}
+#success p{
+    font-size: 27px;
+}
+#log-form input,#log-form textarea{
+    font-size: 17px;
+}
+
+#contact-icons i {
+    font-size: 4.7rem;
+}
+.drag-area button {
+    font-size: 16px;
+}
+.drag-area header {
+    font-size: 14px;
+}
+#cont-form input, #cont-form textarea {
+    font-size: 17px;
+}
+.drag-area .icon {
+    font-size: 43px;
+}
+
+.course-title {
+    font-size: 19px;
+}
+
+#upld-form .upload-input {
+    font-size: 17px;
+}
+@media(max-width:460px){
+    #contact-icons i {
+        font-size: 3.8rem;
+    }
+}
+@media(max-width:350px){
+    #contact-icons i {
+        font-size: 2.9rem;
+    }
+    .course-title {
+        font-size: 19px;
+    }
+
+}
+#log-img1 i {
+    font-size: 69px;
+}
+#log-form button {
+    width: 100px;
+    font-size: 21px;
+}
+#feedback button {
+    font-size: 17px;
+    width: 100px;
+}
+#feedback p{
+    font-size: 18px ;
+}
+#feedback textarea{
+    font-size: 18px ;
+}
+footer button {
+    font-size: 19px;
+}
+
+#f-btn{
+    font-size: 20px;
+}
+#review-tag {
+    font-size: 19px;
+}
+#review-form .comment-post p {
+    font-size: 19px;
+}
+#review-form .comment-post span{
+    font-size: 17px;
+}
+#review-form input,#review-form button{
+    font-size: 20px;
+}
+
+@media(max-width:340px){
+    #review-tag {
+        font-size: 16px;
+        width: 93%;
+        margin: auto;
+    }
+    #review-form .comment-post p{
+        font-size: 18px;
+        margin-bottom: 0px;
+        margin-top: 3px;
+        margin-bottom: 3px;
+    }
+}
+
+#upld-form input{
+    font-size: 16px;
+}
+#login-msg {
+    font-size: 18px;
+    
+}
+.search-box input{
+    font-size: 18px;
+}
+#advanced-search button{
+    font-size: 17px;
+    
+}
+.menu-btn i,.nav-search-icon i{
+    font-size: 25px;
+}
+.nav-icon i{
+    font-size: 27px;
+}
+
+.select-box {
+    font-size: 15px;
+}
+#policies{
+    font-size:16px;
+}
+#policies h1{
+    font-size:24px;  
+}
+#policies h3{
+    font-size:19px;
+}
+
+#copyrights #ownername{
+    font-size: 13px;
+}
+
+#copyrights .tc_policies a{
+   font-size:13px;
+}
+#topbar-admin-text{
+    font-size: 19px;
+}
+.member_btn{
+    font-size:19.6px;
+}
+.search-user{
+    transform: scale(0.95);
+}
+.user_referral_link a{
+    font-size:19px;
+}
+#feedtxt{
+    font-size:18px;
+}
+.payment-selection{
+    transform: scale(0.95)
+}
+
+@media(max-width:640px){
+    #copyrights{
+        height: 110px;
+    }
+}
+@media(max-width:373px){
+    #copyrights{
+        height: 155px;
+    }
+}
+
+@media (max-width: 600px){
+    #no_favbooks h2 {
+        font-size: 1.4rem;
+        margin: 10px;
+    }
+}
+@media (max-width: 1280px){
+    #no_favbooks h2 {
+        font-size: 1.5rem;
+    }
+}
+@media(max-width:850px){
+
+    #user_details .details p,#user_details .stats p{
+        font-size:16.5px;
+    }
+    #user_details .details h3{
+        font-size:19px;
+    }
+    #arrow{
+        font-size:12px;
+    }
+    
+}
+@media(max-width:590px){
+    #user_details .details p{
+        font-size:14px;
+    }
+}
+@media(max-width:380px){
+    #user_details .stats p{
+        font-size:14px;
+    }
+}
+@media(max-height:1200px){
+    .side-bar .menu .item .sub-menu{
+      height:60vh
+    }
+}
+@media(max-height:1120px){
+    .side-bar .menu .item .sub-menu{
+      height:59vh
+    }
+}
+@media(max-height:1050px){
+    .side-bar .menu .item .sub-menu{
+      height:58vh
+    }
+}
+@media(max-height:990px){
+    .side-bar .menu .item .sub-menu{
+      height:57vh
+    }
+}
+@media(max-height:950px){
+    .side-bar .menu .item .sub-menu{
+      height:55vh
+    }
+}
+@media(max-height:910px){
+    .side-bar .menu .item .sub-menu{
+      height:53vh
+    }
+}
+@media(max-height:870px){
+    .side-bar .menu .item .sub-menu{
+      height:52vh
+    }
+}
+@media(max-height:840px){
+    .side-bar .menu .item .sub-menu{
+      height:46vh
+    }
+}
+@media(max-height:810px){
+    .side-bar .menu .item .sub-menu{
+      height:44vh
+    }
+}
+@media(max-height:780px){
+    .side-bar .menu .item .sub-menu{
+      height:42vh ;
+    }
+}
+@media(max-height:760px){
+    .side-bar .menu .item .sub-menu{
+      height:40vh ;
+    }
+}
+@media(max-height:725px){
+    .side-bar .menu .item .sub-menu{
+      height:39vh
+    }
+}
+@media(max-height:700px){
+    .side-bar .menu .item .sub-menu{
+      height:36vh ;
+    }
+}
+@media(max-height:680px){
+    .side-bar .menu .item .sub-menu{
+      height:35vh;
+    }
+}
+@media(max-height:650px){
+    .side-bar .menu .item .sub-menu{
+      height:33vh;
+    }
+}
+@media(max-height:625px){
+     .side-bar .menu .item .sub-menu{
+      height:32vh;
+    }
+}
+@media(max-height:600px){
+     .side-bar .menu .item .sub-menu{
+      height:30vh;
+    }
+}
+@media(max-height:580px){
+    .side-bar .menu .item .sub-menu{
+      height:31vh;
+    }
+}
+@media(max-height:560px){
+    .side-bar .menu .item .sub-menu{
+      height:28vh;
+    }
+}
+@media(max-height:540px){
+     .side-bar .menu .item .sub-menu{
+      height:26vh;
+    }
+}
+@media(max-height:530px){
+     .side-bar .menu .item .sub-menu{
+      height:24vh;
+    }
+}
+@media(max-height:515px){
+     .side-bar .menu .item .sub-menu{
+      height:22vh;
+    }
+}
+@media(max-height:490px){
+    .side-login button{
+      display: none;
+    } 
+}
+
+@media(max-height:530px){
+    .side-bar .menu .item a {
+      font-size: 15px;
+      line-height: 30px;
+     }
+    .side-bar .menu .item .sub-menu a {
+      font-size: 13px;
+      line-height: 18px;
+     }
+     .side-bar .menu .item .sub-menu{
+      height:34vh;
+    }
+    
+}
+@media(max-width:342px){
+    #contact-icons i{   
+        font-size: 3.0rem;
+    }
+}
+@media(max-width:315px) and (max-height:660px){
+    .side-bar .menu .item a {
+        font-size: 16px;
+        line-height: 30px;
+       }
+      .side-bar .menu .item .sub-menu a {
+        font-size: 17px;
+        line-height: 20px;
+       }
+      
+      .side-login button{
+        font-size: 17px;
+      }
+      .side-bar .menu .item a .dropdown-bar{
+        top:-1px;
+      }
+      .nav-upload-btn button{
+          font-size: 17px;
+      }
+      .side-bar .menu .item .sub-menu{
+        height:45vh;
+      }
+}

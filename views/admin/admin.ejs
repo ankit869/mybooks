@@ -1,0 +1,333 @@
+ 
+<%- include("../partials/header") -%>   
+<link rel="stylesheet" href="/css/admin/admin.css">
+<title>Admin's panel | myBooks</title>
+<meta name="description" content="Admin's panel of mybooks">
+<meta name="keywords" content="admin'panel,admin,mybooks admin">
+</head> 
+<style>
+    .select-box {
+        width: 392px;
+    }
+    .search-box input{
+        width:382px;
+    }
+    .select-box .options-container{
+        width:382px;
+    }
+    @media (max-width: 540px){
+        .select-box .option, .selected {
+            margin-left: 3.5px;
+            width:98% ;
+        }
+        .select-box {
+            width: 98%;
+        }
+
+    }
+    @media (max-width: 540px){
+        .select-box .options-container, .search-box input {
+            width: 98%;
+            margin-left:2px;
+        }
+    }
+    .course-books{
+      display: flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      margin-left: 50px; 
+      margin-right: 50px; 
+    }
+    
+    #advanced-search{
+        text-align:center;
+    } 
+    .select-box{
+        margin:auto;
+        text-align:left;
+    }
+   
+   
+    @media(max-width:1050px){
+        .course-books{   
+          margin-left: 0px; 
+          margin-right: 0px; 
+        }
+    }
+    @media(max-width:460px){
+        .book-outer{
+            margin-left:24px;
+            margin-right:24px;
+            transform:scale(1.15);
+            margin-top:27px;
+            margin-bottom:27px;
+        }
+        .book-outer:hover{
+            transform:scale(1.20);
+        }
+    }
+    @media(max-width:375px){
+        .book-outer{
+            margin-left:15px;
+            margin-right:15px;
+            transform:scale(1);
+            margin-top:8px;
+            margin-bottom:8px;
+        }
+        .book-outer:hover{
+            transform:scale(1.05);
+        }
+        
+    }
+    @media(max-width:340px){
+        .book-outer{
+            margin-left:10px;
+            margin-right:10px;
+        }
+        
+    }
+    
+    
+</style>
+<body onload='checkAuth("<%=status%>");books_under_review();'>
+    <div class="nanobar my-class" id="my-id" style="position: fixed;">
+      <div class="bar"></div>
+    </div>
+    <nav class=".navbar">
+        <div id="navbar">
+            <ul id="navbar-ul1">
+                <li id="icon"><i class="fas fa-book-reader"></i></li>
+                <div id="navigate">
+                    <li>Admin's panel</li>
+
+                    <form id="searchbar" method="get" action="/admin">
+                        <input type="text" name="searchtag" placeholder="search books..." required>
+                        <button><i class="fas fa-search"></i> Search</button>
+                    </form>
+                    <form id="searchbar" class="messages-panel">
+                        <button type="button" onclick="location.href='/admin/messages'"><i class="fas fa-envelope-open-text"></i> Messages</button>
+                    </form>
+                    <form id="searchbar" class="messages-panel">
+                        <button type="button" onclick="location.href='/admin/under-review'"><i class="fas fa-clipboard-list"></i> Review section</button>
+                    </form>
+                    
+                </div>  
+                <ul id="navbar-ul2">
+                    <div id="hide-access">
+                      <% if(status=="block"){ %>
+                        <button onclick="location.href='/admin-signup'"><i class="fas fa-sign-in-alt"></i> SignUp</button>
+                        <button onclick="location.href='/admin-login'">Login</button>
+                      <% } else {%>
+                        <button onclick="location.href='/logout'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                      <% } %>
+                    </div>
+                    <button onclick="location.href='/admin/upload-edit/newbook'"><i class="fas fa-plus"></i> Upload</button>
+                    <button onclick="location.href='/admin/members'"><i class="fas fa-users-cog"></i></button>
+
+                </ul>
+            </ul> 
+        </div>
+    </nav>
+    <div class="top_bar">
+        <div class="menu-btn">
+            <i onclick="location.href='/admin/upload-edit/newbook'" class="fas fa-upload"></i>
+        </div>
+        <div class="msg-btn">
+            <i onclick="location.href='/admin/messages'" class="fas fa-envelope-open-text"></i>
+        </div>
+        <div class="review-btn">
+            <i onclick="location.href='/admin/under-review'" class="fas fa-clipboard-list"></i>
+        </div>
+        <div class="member-btn">
+            <i onclick="location.href='/admin/members'" class="fas fa-users-cog"></i>
+        </div>
+        <div class="nav-search-icon">
+            <i class="fas fa-search"></i>
+        </div>
+        <form class="nav-search-input" method="get" action="/admin">
+            <input type="text" name="searchtag" placeholder="search books..." required>
+            <button><i class="fas fa-search"></i></button>
+        </form>
+        <h4 id="topbar-admin-text">Admin</h4>
+        <div class="nav-icon">
+            <i class="fas fa-book-reader"></i>
+        </div>
+    </div>
+    <br>
+    <!--<section>
+        <img src="/images/kindle-tree.jpg"  width="100%" height="410px">
+    </section>-->
+    <section>
+        <div class="course">
+            <h2 class="course-title"><%=searchtag%></h2>
+            <button id="filterbtn">filter<span> books</span></button>
+            <div id="advanced-search">
+               <div id="filter_results">
+                   <form action="/admin-advanced_search" method="get">                
+                    <%- include("../book-genres/categories") -%>
+                    <%- include("../book-genres/sub-category/ba") -%>
+                    <%- include("../book-genres/sub-category/bsc") -%>
+                    <%- include("../book-genres/sub-category/btech") -%>
+                    <%- include("../book-genres/sub-category/competetive") -%>
+                    <%- include("../book-genres/sub-category/diploma") -%>
+                    <%- include("../book-genres/sub-category/diploma") -%>
+                    <%- include("../book-genres/sub-category/pre_primary") -%>
+                    <%- include("../book-genres/sub-category/primary") -%>
+                    <%- include("../book-genres/sub-category/secondary") -%>
+                    <%- include("../book-genres/sub-category/post_graduation") -%>
+                    <%- include("../book-genres/sub-category/others") -%>
+                    <button id="srch_btn" type="submit"><i class="fas fa-search"></i>&nbsp;&nbsp;filter <span>the selected course books</span></button>
+                </form>
+               </div>
+            </div>
+            <hr>
+                <% if(books==""){ %>
+                    <div id="no_favbooks">
+                      <i class="fas fa-frown fa-4x"></i>
+                      <h2>No books found !! related to your search</h2>
+                    </div>
+                    <style>
+                    footer{
+                      text-align: center;
+                      background: none;
+                      position: fixed;
+                      bottom:0px;
+                      width: 100%;
+                    }
+                    @media(max-height:840px){
+                         footer{
+                          text-align: center;
+                          background: none;
+                          position: relative;
+                          bottom:-15px;
+                          width: 100%;
+                        }
+                    }
+                </style>
+                <% } else {%>
+                <br>
+                <div class="course-books">
+                
+                <% books.forEach(function(book){ %>  
+                    
+                        <div class="book-outer" id="<%=book.id%>">
+                            <div class="book">
+                                <div class="isreviewed">
+                                    <button onclick="add_to_review('<%=book.id%>','<%=book.book_category%>','<%=book.book_name%>')" class="floating-add2"><i class="fas fa-clipboard-check fa-2x"></i></button>
+                                </div>
+                                <button onclick="location.href='/admin/upload-edit/<%=book.id%>?&isupt=Update'" class="floating-edit"><i class="far fa-edit fa-2x"></i></button>
+                                <button onclick="remove_book('<%=book.id%>')" class="floating-delete"><i class="fas fa-trash-alt fa-2x"></i></button>
+                                <img onclick="location.href='/book/<%=book.id%>'" class="book-cover" src="<%=book.book_cover_cloudinary_link%>" alt="" >
+                                <hr>
+                                <div class="user-download">
+                                    <a class="book-read" href="<%=book.book_file_link%>" target="_blank">Read</a>
+                                    <button onclick="location.href='/reviews/<%=book.id%>'" class="review-book"><i class="fas fa-comment-dots fa-2x"></i></button>
+                                    <button onclick="add_to_fav('<%=book.id%>')" id="add_fav"><i class="fas fa-heart fa-2x <%=book.id%>"></i></button>
+                                </div>
+                            </div>
+                            <% if(book.book_name.length<=65){ %>
+                                <p class="book-name"><%=book.book_name%></p>
+                            <% } else {%>
+                                <p class="book-name"><%=book.book_name.substr(0,65)%> ...</p>
+                            <% } %>
+                        </div> 
+                <% }) %>
+            <% } %>
+                      
+            </div>
+        </div> 
+       
+        <div class="roll_animation" style="display: none">
+            <div class="lds-roller" align="center" style="transform:scale(0.65);"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        </div> 
+        
+        <div id="snackbar">Successfully deleted the book.</div>
+    </section>
+    <br>
+    <script>
+        page=1;
+        isgot=true;
+        function get_more(){
+        page++;
+        $.ajax({
+            type: "GET",
+            url: "/admin/get_more_books?searchtag="+"<%=searchtag%>&&page="+page,
+            success: function(books){
+                var string="";
+                if(books.length>=1){
+                    books.forEach((book)=>{
+                        string+=`
+                        <div class="book-outer" id="${book._id}">
+                            <div class="book">
+                                <div class="isreviewed">
+                                    <button onclick="add_to_review('${book._id}','${book.book_category}','${book.book_name}')" class="floating-add2"><i class="fas fa-clipboard-check fa-2x"></i></button>
+                                </div>
+                                <button onclick="location.href='/admin/upload-edit/${book._id}/?&isupt=Update'" class="floating-edit"><i class="far fa-edit fa-2x"></i></button>
+                                <button onclick="remove_book('${book._id}')" class="floating-delete"><i class="fas fa-trash-alt fa-2x"></i></button>
+                                <img onclick="location.href='/book/${book._id}'" class="book-cover" src="${book.book_cover_cloudinary_link}" alt="" >
+                                <hr>
+                                <div class="user-download">
+                                    <a class="book-read" href="${book.book_file_link}" target="_blank">Read</a>
+                                    <button onclick="location.href='/reviews/${book._id}'" class="review-book"><i class="fas fa-comment-dots fa-2x"></i></button>
+                                    <button onclick="add_to_fav('${book._id}')" id="add_fav"><i class="fas fa-heart fa-2x ${book._id}"></i></button>
+                                </div>
+                            </div>`
+                            
+                            if(book.book_name.length<=65){
+                                string+=`<p class="book-name">${book.book_name}</p>`
+                            } else {
+                                b_name=book.book_name.substr(0,65)
+                                string+=`<p class="book-name">${b_name} ...</p>`
+                            }
+                            string+=`</div> `
+                    })
+                    $(".course-books").append(string)
+                    books_under_review();
+                    favbooks()
+                    isgot=true;
+               }
+                $(".roll_animation").css("display","none")
+
+            }
+        })
+        }
+        window.addEventListener('scroll',()=>{
+            const {scrollHeight,scrollTop,clientHeight}=document.documentElement;
+            if(scrollTop+clientHeight+320>=scrollHeight){
+               if(isgot){
+                   isgot=false;
+                   $(".roll_animation").css("display","block")
+                   get_more() 
+                }
+            }
+        })
+    </script>
+    <footer>
+        <div>
+            <button onclick="location.href='/logout'">Logout</button>
+        </div>
+  <%- include("../partials/footer") -%>      
+<%if(books.length>=14) { %> 
+<script>
+    $(".adsteraAds").css("display","none")
+
+    function showToast(){
+        $("body").append(`
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11;top:70px;">
+            <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                <img src="/images/enable.png" width="40px" class="rounded me-2" alt="...">
+                <strong class="me-auto">Enable Notifications! </strong>
+                <small>Just now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                Please enable notifications from settings otherwise you will not be able to recieve important messages
+                </div>
+            </div>
+        </div>`)
+        $(".toast").toast('show')
+    }
+    
+</script>
+<% } %>

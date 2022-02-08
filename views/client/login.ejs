@@ -1,0 +1,113 @@
+
+<%- include("../partials/header") -%>    
+<link rel="stylesheet" href="/css/client/login.css">  
+<title>Login | myBooks</title>
+<meta name="description" content="Login into mybooks">
+<meta name="keywords" content="login, login, mybooks login">
+</head>
+<!--<style>
+    footer{
+      text-align: center;
+      background: none;
+      position: fixed;
+      bottom:0px;
+      width: 100%;
+    }
+    
+
+    @media(min-height:950px) and (max-width:310px){
+        footer{
+          text-align: center;
+          background: none;
+          position: relative;
+          bottom:-15px;
+          width: 100%;
+        }
+    }
+   
+    @media(min-width:1272px) and (max-height:646px){
+        footer{
+          text-align: center;
+          background: none;
+          position: relative;
+          bottom:-15px;
+          width: 100%;
+        }
+    }
+    @media(max-width:1272px) and (max-height:725px){
+        footer{
+          text-align: center;
+          background: none;
+          position: relative;
+          bottom:-15px;
+          width: 100%;
+        }
+    }
+</style>-->
+<body>
+    <br>
+    
+    <section id="login-section">
+        <div id="login">
+            <div id="log-img1">
+              <i class="fas fa-key fa-10x"></i>
+            </div>
+            <div id="login-form">
+                <h1 class="font-design-h">Login</h1>
+                <hr>
+                <p id="login-msg"><%=message%></p>
+                <form id="log-form" class="login-form" action="/login" method="post">
+                   <input name="username" type="email" placeholder="Enter your email" required>
+                   <input name="password" type="password" placeholder="Enter your password" required>
+                   <a href="/reset">Forget password ?</a>
+                   <button class="font-design-b" id="login-send">&nbsp;Login&nbsp;</button>
+                   <p>Or</p>
+                </form>
+                
+                <div id="l-signin" style="display:flex">
+                   <div id="l-btn">
+                        <button onclick="location.href='/signup'" class="font-design-b" id="signup-send">SignUp</button>
+                        <button onclick="location.href='/auth/google'" class="font-design-b" id="gsignup-send"><i class="fab fa-google"></i> SignIn</button>
+                   </div>
+                </div>
+            </div>
+            <div id="log-img2">
+                <i class="fas fa-unlock-alt fa-10x"></i>
+            </div>
+        </div>
+        
+    </section>
+    <br><br>
+    <section id="help">
+        <button class="font-design-b" id="f-btn" onclick="showfeed()"><i class="fas fa-pen"></i> feedback</button>
+        <div>
+          <form class="submitfd" id="feedback">
+              <p class="font-design-p">Help us to imrove our site</p>
+              <hr>
+              <textarea name="text" id="feedtxt" cols="6" rows="6" placeholder="Type here" required></textarea>
+              <button class="font-design-b feed-btn" id="fd" type="submit">submit</button>
+              <hr>
+              <br>
+          </form>
+        </div>
+    </section>
+    <div style="transform:scale(0.9);" id="container-51fe2e96c8f38b505accab9b34487033"></div>
+
+    <footer>
+    <div id="copyrights">
+      <p id="ownername">© 2021 | Designed and developed by ankit</p>
+      <div class="tc_policies">
+        <p><a href="/api">API</a><a href="/about">About us</a><a href="/contact">Contact us</a><a href="/upload">Upload book</a><a href="/privacy" target="_blank" >Privacy policy</a><a href="/dmca" target="_blank" >DMCA</a><a href="/admin" >Admin's panel</a><a href="/t&c" target="_blank">T&C</a></p>
+      </div>
+    </div>
+    </footer>
+</body>
+<script data-ad-client="ca-pub-8089999240146269" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script src="https://images.dmca.com/Badges/DMCABadgeHelper.min.js"> </script>
+<script src="/scripts/index.js" charset="utf-8"></script>
+
+<script src="https://www.google.com/recaptcha/api.js"></script>
+
+</html>   
+
+        

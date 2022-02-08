@@ -1,0 +1,183 @@
+
+#login-form{
+    width:400px;
+    margin:40px;
+    background-color:rgba(86,117,248,0.45);
+    border-radius: 20px;
+    /* text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center; */
+}
+#login-form h1{
+    color:#fafaff;
+    margin:5px;
+    margin-bottom: 0px;
+}
+#login{
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    
+}
+#log-form{
+    display: flex;
+    flex-direction: column;
+    margin:20px;
+    margin-top:10px;
+    margin-bottom:10px;
+}
+#log-form a{
+    font-size: 20px;
+}
+#log-form input,#log-form textarea{
+    margin:5px;
+    border-radius:10px;
+    text-decoration: none;
+    border: none;
+    padding:8px;
+    outline: none;
+    font-size: 20px;
+    background-color:#fafaff;
+}
+#log-form button{
+    background:#6083e4;
+    border:none;
+    border-radius:20px;
+    width:110px;
+    font-size: 25px;
+    /* padding:3px; */
+    position: relative;
+    top:10px;
+    margin:auto;
+    font-weight: bold;
+    color:#fafaff;
+    
+}
+#log-form button:hover{
+    top:8px;
+    transform: scale(0.95);
+}
+#login-section{
+    text-align: center;
+}
+#log-form p{
+    color:#fafaff;
+    font-size: 25px;
+    margin-top: 10px;
+}
+#l-signin button{
+    border:none;
+    border-radius:20px;
+    font-size: 25px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 5px;
+    color:#6083e4;
+    font-weight: bold;
+    background-color: #fafaff;
+    
+}
+#l-signin button:hover{
+    position: relative;
+    bottom:3px;
+}
+#l-signin{
+    display:inline-block;
+    margin-top: -20px;
+    margin-bottom: 15px;
+}
+#l-btn{
+    margin: auto;
+}
+#gsignup-send i,#gsignup-send{
+    color:#dc3545 !important;
+}
+#login-msg{
+    color:#fafaff;
+    font-size: 20px;
+    margin:7px;
+}
+
+#log-img1 i,#log-img2 i{
+    color:rgba(86,117,248,.5);
+    margin:20px;
+}
+#log-img1{
+    margin-right: 50px;
+}
+#log-img2{
+    margin-left: 50px;
+}
+
+#otp-btn{
+    color:#fafaff;
+    background-color: green !important;
+    padding: 3px !important;
+    font-size: 18px !important;
+    width: 115px !important;
+    border-radius: 10px !important;
+    margin-bottom: 16px !important;
+}
+
+#reset-send{
+    margin-bottom: 15px !important;
+}
+@media(max-width:1290px){
+    #log-img2 i{
+        display: none;
+    }
+    #log-img1 i{
+        font-size: 80px;
+        position: relative;
+        left:30px;
+    }
+    #log-img1{
+        margin-top: 10px;
+    }
+    #login{
+        flex-direction: column;
+    }
+    #login-form {
+        width: 350px;
+       margin:10px;
+       
+    }
+    #login-form button{
+        font-size: 24px;
+    }
+    
+    #log-form{
+        margin:10px;
+    }
+    #log-form button{
+        margin:10px;
+        width:100px;
+        margin: auto;
+    }
+    #login-msg {
+        font-size: 20px;
+        margin:5px;
+    }
+    #contact-form h1 {
+        font-size: 30px;
+    }
+    #log-form input,#log-form textarea{
+        font-size: 20px;
+    }
+}
+
+@media(max-width:380px){
+    #login-form {
+       width: 85%;
+       margin:10px;
+       position: relative;
+       left:0px
+    }
+} 
+
+@media(max-width:320px){
+    #contact-form h1 {
+        font-size: 25px;
+    }
+}

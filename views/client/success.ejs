@@ -1,0 +1,164 @@
+
+<%- include("../partials/header") -%>  
+<link rel="stylesheet" href="/css/client/success.css">
+<title>Success | myBooks</title>
+</head>   
+<!--<style>
+    footer{
+      text-align: center;
+      background: none;
+      position: fixed;
+      bottom:0px;
+      width: 100%;
+    }
+    
+    @media(max-width:782px) and (max-height:785px){
+        footer{
+          text-align: center;
+          background: none;
+          position: relative;
+          bottom:-15px;
+          width: 100%;
+        }
+    }
+   
+     @media(max-width:1272px) and (max-height:710px){
+        footer{
+          text-align: center;
+          background: none;
+          position: relative;
+          bottom:-15px;
+          width: 100%;
+        }
+    }
+   
+    @media(min-width:1272px) and (max-height:740px){
+        footer{
+          text-align: center;
+          background: none;
+          position: relative;
+          bottom:-15px;
+          width: 100%;
+        }
+    }
+</style>-->
+<body onload='checkAuth("<%=status%>")'>
+     
+    <div class="nanobar my-class" id="my-id" style="position: fixed;">
+      <div class="bar"></div>
+    </div>
+    <nav class=".navbar">
+        <div id="navbar">
+            <ul id="navbar-ul1">
+                <li id="icon"><i class="fas fa-book-reader"></i></li>
+                <div id="navigate">
+                    <li><a href="/home">Home</a></li>
+                    <li><a href="/about">About us</a></li>
+                    <li><a href="/contact">Contact us</a></li>
+                    <li><a href="/mybooks">Your Books</a></li>
+
+                    <form id="searchbar" method="get" action="/search">
+                        <input type="text" name="search_item" placeholder="search books..." required>
+                        <button><i class="fas fa-search"></i> Search</button>
+                    </form>
+                    <form class="course-sel">
+                        <button class="dropdown"> <i class="fas fa-caret-right"></i> Books category</button>
+                        <%- include("../drop-links/links") -%>
+                    </form>
+
+                </div>  
+                <ul id="navbar-ul2">
+                    <div id="hide-access">
+                      <% if(status=="block"){ %>
+                        <button onclick="location.href='/signup'"><i class="fas fa-sign-in-alt"></i> SignUp</button>
+                        <button onclick="location.href='/login'">Login</button>
+                      <% } else {%>
+                        <button onclick="location.href='/logout'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                      <% } %>
+                    </div>
+                    <button onclick="location.href='/upload'"><i class="fas fa-plus"></i> Upload</button>
+                </ul>
+            </ul> 
+        </div>
+    </nav>
+    <div class="top_bar">
+        <div class="menu-btn">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="nav-search-icon">
+            <i class="fas fa-search"></i>
+        </div>
+        <form class="nav-search-input" method="get" action="/search">
+            <input type="text" name="search_item" placeholder="search books..." required>
+            <button><i class="fas fa-search"></i></button>
+        </form>
+        
+        <div class="nav-icon">
+            <i class="fas fa-book-reader"></i>
+        </div>
+    </div>
+    
+    <div class="side-bar">
+        <div class="close-btn">
+            <i class="fas fa-times"></i>
+        </div>
+        <div class="nav-upload-btn">
+            <button onclick="location.href='/upload'"><i class="fas fa-plus"></i> Upload</button>
+        </div>
+        <div class="menu">
+            <div class="item">
+                <a href="/home"><i class="fas fa-house-user"></i> Home</a>
+            </div>
+            <div class="item">
+                <a href="/about"><i class="fas fa-info-circle"></i> About us</a>
+            </div>
+            <div class="item">
+                <a href="/contact"><i class="fas fa-envelope"></i> Contact us</a>
+            </div>
+            <div class="item">
+                <a href="/mybooks"><i class="fas fa-book-open"></i> Your books</a>
+            </div>
+            <div class="item">
+                <a class="sub-btn"><i class="fas fa-book"></i> Books Category<i class="fas fa-angle-right dropdown-bar"></i></a>
+                <%- include("../drop-links/sidebar_links") -%>
+            </div>
+            <div class="side-login">
+                <% if(status=="block"){ %>
+                  <button onclick="location.href='/login'">Login</button>
+                  <button onclick="location.href='/signup'"><i class="fas fa-sign-in-alt"></i> SignUp</button>
+                <% } else {%>
+                  <button onclick="location.href='/logout'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <section id="success-section">
+        <button id="playme" onclick="playsuccess()" style="display:none"></button>
+        <div id="success">
+           <i class="fas fa-check-circle"></i>
+           <br>
+           <p><%=message%></p>
+        </div>
+    </section>
+    <section id="help">
+        <button class="font-design-b" id="f-btn" onclick="showfeed()"><i class="fas fa-pen"></i> feedback</button>
+        <div>
+          <form class="submitfd" id="feedback">
+              <p class="font-design-p">Help us to imrove our site</p>
+              <hr>
+              <textarea name="text" id="feedtxt" cols="6" rows="6" placeholder="Type here" required></textarea>
+              <button class="font-design-b feed-btn" id="fd" type="submit">Submit</button>
+              <hr>
+              <br>
+          </form>
+        </div>
+    </section>
+    <br>
+
+    <footer>
+       
+  <%- include("../partials/footer") -%>      
+    
+        

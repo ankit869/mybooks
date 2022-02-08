@@ -1,0 +1,215 @@
+
+<%- include("../partials/header") -%>
+<link rel="stylesheet" href="/css/admin/admin.css">
+<link rel="stylesheet" href="/css/client/upload.css">
+<title>Upload or update | myBooks</title>
+<meta name="description" content="Admin' panel of mybooks">
+</head>   
+
+<body onload='checkAuth("<%=status%>")'>
+    <div class="nanobar my-class" id="my-id" style="position: fixed;">
+      <div class="bar"></div>
+    </div>
+    <nav class=".navbar">
+        <div id="navbar">
+            <ul id="navbar-ul1">
+                <li id="icon"><i class="fas fa-book-reader"></i></li>
+                <div id="navigate">
+                    <li onclick="location.href='/admin'">Admin's panel</li>
+
+                    <form id="searchbar" method="get" action="/admin">
+                        <input type="text" name="searchtag" placeholder="search books..." required>
+                        <button><i class="fas fa-search"></i> Search</button>
+                    </form>
+                    <form id="searchbar" class="messages-panel">
+                        <button type="button" onclick="location.href='/admin/messages'"><i class="fas fa-envelope-open-text"></i> Messages</button>
+                    </form>
+                    <form id="searchbar" class="messages-panel">
+                        <button type="button" onclick="location.href='/admin/under-review'"><i class="fas fa-clipboard-list"></i> Review section</button>
+                    </form>
+                    
+                </div>  
+                <ul id="navbar-ul2">
+                    <div id="hide-access">
+                      <% if(status=="block"){ %>
+                        <button onclick="location.href='/admin-signup'"><i class="fas fa-sign-in-alt"></i> SignUp</button>
+                        <button onclick="location.href='/admin-login'">Login</button>
+                      <% } else {%>
+                        <button onclick="location.href='/logout'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                      <% } %>
+                    </div>
+                    <button onclick="location.href='/admin/upload-edit/newbook'"><i class="fas fa-plus"></i> Upload</button>
+                    <button onclick="location.href='/admin/members'"><i class="fas fa-users-cog"></i></button>
+
+                </ul>
+            </ul> 
+        </div>
+    </nav>
+    <div class="top_bar">
+        <div class="menu-btn">
+            <i onclick="location.href='/admin/upload-edit/newbook'" class="fas fa-upload"></i>
+        </div>
+        <div class="msg-btn">
+            <i onclick="location.href='/admin/messages'" class="fas fa-envelope-open-text"></i>
+        </div>
+        <div class="review-btn">
+            <i onclick="location.href='/admin/under-review'" class="fas fa-clipboard-list"></i>
+        </div>
+        <div class="member-btn">
+            <i onclick="location.href='/admin/members'" class="fas fa-users-cog"></i>
+        </div>
+        <div class="nav-search-icon">
+            <i class="fas fa-search"></i>
+        </div>
+        <form class="nav-search-input" method="get" action="/admin">
+            <input type="text" name="search_item" placeholder="search books..." required>
+            <button><i class="fas fa-search"></i></button>
+        </form>
+        <h4 onclick="location.href='/admin'" id="topbar-admin-text">Admin</h4>
+        <div class="nav-icon">
+            <i class="fas fa-book-reader"></i>
+        </div>
+    </div>
+    
+    <section id="upload-section">
+    
+        <div id="upload">
+            <div id="upload-img1" style="bottom:100px;">
+              <i class="fas fa-cloud-upload-alt fa-10x"></i>
+            </div> 
+            <div id="upload-form">
+                <br>
+                <% if(isupt=="Update") {%> 
+                    <h1 class="font-design-h"><i class="fas fa-edit"></i> Update Book</h1>
+                    <hr>
+                    <p id="upload-msg"></p>
+                    <form id="upld-form" action="/admin/upload-edit" method="post" enctype="multipart/form-data" onsubmit="return confirm('Are you sure you want to edit this book');">
+                <% } else{%>
+                    <h1 class="font-design-h"><i class="fas fa-upload"></i> Upload Book</h1>
+                    <hr>
+                    <p id="upload-msg"></p>
+                    <form id="upld-form" action="/admin/upload-edit" method="post" enctype="multipart/form-data">
+                <% } %>
+                   <input class="upload-input" value="<%=book.book_name%>" maxlength='100' name="book_name" type="text" placeholder="Enter the book name" required>
+                   <input class="upload-input" value="<%=book.author_name%>" maxlength='150' type="text" name="author_name" placeholder="Name of the author (optional)">
+                   <input class="upload-input" value="<%=book.tags%>" type="text" maxlength='150' name="tags" placeholder="Enter tags (optional)">
+                   <% if(isupt=="Update") {%> 
+                        <input value="<%=book.id%>" name="book_id" type="text" hidden>
+                        <input id="isUpldImg" value="1" type="text" name="isUpldImg" hidden>
+                    <% } else { %>
+                        <input value="newbook" name="book_id" type="text" hidden>
+                        <input id="isUpldImg" value="0" type="text" name="isUpldImg" hidden>
+                    <% } %>
+                   
+                   <div class="drag-area">
+                       <div id="hide_IMG">
+                           <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                           <header>Drag & Drop to Upload book cover</header>
+                           <p>OR</p>
+                           <button onclick="chooseIMG()" type="button">Browse Image</button>
+                           <input  type="file" name="image_file" accept="image/*" hidden>
+                       </div>
+                       <div id="show_IMG">
+                       <% if(isupt=="Update") {%> 
+                           <img id="book-file-img" src='<%=book.book_cover_cloudinary_link%>'>
+                       <% } else{%>
+                           <img id="book-file-img"'>
+                       <% } %>
+                           <button type="button" onclick="cancleImg()" id="cancle-image" ><i class="fas fa-times"></i></button>
+                       </div>
+                   </div>
+                   <textarea rows="5" cols="10" class="upload-input" type="text" maxlength='500' name="description" placeholder="Write description of book (optional)"><%=book.book_description%></textarea>
+
+                   <%- include("../book-genres/categories") -%>
+                   <%- include("../book-genres/sub-category/ba") -%>
+                   <%- include("../book-genres/sub-category/bsc") -%>
+                   <%- include("../book-genres/sub-category/btech") -%>
+                   <%- include("../book-genres/sub-category/competetive") -%>
+                   <%- include("../book-genres/sub-category/diploma") -%>
+                   <%- include("../book-genres/sub-category/diploma") -%>
+                   <%- include("../book-genres/sub-category/pre_primary") -%>
+                   <%- include("../book-genres/sub-category/primary") -%>
+                   <%- include("../book-genres/sub-category/secondary") -%>
+                   <%- include("../book-genres/sub-category/post_graduation") -%>
+                   <%- include("../book-genres/sub-category/others") -%>
+                   <% if(isupt=="Update") {%> 
+                       <br>
+                       <h5 style="color:white">*Replace file with another file</h5>
+                       <input class="upload-input" type="file" name="pdf_file" value="" id="file-input" accept=".pdf,.zip,.rar,.7zip">
+                   <% } else { %>
+                       <input class="upload-input" type="file" name="pdf_file" value="" id="file-input" accept=".pdf,.zip,.rar,.7zip"required>
+                   <% } %>
+                   <br>
+                </form>
+                <p id="progress-percent" style="display:none;margin-left:8px;margin-right:8px;">0%</p>
+                <div class="progress" style="display:none;margin-left:8px;margin-right:8px;">
+                   <div class="progress-bar progress-bar-striped progress-bar-animated bar progress-width" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
+                </div>
+                <div class="alert alert-success status" style="display:none;margin-left:8px;margin-right:8px;" role="alert">
+                    <% if(isupt=="Update") {%> 
+                        Book is successfully updated !
+                    <% } else{%>
+                        Your files is successfully uploaded !
+                    <% } %>
+                    
+                </div>
+                <% if(isupt=="Update") {%> 
+                    <button id="upload-btn" form="upld-form" type="submit">Update</button>
+                <% } else{%>
+                    <button id="upload-btn" form="upld-form" type="submit">Upload</button>
+                <% } %>
+            </div>
+            <div id="upload-img2" style="bottom:100px;">
+                <i class="fas fa-cloud-upload-alt fa-10x"></i>
+            </div>   
+        </div>
+    </section>
+    <br><br>
+    <section id="help">
+        <button class="font-design-b" id="f-btn" onclick="showfeed()"><i class="fas fa-pen"></i> feedback</button>
+        <div>
+          <form class="submitfd" id="feedback">
+              <p class="font-design-p">Help us to imrove our site</p>
+              <hr>
+              <textarea name="text" id="feedtxt" cols="6" rows="6" placeholder="Type here" required></textarea>
+              <button class="font-design-b feed-btn" id="fd" type="submit">Submit</button>
+              <hr>
+          </form>
+        </div>
+    </section>
+    <script>
+        if('<%=isupt%>'=='Update'){
+        $("#show_IMG").css("display","block")
+        $("#hide_IMG").css("display","none")
+        $("input[value='<%=book.book_category%>']").prop('checked', true)
+        if('<%=book.book_subcategory%>'=='<%=book.book_category%>'){
+            $("#other-course").prop("checked", true)
+            $("#other-course").prop("value","<%=book.book_category%>")
+            $("#book-categories .selected").html("<%=book.book_category%>") 
+
+        }else{
+            $("input[value='<%=book.book_subcategory%>']").prop('checked', true)
+            $("#book-categories .selected").html("<%=book.book_category%>")   
+            var selectedTerm='<%=book.book_category%>'
+            selectedTerm = "#"+selectedTerm.toLowerCase().replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
+
+            $(selectedTerm).css("display","block")
+            $(selectedTerm+" .sub-category-selected").html('<%=book.book_subcategory%>')
+        }
+        
+        $('#book-categories').on('click',()=>{
+            if($("input[name='category']:checked").val()!='<%=book.book_category%>'){
+                $("input[value='<%=book.book_subcategory%>']").prop('checked', false)
+            }
+        })
+        }
+    </script>
+    <footer>
+        <div>
+            <% if(status=="block"){ %>
+                <button onclick="location.href='/login'">Login</button>
+                <button onclick="location.href='/signup'">SignUp</button>
+                <button onclick="location.href='/auth/google'" class="google"><i class="fab fa-google"></i> SignIn</button>
+            <% } %>            
+        </div>
+  <%- include("../partials/footer") -%>      
