@@ -29,9 +29,11 @@ const pdf_store = multer.diskStorage({
         callback(null, fname);
     }
 });
+
 const upld = multer({
     storage: pdf_store
 })
+
 router.post('/doc-converter/upload_doc_files', upld.any('doc_file'), (req, res) => {
     try {
         if (!req.files) {
