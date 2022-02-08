@@ -1,3 +1,4 @@
+
 fileInput = document.querySelector(".doc-file-input");
 doc_files = document.querySelector(".doc_files");
 
@@ -12,15 +13,15 @@ fileInput.onchange = ({target})=>{
   for(i=0;i<target.files.length;i++){
     let file = target.files[i];
     if(file){
-      let fileName = file.name;
-      if(fileName.length >= 12){
-        fileName = file.name.split('.')[0].substring(0, 13) + "... ." + file.name.split('.').pop();
+      if(file.name.length>13){
+        fileName=file.name.split('.')[0].substring(0, 13) + "... ." + file.name.split('.').pop()
+      }else{
+        fileName=file.name.split('.')[0]+'.'+file.name.split('.').pop()
       }
       if(file.name.split('.').pop()=="docx" 
          || file.name.split('.').pop()=="pptx"
          || file.name.split('.').pop()=="xlsx"
          || file.name.split('.').pop()=="doc"
-         || file.name.split('.').pop()=="pdf"
          || file.name.split('.').pop()=="ppt"
          || file.name.split('.').pop()=="xls"){
         j++;
@@ -166,17 +167,22 @@ $(dragArea_docfile).on('drop',function(event){
     for(i=0;i<target.files.length;i++){
       let file = target.files[i];
       if(file){
-        let fileName = file.name;
-        let splitName="";
-        if(fileName.length >= 12){
-          splitName = fileName.split('.');
-          fileName = splitName[0].substring(0, 13) + "... ." + splitName[1];
-        }
-        j++;
-        if(!splitName){
-          uploadFile(file,fileName,'docx');
+        if(file.name.length>13){
+          fileName=file.name.split('.')[0].substring(0, 13) + "... ." + file.name.split('.').pop()
         }else{
-          uploadFile(file,fileName,splitName[1]);
+          fileName=file.name.split('.')[0]+'.'+file.name.split('.').pop()
+        }
+        
+        if(file.name.split('.').pop()=="docx" 
+          || file.name.split('.').pop()=="pptx"
+          || file.name.split('.').pop()=="xlsx"
+          || file.name.split('.').pop()=="doc"
+          || file.name.split('.').pop()=="ppt"
+          || file.name.split('.').pop()=="xls"){
+          j++;
+          uploadFile(file,fileName,file.name.split('.').pop());
+        }else{
+          alert("Please Upload Word,Excel or PPT files.")
         }
       } 
     }
@@ -194,68 +200,74 @@ new Sortable(filesToBeSorted, {
 })
 
 function convertIntoPdf(ismerge){
-  $.LoadingOverlay("show",{
-      background  : "#3c436cc7"
-  });
-  var files=new Array();
-  $(".doc_files .file").each(function (index, value) {   
-    console.log($(this).find(".fileCode").text())     
-    files.push($(this).find(".fileCode").text())     
-  });
-  var xhr   = new XMLHttpRequest();
-
-  xhr.responseType = 'blob';
-  xhr.open("GET", "/doc-converter/convert_to_pdf?filesToBeConverted="+JSON.stringify(files)+"&ismerge="+ismerge);
-
-  xhr.send();
-  
-  xhr.onload= async function(){
-      console.log(this.status)
-      console.log(this.response)
-      if(this.status==503){
-        $.LoadingOverlay("hide");
-        setTimeout(function(){
-          alert("Some Error Occured while Coverting your files try another")
-        },600)
-      }else{
-        var blob = new Blob([this.response], { type: "application/zip" });
-        const zipReader = new zip.ZipReader(new zip.BlobReader(blob));
-        const entries = await zipReader.getEntries();
-        var filesHTML=""
-        
-        entries.forEach(async function(entry,entryIndex){
-          blob=await entry.getData(new zip.BlobWriter())
-          var file = new File([blob],entry.filename,{type:"application/pdf"});
-          let fileTotal = Math.floor(file.size / 1000);
-          console.log(blob)
-          let fileSize;
-          (fileTotal < 1024) ? fileSize = fileTotal + " KB" : fileSize = (fileTotal /1024).toFixed(2) + " MB";
-
-          filesConverted.push(file)
-          
-          filesHTML+=`<div class="fileData">
-                      <img onclick="shareFile('${file.name}')" class="circle_share_icon" src="/images/circle-share.png" alt="">
-                      <img onclick="downloadFile('${file.name}')" class="circle_download_icon" src="/images/circle-download.png" alt="">
-                      <div class="fileInfo">
-                          <img class="file_icon" src="/images/pdf_icon.png" alt="">
-                          <span class="file_name" >${file.name.split('.')[0].substring(0, 13) + "... ." + file.name.split('.').pop()}</span>
-                          <span class="file_size" >${fileSize}</span>
-                      </div>      
-                  </div>`
-          
-          if(filesConverted.length==entries.length){
-            $.LoadingOverlay("hide");
-            $(".convertedFiles .files").html(filesHTML)
-            $(".convertedFiles").css("display", "block")
-            $("#pdfCreator").css("display", "none")
-          }
-        })
-        await zipReader.close()
+  if(j>=1){
+    if(ismerge=="true"){
+      if(j<2){
+        alert("please select atleast 2 or more files to merge them.")
+        return;
       }
-      
+    }
+    $.LoadingOverlay("show",{
+        background  : "#3c436cc7"
+    });
+    var files=new Array();
+    $(".doc_files .file").each(function (index, value) {       
+      files.push($(this).find(".fileCode").text())     
+    });
+    var xhr   = new XMLHttpRequest();
   
+    xhr.responseType = 'blob';
+    xhr.open("GET", "/doc-converter/convert_to_pdf?filesToBeConverted="+JSON.stringify(files)+"&ismerge="+ismerge);
+  
+    xhr.send();
+    
+    xhr.onload= async function(){
+  
+        if(this.status==503){
+          $.LoadingOverlay("hide");
+          setTimeout(function(){
+            alert("Some Error Occured while Coverting your files try another")
+          },600)
+        }else{
+          var blob = new Blob([this.response], { type: "application/zip" });
+          const zipReader = new zip.ZipReader(new zip.BlobReader(blob));
+          const entries = await zipReader.getEntries();
+          var filesHTML=""
+          
+          entries.forEach(async function(entry,entryIndex){
+            blob=await entry.getData(new zip.BlobWriter())
+            var file = new File([blob],entry.filename,{type:"application/pdf"});
+            let fileTotal = Math.floor(file.size / 1000);
+            let fileSize;
+            (fileTotal < 1024) ? fileSize = fileTotal + " KB" : fileSize = (fileTotal /1024).toFixed(2) + " MB";
+  
+            filesConverted.push(file)
+            let fileName = file.name;
+            if(fileName.length >= 12){
+              fileName=file.name.split('.')[0].substring(0, 13) + "... ." + file.name.split('.').pop()
+            }
+  
+            filesHTML+=`<div class="fileData">
+                        <img onclick="shareFile('${file.name}')" class="circle_share_icon" src="/images/circle-share.png" alt="">
+                        <img onclick="downloadFile('${file.name}')" class="circle_download_icon" src="/images/circle-download.png" alt="">
+                        <div class="fileInfo">
+                            <img class="file_icon" src="/images/pdf_icon.png" alt="">
+                            <span class="file_name" >${fileName}</span>
+                            <span class="file_size" >${fileSize}</span>
+                        </div>      
+                    </div>`
+            
+            if(filesConverted.length==entries.length){
+              $.LoadingOverlay("hide");
+              $(".convertedFiles .files").html(filesHTML)
+              $(".convertedFiles").css("display", "block")
+              $("#pdfCreator").css("display", "none")
+            }
+          })
+          await zipReader.close()
+        }
+    }
   }
-  
 }
 
 
@@ -274,7 +286,7 @@ async function shareFile(fname){
       await navigator.share({
         files: [filesConverted.find(file => file.name === fname)],
         title: fname,
-        text: 'PDF file created with Online DocConverter',
+        text: 'PDF file created with Online DocScanner',
       })
     .then(() => console.log('Share was successful.'))
     .catch((error) => console.log('Sharing failed', error));
