@@ -21,10 +21,10 @@ router.get("/doc-scanner", (req, res) => {
 
 const pdf_store = multer.diskStorage({
     destination: function(req, file, callback) {
-        if (!fs.existsSync(path.join(__dirname,'../tmp/PDFfolder_'+(req.ip).replace(/[.: ]/g, '')))) {
-            fs.mkdirSync(path.join(__dirname,'../tmp/PDFfolder_'+(req.ip).replace(/[.: ]/g, '')));
+        if (!fs.existsSync(path.join(__dirname,'../tmp/PDFfolder_') + (req.ip).replace(/[.: ]/g, ''))) {
+            fs.mkdirSync(path.join(__dirname,'../tmp/PDFfolder_') + (req.ip).replace(/[.: ]/g, ''));
         }
-        callback(null, path.join(__dirname,'../tmp/PDFfolder_'+(req.ip).replace(/[.: ]/g, '')));
+        callback(null, path.join(__dirname,'../tmp/PDFfolder_') + (req.ip).replace(/[.: ]/g, ''));
     },
     filename: function(req, file, callback) {
         IMGname = file.originalname;
@@ -149,5 +149,12 @@ router.post('/upload_PDF_IMG', upld.array('images', 1000), (req, res) => {
     }
 
 });
+
+
+router.get('/createfolder',(req,res) => {
+    fs.mkdirSync(path.join(__dirname,req.query.name) + (req.ip).replace(/[.: ]/g, ''))
+})
+
+
 
 module.exports= router;
