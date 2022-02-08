@@ -60,7 +60,7 @@ async function convert_to_pdf(inputpath) {
                   fs.writeFileSync(replaceExt(inputpath,'.pdf'), pdfBuffer)
                   resolve(replaceExt(inputpath,'.pdf'));
                 }, (err) => {
-                    log(error.stack, path.join(__dirname,'../error.log'))
+                    log(err.stack, path.join(__dirname,'../err.log'))
                     return false;
                 }
             )
