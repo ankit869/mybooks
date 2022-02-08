@@ -2,12 +2,15 @@ const multer = require("multer");
 const archiver = require('archiver');
 const express = require('express');
 const fs = require('fs');
-var converter = require('office-converter')();
+var toPdf = require("office-to-pdf")
+var replaceExt = require('replace-ext');
 const log = require('log-to-file');
-const router = express.Router();
 const path = require("path");
 const PDFMerger = require('pdf-merger-js');
 var rimraf = require("rimraf");
+
+const router = express.Router();
+
 router.get("/doc-converter",async (req, res) => {
     if (req.isAuthenticated()) {
         res.render('webapps/doc_converter.ejs', { status: "none" })
@@ -52,14 +55,15 @@ router.post('/doc-converter/upload_doc_files', upld.any('doc_file'), (req, res) 
 async function convert_to_pdf(inputpath) {
     try {
         return new Promise(resolve => {
-            converter.generatePdf(inputpath, function(err, result) { 
-                if(err){
-                    log(err.stack, path.join(__dirname,'../error.log'))
-                    resolve(false);
-                }else{
-                    resolve(result.outputFile);
+            toPdf(fs.readFileSync(inputpath)).then(
+                (pdfBuffer) => {
+                  fs.writeFileSync(replaceExt(inputpath,'.pdf'), pdfBuffer)
+                  resolve(replaceExt(inputpath,'.pdf'));
+                }, (err) => {
+                    log(error.stack, path.join(__dirname,'../error.log'))
+                    return false;
                 }
-            });
+            )
         });
     }catch(error){
         log(error.stack, path.join(__dirname,'../error.log'))
@@ -95,9 +99,8 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
                 fileName=files[i]
                 filepath=path.join(directory,`/${fileName}`)
                 result=await convert_to_pdf(filepath)
-                console.log(result)
                 if(!result){
-                    // rimraf(directory, function () { });
+                    rimraf(directory, function () { });
                     return res.sendStatus(503);
                 }else{
                     merger.add(result);
@@ -113,9 +116,8 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
                 fileName=files[i]
                 filepath=path.join(directory,`/${fileName}`)
                 result=await convert_to_pdf(filepath)
-                console.log(result)
                 if(!result){
-                    // rimraf(directory, function () { });
+                    rimraf(directory, function () { });
                     return res.sendStatus(503);
                 }else{
                     file={
@@ -137,7 +139,7 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
             archive.finalize().then(()=>{
                 setTimeout(()=>{
                     res.sendFile(path.join(directory,'/output/outputpdf.zip'))
-                    // rimraf(directory, function () { });
+                    rimraf(directory, function () { });
                 },300)
             })
         }
