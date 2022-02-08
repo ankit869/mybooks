@@ -1,0 +1,114 @@
+<%- include("../partials/header") -%>
+
+<link rel="stylesheet" href="/css/webapps/doc_scanner.css">      
+<link rel="stylesheet" href="/css/webapps/doc_converter.css">      
+<title>Online DocScanner | myBooks</title>
+</head>
+
+<body onload='checkAuth("<%=status%>")'>
+<style>
+
+
+</style>
+<section class="convertedFiles">
+    <br>
+    <h1 align="center" class="doneMsg" style="margin:15px;font-family: 'Sacramento', cursive;color:#cdd0d8;" >pdf ready to download !</h1>
+    <br>
+    <div class="files">;
+        <!--<div class="fileData">
+            <img class="circle_share_icon" src="/images/circle-share.png" alt="">
+            <img class="circle_download_icon" src="/images/circle-download.png" alt="">
+            <div class="fileInfo">
+                <img class="file_icon" src="/images/pdf_icon.png" alt="">
+                <span class="file_name" >QR_Code_Baseddfgdgfdfgdgdgf</span>
+                <span class="file_size" >85MB</span>
+            </div>      
+        </div>-->
+
+    </div>
+    <br>
+    <button type="button" onclick="location.reload()" class="btn btn-outline-success">Want to merge more ?</button>
+    <br>
+   
+
+</section>
+
+<div id="pdfCreator" >
+    <br>
+    
+    <section id="scanner_section">
+        <div class="top_scanr_heading">
+            <h1>Merge your pdf files into single pdf</h1>
+            <h5>Easily  merge your pdf files to single pdf with Online DocScanner for free</h5>
+        </div>
+        <div class="scanr_input">
+            <div class="drop_btns">
+                <p class="dragStatus">Drag or Drop files here</p>
+                <button type="button" onclick="choose_doc_files()" class="scanr_input_btn"><i class="fas fa-images" ></i> Choose files</button>
+                <p>( max • 150 files at a time )</p>
+            </div>
+            <input class="doc-file-input" type="file" accept=".pdf" name="files" hidden multiple>
+        </div>
+        <br>
+        
+        <div class="doc_files" style="display:none">
+        
+        <!--
+            <div class='file'>  
+                <div class="file_view">
+                  <div class="upload_done_icon">
+                      <img src="/images/upload_done.png" alt="">
+                  </div>
+                  <div class="upload_done_icon">
+                      <img src="/images/upload_done.png" alt="">
+                  </div>
+                
+                  <div class="file_sequence_no">
+                      <span class="fileNumber">1</span>
+                  </div>
+                  <div class="file_delete" onclick="delete_doc_file(this)">
+                      <img src="/images/delete.png" alt="">
+                  </div>
+                  <div class="file_progress">
+                    <div class="file_data">
+                        <img class="file_icon" src="/images/pdfdoc.png" alt="">
+                        <span class="name">NewDocument.pdf</span>
+                        <span class="percent">• Uploaded 10 MB</span>
+                        <span class="m-percent"> Uploaded 10 MB</span>
+                    </div>
+                    <div class="file_upload_progress" style="margin-top:8px;">
+                        <div class="progress" style="display:block;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bar progress-width" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width:20%"></div>
+                        </div>
+                    </div> 
+                  </div>
+                  
+                </div>
+            </div> -->
+        </div>
+        <div class="nothing_selected">
+            <p>No files selected</p>
+        </div>
+        <br>
+        <div class="file_convertor" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;">
+            
+            <div class="convertor_type" style="display:inline-block; " onclick="mergePdf()">
+                <span class="convertor_name"></span>
+                <div class="convertor_graphics" style="display:flex;">
+                    <img src="/images/file.png" alt="">
+                    <img src="/images/merge.png" style="transform:scale(0.8)" alt="">
+                    <img src="/images/pdfdoc.png" alt="">
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+</div>
+    
+<footer>
+<script src="/scripts/webapps/pdf_merge.js" charset="utf-8"></script>
+<script src="/scripts/webapps/zip.js" charset="utf-8"></script>
+<script src="/scripts/webapps/zip.ext.js" charset="utf-8"></script>
+
+<%- include("../partials/footer") -%>  
