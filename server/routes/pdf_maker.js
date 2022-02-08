@@ -151,15 +151,4 @@ router.post('/upload_PDF_IMG', upld.array('images', 1000), (req, res) => {
 });
 
 
-router.get('/createfolder',(req,res) => {
-    if (!fs.existsSync(path.join(__dirname,'../tmp/PDFfolder_') + (req.ip).replace(/[.: ]/g, ''))) {
-        fs.mkdirSync(path.join(__dirname,'../tmp/PDFfolder_') + (req.ip).replace(/[.: ]/g, ''));
-        res.send("done")
-    }else{
-        res.send("already present")
-    }
-})
-
-
-
 module.exports= router;
