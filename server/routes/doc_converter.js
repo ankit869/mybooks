@@ -6,7 +6,7 @@ var toPdf = require("office-to-pdf")
 var replaceExt = require('replace-ext');
 const log = require('log-to-file');
 const path = require("path");
-const PDFMerger = require('easy-pdf-merge');;
+const PDFMerger = require('easy-pdf-merge');
 var rimraf = require("rimraf");
 
 const router = express.Router();
@@ -136,7 +136,8 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
         async function sendMerged(){
             merge(convertedFiles, path.join(directory,`/output/${mergepdf_name}`), function (err) {
                 if (err) {
-                    return console.log(err)
+                    log(err.stack, path.join(__dirname,'../err.log'))
+                    res.sendStatus(503)
                 }else{
                     archive.append(fs.createReadStream(path.join(directory,`/output/${mergepdf_name}`)),{ name: mergepdf_name });
                     archive.pipe(output);
@@ -156,7 +157,7 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
             archive.finalize().then(()=>{
                 setTimeout(()=>{
                     res.sendFile(path.join(directory,'/output/outputpdf.zip'))
-                    // rimraf(directory, function () { });
+                    rimraf(directory, function () { });
                 },300)
             })
         }
