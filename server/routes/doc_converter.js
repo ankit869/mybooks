@@ -88,8 +88,9 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
 
         if (!fs.existsSync(path.join(directory,"/output"))) {
             fs.mkdirSync(path.join(directory,"/output"));
+            console.log("hello1")
         }
-
+        console.log("hello2")
         mergepdf_name="merged.pdf"
 
         if(req.query.mergepdfName){
@@ -189,8 +190,9 @@ router.get("/doc-converter/mergepdf",async (req, res, next) => {
         files = files.replace(/'/g, '"');
         files = JSON.parse(files);
         directory=path.join(__dirname,`../tmp/PDFfolder_${(req.ip).replace(/[.: ]/g, '')}`)
-        if (!fs.existsSync(directory+"/output")) {
-            fs.mkdirSync(directory+"/output");
+        
+        if (!fs.existsSync(path.join(directory,"/output"))) {
+            fs.mkdirSync(path.join(directory,"/output"));
         }
 
         mergepdf_name="merged.pdf"
