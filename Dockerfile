@@ -12,5 +12,5 @@ RUN apt-get install -y unoconv
 COPY . /app
 WORKDIR /app
 RUN npm install
-RUN npm install gsx-pdf-optimize
+RUN npm install gsx-pdf-optimize --global
 CMD node ./server/server.js
