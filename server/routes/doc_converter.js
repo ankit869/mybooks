@@ -30,10 +30,10 @@ router.get("/pdf-merger",async (req, res) => {
 
 const pdf_store = multer.diskStorage({
     destination: function(req, file, callback) {
-        if (!fs.existsSync(path.join(__dirname,'../tmp/PDFfolder_') + (req.ip).replace(/[.: ]/g, ''))) {
-            fs.mkdirSync(path.join(__dirname,'../tmp/PDFfolder_') + (req.ip).replace(/[.: ]/g, ''));
+        if (!fs.existsSync(path.join(_dirname,'../tmp/PDFfolder') + (req.ip).replace(/[.: ]/g, ''))) {
+            fs.mkdirSync(path.join(_dirname,'../tmp/PDFfolder') + (req.ip).replace(/[.: ]/g, ''));
         }
-        callback(null, path.join(__dirname,'../tmp/PDFfolder_') + (req.ip).replace(/[.: ]/g, ''));
+        callback(null, path.join(_dirname,'../tmp/PDFfolder') + (req.ip).replace(/[.: ]/g, ''));
     },
     filename: function(req, file, callback) {
         fname = file.originalname;
@@ -61,16 +61,13 @@ router.post('/doc-converter/upload_doc_files', upld.any('doc_file'), (req, res) 
 
 
 
-async function convert_to_pdf(inputpath,fname,dir) {
+async function convert_to_pdf(inputpath) {
     try {        
         return new Promise(resolve => {
             toPdf(fs.readFileSync(inputpath)).then(
                 async (pdfBuffer) => {
-                  fs.writeFileSync(replaceExt(inputpath,'.pdf'), pdfBuffer)
-
-                  await execShellCommand(`gsx-pdf-optimize ${replaceExt(inputpath,'.pdf')} ${path.join(directory,'/output/'+resolve(replaceExt(fname,'.pdf')))}`)
-                  
-                  resolve(path.join(directory,'/output/'+resolve(replaceExt(fname,'.pdf'))));
+                  fs.writeFileSync(replaceExt(inputpath,'.pdf'), pdfBuffer)                  
+                  resolve(replaceExt(inputpath,'.pdf'));
                 }, (err) => {
                     log(err.stack, path.join(__dirname,'../error.log'))
                     return false;
@@ -88,7 +85,7 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
         var files=req.query.filesToBeConverted
         files = files.replace(/'/g, '"');
         files = JSON.parse(files);
-        directory=path.join(__dirname,`../tmp/PDFfolder_${(req.ip).replace(/[.: ]/g, '')}`)
+        directory=path.join(_dirname,`../tmp/PDFfolder${(req.ip).replace(/[.: ]/g, '')}`)
 
         if (!fs.existsSync(path.join(directory,"/output"))) {
             fs.mkdirSync(path.join(directory,"/output"), { recursive: true });
@@ -110,7 +107,7 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
             for(i=0;i<files.length;i++){
                 fileName=files[i]
                 filepath=path.join(directory,`/${fileName}`)
-                result=await convert_to_pdf(filepath,fileName,directory)
+                result=await convert_to_pdf(filepath)
                 if(!result){
                     rimraf(directory, function () { });
                     return res.sendStatus(503);
@@ -127,7 +124,7 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
             for(i=0;i<files.length;i++){
                 fileName=files[i]
                 filepath=path.join(directory,`/${fileName}`)
-                result=await convert_to_pdf(filepath,fileName,directory)
+                result=await convert_to_pdf(filepath)
                 if(!result){
                     rimraf(directory, function () { });
                     return res.sendStatus(503);
@@ -189,7 +186,7 @@ router.get("/doc-converter/mergepdf",async (req, res, next) => {
         var files=req.query.filesToBeMerged
         files = files.replace(/'/g, '"');
         files = JSON.parse(files);
-        directory=path.join(__dirname,`../tmp/PDFfolder_${(req.ip).replace(/[.: ]/g, '')}`)
+        directory=path.join(_dirname,`../tmp/PDFfolder${(req.ip).replace(/[.: ]/g, '')}`)
         
         if (!fs.existsSync(path.join(directory,"/output"))) {
             fs.mkdirSync(path.join(directory,"/output"), { recursive: true });
