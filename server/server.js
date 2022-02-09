@@ -100,44 +100,44 @@ app.post("/services/deploy",siteupld.any(),(req,res)=>{
 port=process.env.PORT||8080
 
 // -----------single-threaded-mode--------
-app.listen(port, (err) => {
-    if (err) {
-        console.log("ERROR !! occurred")
-        log(err, 'error.log')
-    } else {
-        console.log(`Server is running in cluster-mode at http://localhost:${port}`);
-    }
-})
+// app.listen(port, (err) => {
+//     if (err) {
+//         console.log("ERROR !! occurred")
+//         log(err, 'error.log')
+//     } else {
+//         console.log(`Server is running in cluster-mode at http://localhost:${port}`);
+//     }
+// })
 
 // -----------multi-threaded-mode-------------
 // const totalCPUs = require("os").cpus().length;
 
 
-// const totalCPUs = 3;
+const totalCPUs = 3;
 
-// if (cluster.isMaster) {
-//   console.log(`Server is running in cluster-mode at http://localhost:${port}/`);
-//   console.log(`Number of CPUs is ${totalCPUs}`);
-//   console.log(`Master ${process.pid} is running`);
+if (cluster.isMaster) {
+  console.log(`Server is running in cluster-mode at http://localhost:${port}/`);
+  console.log(`Number of CPUs is ${totalCPUs}`);
+  console.log(`Master ${process.pid} is running`);
 
-//   // Fork workers.
-//   for (let i = 0; i < totalCPUs; i++) {
-//     cluster.fork();
-//   }
+  // Fork workers.
+  for (let i = 0; i < totalCPUs; i++) {
+    cluster.fork();
+  }
 
-//   cluster.on("exit", (worker, code, signal) => {
-//     console.log(`worker ${worker.process.pid} died`);
-//     console.log("Let's fork another worker!");
-//     cluster.fork();
-//   });
-// } else {
-//     app.listen(port, (err) => {
-//         if (err) {
-//             console.log("ERROR !! occurred")
-//             log(err, 'error.log')
-//         } 
-//     })
-// }
+  cluster.on("exit", (worker, code, signal) => {
+    console.log(`worker ${worker.process.pid} died`);
+    console.log("Let's fork another worker!");
+    cluster.fork();
+  });
+} else {
+    app.listen(port, (err) => {
+        if (err) {
+            console.log("ERROR !! occurred")
+            log(err, 'error.log')
+        } 
+    })
+}
 
 
 // https://javascriptobfuscator.com/Javascript-Obfuscator.aspx
