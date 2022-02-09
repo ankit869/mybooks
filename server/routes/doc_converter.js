@@ -6,7 +6,7 @@ var toPdf = require("office-to-pdf")
 var replaceExt = require('replace-ext');
 const log = require('log-to-file');
 const path = require("path");
-const execShellCommand =require('./routes/execute_shell_cmd.js');
+const execShellCommand =require('./execute_shell_cmd.js');
 const merge = require('pdfmerge');
 var rimraf = require("rimraf");
 
@@ -72,7 +72,7 @@ async function convert_to_pdf(inputpath) {
                   
                   resolve(replaceExt(inputpath,'.pdf'));
                 }, (err) => {
-                    log(err.stack, path.join(__dirname,'../err.log'))
+                    log(err.stack, path.join(__dirname,'../error.log'))
                     return false;
                 }
             )
@@ -161,7 +161,7 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
     
             }).catch(function(err){
                 res.sendStatus(503)
-                log(err, path.join(__dirname,'../err.log'))
+                log(err, path.join(__dirname,'../error.log'))
                 rimraf(directory, function () { });
             })
         }
@@ -231,7 +231,7 @@ router.get("/doc-converter/mergepdf",async (req, res, next) => {
 
         }).catch(function(err){
             res.sendStatus(503)
-            log(err, path.join(__dirname,'../err.log'))
+            log(err, path.join(__dirname,'../error.log'))
             rimraf(directory, function () { });
         })
 
