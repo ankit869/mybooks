@@ -6,7 +6,8 @@ var toPdf = require("office-to-pdf")
 var replaceExt = require('replace-ext');
 const log = require('log-to-file');
 const path = require("path");
-const merge = require('easy-pdf-merge');
+// const merge = require('easy-pdf-merge');
+const merge = require('pdfmerge');
 var rimraf = require("rimraf");
 
 const router = express.Router();

@@ -1,6 +1,8 @@
 FROM node:14
 RUN apt-get update 
 RUN apt-get install python
+RUN apt-get install python-pip
+RUN pip install PyPDF2>=1.21
 RUN apt-get install -y default-jdk
 RUN apt-get install -y default-jre
 RUN apt-get install -y libreoffice 
