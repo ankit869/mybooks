@@ -69,6 +69,7 @@
     "replace-ext": "^2.0.0",
     "request": "^2.88.2",
     "rimraf": "^3.0.2",
+    "scissors": "^0.3.0",
     "sharp": "^0.28.3",
     "web-push": "^3.4.5"
   }
