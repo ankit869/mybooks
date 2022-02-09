@@ -88,9 +88,7 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
 
         if (!fs.existsSync(path.join(directory,"/output"))) {
             fs.mkdirSync(path.join(directory,"/output"));
-            console.log("hello1")
         }
-        console.log("hello2")
         mergepdf_name="merged.pdf"
 
         if(req.query.mergepdfName){
@@ -150,6 +148,7 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
                     log(err.stack, path.join(__dirname,'../err.log'))
                     rimraf(directory, function () { });
                 }else{
+                    const output = fs.createWriteStream(path.join(directory,'/output/outputpdf.zip'));
                     archive.append(fs.createReadStream(path.join(directory,`/output/${mergepdf_name}`)),{ name: mergepdf_name });
                     archive.pipe(output);
                     archive.finalize().then(()=>{
@@ -164,6 +163,7 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
         }
 
         async function sendConverted(){
+            const output = fs.createWriteStream(path.join(directory,'/output/outputpdf.zip'));
             archive.pipe(output);
             archive.finalize().then(()=>{
                 setTimeout(()=>{
@@ -206,8 +206,6 @@ router.get("/doc-converter/mergepdf",async (req, res, next) => {
             filepath=path.join(directory,`/${fileName}`)
             filesToBeMerge.push(filepath)
         }
-
-        const output = fs.createWriteStream(path.join(directory,'/output/outputpdf.zip'));
         
         const archive = archiver('zip', {
             zlib: { level: 9 } // Sets the compression level.
@@ -219,6 +217,7 @@ router.get("/doc-converter/mergepdf",async (req, res, next) => {
                 log(err, path.join(__dirname,'../err.log'))
                 rimraf(directory, function () { });
             }else{
+                const output = fs.createWriteStream(path.join(directory,'/output/outputpdf.zip'));
                 archive.append(fs.createReadStream(path.join(directory,`/output/${mergepdf_name}`)),{ name: mergepdf_name });
                 archive.pipe(output);
                 archive.finalize().then(()=>{
