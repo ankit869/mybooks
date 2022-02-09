@@ -232,7 +232,7 @@ function convertIntoPdf(ismerge){
           var blob = new Blob([this.response], { type: "application/zip" });
           const zipReader = new zip.ZipReader(new zip.BlobReader(blob));
           const entries = await zipReader.getEntries();
-          var filesHTML=""
+          var filesHTML="<br>"
           
           entries.forEach(async function(entry,entryIndex){
             blob=await entry.getData(new zip.BlobWriter())
@@ -246,7 +246,7 @@ function convertIntoPdf(ismerge){
             if(fileName.length >= 12){
               fileName=file.name.split('.')[0].substring(0, 13) + "... ." + file.name.split('.').pop()
             }
-  
+    
             filesHTML+=`<div class="fileData">
                         <img onclick="shareFile('${file.name}')" class="circle_share_icon" src="/images/circle-share.png" alt="">
                         <img onclick="downloadFile('${file.name}')" class="circle_download_icon" src="/images/circle-download.png" alt="">
@@ -259,11 +259,13 @@ function convertIntoPdf(ismerge){
             
             if(filesConverted.length==entries.length){
               $.LoadingOverlay("hide");
+              filesHTML+="<br>"
               $(".convertedFiles .files").html(filesHTML)
               $(".convertedFiles").css("display", "block")
               $("#pdfCreator").css("display", "none")
             }
           })
+
           await zipReader.close()
         }
     }
