@@ -6,8 +6,7 @@ var toPdf = require("office-to-pdf")
 var replaceExt = require('replace-ext');
 const log = require('log-to-file');
 const path = require("path");
-// const merge = require('easy-pdf-merge');
-var scissors = require('scissors');
+const execShellCommand =require('./routes/execute_shell_cmd.js');
 const merge = require('pdfmerge');
 var rimraf = require("rimraf");
 
@@ -66,11 +65,10 @@ async function convert_to_pdf(inputpath) {
     try {        
         return new Promise(resolve => {
             toPdf(fs.readFileSync(inputpath)).then(
-                (pdfBuffer) => {
+                async (pdfBuffer) => {
                   fs.writeFileSync(replaceExt(inputpath,'.pdf'), pdfBuffer)
 
-                  var pdf = scissors(replaceExt(inputpath,'.pdf'))
-                  console.log(pdf)
+                  await execShellCommand(`gsx-pdf-optimize ${replaceExt(inputpath,'.pdf')} ${replaceExt(inputpath,'.pdf')}`)
                   
                   resolve(replaceExt(inputpath,'.pdf'));
                 }, (err) => {
