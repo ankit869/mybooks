@@ -146,6 +146,7 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
             merge(convertedFiles, path.join(directory,`/output/${mergepdf_name}`), function (err) {
                 if (err) {
                     console.log("error2")
+                    console.log(err)
                     res.sendStatus(503)
                     log(err.stack, path.join(__dirname,'../err.log'))
                     rimraf(directory, function () { });
