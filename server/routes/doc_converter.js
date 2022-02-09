@@ -86,8 +86,8 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
         files = JSON.parse(files);
         directory=path.join(__dirname,`../tmp/PDFfolder_${(req.ip).replace(/[.: ]/g, '')}`)
 
-        if (!fs.existsSync(directory+"/output")) {
-            fs.mkdirSync(directory+"/output");
+        if (!fs.existsSync(path.join(directory,"/output"))) {
+            fs.mkdirSync(path.join(directory,"/output"));
         }
 
         mergepdf_name="merged.pdf"
@@ -174,6 +174,8 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
         
     }catch(err){
         log(err.stack, path.join(__dirname,'../error.log'))
+        rimraf(directory, function () { });
+        return res.sendStatus(503);
     }
     
 })
@@ -190,7 +192,6 @@ router.get("/doc-converter/mergepdf",async (req, res, next) => {
         if (!fs.existsSync(directory+"/output")) {
             fs.mkdirSync(directory+"/output");
         }
-
 
         mergepdf_name="merged.pdf"
 
@@ -209,7 +210,7 @@ router.get("/doc-converter/mergepdf",async (req, res, next) => {
         const archive = archiver('zip', {
             zlib: { level: 9 } // Sets the compression level.
         });
-        
+
         merge(filesToBeMerge, path.join(directory,`/output/${mergepdf_name}`), function (err) {
             if (err) {
                 res.sendStatus(503)
