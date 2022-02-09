@@ -143,25 +143,24 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
             }
         }
 
+
+
         async function sendMerged(){
-            merge(convertedFiles, path.join(directory,`/output/${mergepdf_name}`), function (err) {
-                if (err) {
-                    console.log("err1---->"+err)
-                    res.sendStatus(503)
-                    log(err, path.join(__dirname,'../err.log'))
-                    rimraf(directory, function () { });
-                }else{
-                    archive.append(fs.createReadStream(path.join(directory,`/output/${mergepdf_name}`)),{ name: mergepdf_name });
-                    archive.pipe(output);
-                    archive.finalize().then(()=>{
-                        setTimeout(()=>{
-                            res.sendFile(path.join(directory,'/output/outputpdf.zip'))
-                            rimraf(directory, function () { });
-                        },300)
-                    })
-                }
-                convertedFiles=[]
-            });
+            merge(convertedFiles, path.join(directory,`/output/${mergepdf_name}`)).then(function(done){
+                archive.append(fs.createReadStream(path.join(directory,`/output/${mergepdf_name}`)),{ name: mergepdf_name });
+                archive.pipe(output);
+                archive.finalize().then(()=>{
+                    setTimeout(()=>{
+                        res.sendFile(path.join(directory,'/output/outputpdf.zip'))
+                        rimraf(directory, function () { });
+                    },300)
+                })
+    
+            }).catch(function(err){
+                res.sendStatus(503)
+                log(err, path.join(__dirname,'../err.log'))
+                rimraf(directory, function () { });
+            })
         }
 
         async function sendConverted(){
@@ -215,25 +214,23 @@ router.get("/doc-converter/mergepdf",async (req, res, next) => {
             zlib: { level: 9 } // Sets the compression level.
         });
 
-        merge(filesToBeMerge, path.join(directory,`/output/${mergepdf_name}`), function (err) {
-            if (err) {
-                console.log("err1---->"+err)
-                res.sendStatus(503)
-                log(err, path.join(__dirname,'../err.log'))
-                rimraf(directory, function () { });
-            }else{
-                archive.append(fs.createReadStream(path.join(directory,`/output/${mergepdf_name}`)),{ name: mergepdf_name });
-                archive.pipe(output);
-                archive.finalize().then(()=>{
-                    setTimeout(()=>{
-                        res.sendFile(path.join(directory,'/output/outputpdf.zip'))
-                        rimraf(directory, function () { });
-                    },300)
-                })
-            }
-            convertedFiles=[]
-        });
+        
 
+        merge(filesToBeMerge, path.join(directory,`/output/${mergepdf_name}`)).then(function(done){
+            archive.append(fs.createReadStream(path.join(directory,`/output/${mergepdf_name}`)),{ name: mergepdf_name });
+            archive.pipe(output);
+            archive.finalize().then(()=>{
+                setTimeout(()=>{
+                    res.sendFile(path.join(directory,'/output/outputpdf.zip'))
+                    rimraf(directory, function () { });
+                },300)
+            })
+
+        }).catch(function(err){
+            res.sendStatus(503)
+            log(err, path.join(__dirname,'../err.log'))
+            rimraf(directory, function () { });
+        })
 
     }catch(err){
         console.log("err2---->"+err)
