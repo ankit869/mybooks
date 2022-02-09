@@ -42,7 +42,6 @@
     "google-tokens": "0.0.3",
     "googleapis": "^83.0.0",
     "gsx-pdf-optimize": "^1.0.4",
-    "hummus-recipe": "^2.0.1",
     "in-memory-otp": "^1.4.0",
     "lodash": "^4.17.21",
     "log-to-file": "^3.0.0",
@@ -70,7 +69,6 @@
     "replace-ext": "^2.0.0",
     "request": "^2.88.2",
     "rimraf": "^3.0.2",
-    "scissors": "^0.3.0",
     "sharp": "^0.28.3",
     "web-push": "^3.4.5"
   }

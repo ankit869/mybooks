@@ -159,7 +159,7 @@
 .convertedFiles .files {
   text-align:center;
   overflow-y:auto;
-  width:480px;
+  width:500px;
   margin:auto;
   border-radius:10px;
   max-height:500px;
@@ -176,6 +176,7 @@
 }
 .convertedFiles .files .fileData .file_icon{
   width:90px;
+  margin:5px;
 }
 .convertedFiles .files .fileData .file_name{
   padding:5px;
@@ -201,13 +202,13 @@
 .convertedFiles .files .circle_share_icon{
   position: absolute;
   right:10px;
-  top:-12px;
+  top:-18px;
   width:35px;
 }
 .convertedFiles .files .circle_download_icon{
   position: absolute;
   right:60px;
-  top:-12px;
+  top:-18px;
   width:35px;
 }
 .convertedFiles .files .circle_share_icon:hover,.convertedFiles .files .circle_download_icon:hover{
@@ -222,47 +223,77 @@
       margin:15px;
       padding:5px;  
   }
+  .convertedFiles .files .fileData .fileInfo{
+      display:flex;
+      flex-direction: column;
+      align-items:center;
+      justify-content:center;
+  }
+  .convertedFiles .files .fileData .file_icon{
+      width:70px;
+  }
+  .convertedFiles .files .circle_share_icon{
+      width:40px;
+  }
+  .convertedFiles .files .circle_download_icon{
+      width:40px;
+  }
+  .convertedFiles .files .fileData .file_name{
+      font-size:20px;
+  }
+  .convertedFiles .files .fileData .file_size{
+      font-size:90%;
+  }
+  .convertedFiles .files .fileData .file_size{
+      position:relative;
+      left:10px;
+      bottom:5px;
+      color:#6990F2;
+  }
+}
+
+@media(max-width:405px){
+  .convertedFiles .files{
+      width:95%;
+  }
+  .convertedFiles .files .fileData{
+      margin:12px;
+      padding:5px;  
+  }
   .convertedFiles .files .fileData .file_icon{
       width:65px;
   }
   .convertedFiles .files .circle_share_icon{
-      width:30px;
+      width:35px;
   }
   .convertedFiles .files .circle_download_icon{
-      width:30px;
+      width:35px;
   }
   .convertedFiles .files .fileData .file_name{
-      font-size:15px;
+      font-size:16px;
   }
   .convertedFiles .files .fileData .file_size{
-      font-size:75%;
+      font-size:80%;
   }
 }
-@media(max-width:435px){
+@media(max-width:328px){
+  .convertedFiles .files{
+      width:97%;
+  }
+
   .convertedFiles .files .fileData .file_icon{
       width:60px;
   }
   .convertedFiles .files .circle_share_icon{
-      width:25px;
+      width:30px;
   }
   .convertedFiles .files .circle_download_icon{
-      width:25px;
+      width:30px;
   }
   .convertedFiles .files .fileData .file_name{
       font-size:14px;
   }
   .convertedFiles .files .fileData .file_size{
       font-size:70%;
-  }
-
-}
-@media(max-width:378px){
-  .convertedFiles .files{
-      width:95%;
-  }
-}
-@media(max-width:358px){
-  .convertedFiles .files .fileData .file_size{
-      display: none;
   }
 }
