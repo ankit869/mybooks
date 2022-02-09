@@ -41,6 +41,7 @@
     "google-books-search": "^0.3.1",
     "google-tokens": "0.0.3",
     "googleapis": "^83.0.0",
+    "gsx-pdf-optimize": "^1.0.4",
     "hummus-recipe": "^2.0.1",
     "in-memory-otp": "^1.4.0",
     "lodash": "^4.17.21",
