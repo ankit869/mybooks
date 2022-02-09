@@ -111,6 +111,7 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
                     rimraf(directory, function () { });
                     return res.sendStatus(503);
                 }else{
+                    console.log(result)
                     convertedFiles.push(result);
                     if(fileName==files[files.length-1]){
                         sendMerged()
