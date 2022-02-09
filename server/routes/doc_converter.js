@@ -30,10 +30,10 @@ router.get("/pdf-merger",async (req, res) => {
 
 const pdf_store = multer.diskStorage({
     destination: function(req, file, callback) {
-        if (!fs.existsSync(path.join(_dirname,'../tmp/PDFfolder') + (req.ip).replace(/[.: ]/g, ''))) {
-            fs.mkdirSync(path.join(_dirname,'../tmp/PDFfolder') + (req.ip).replace(/[.: ]/g, ''));
+        if (!fs.existsSync(path.join(__dirname,'../tmp/PDFfolder') + (req.ip).replace(/[.: ]/g, ''))) {
+            fs.mkdirSync(path.join(__dirname,'../tmp/PDFfolder') + (req.ip).replace(/[.: ]/g, ''));
         }
-        callback(null, path.join(_dirname,'../tmp/PDFfolder') + (req.ip).replace(/[.: ]/g, ''));
+        callback(null, path.join(__dirname,'../tmp/PDFfolder') + (req.ip).replace(/[.: ]/g, ''));
     },
     filename: function(req, file, callback) {
         fname = file.originalname;
@@ -85,7 +85,7 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
         var files=req.query.filesToBeConverted
         files = files.replace(/'/g, '"');
         files = JSON.parse(files);
-        directory=path.join(_dirname,`../tmp/PDFfolder${(req.ip).replace(/[.: ]/g, '')}`)
+        directory=path.join(__dirname,`../tmp/PDFfolder${(req.ip).replace(/[.: ]/g, '')}`)
 
         if (!fs.existsSync(path.join(directory,"/output"))) {
             fs.mkdirSync(path.join(directory,"/output"), { recursive: true });
@@ -183,7 +183,7 @@ router.get("/doc-converter/mergepdf",async (req, res, next) => {
         var files=req.query.filesToBeMerged
         files = files.replace(/'/g, '"');
         files = JSON.parse(files);
-        directory=path.join(_dirname,`../tmp/PDFfolder${(req.ip).replace(/[.: ]/g, '')}`)
+        directory=path.join(__dirname,`../tmp/PDFfolder${(req.ip).replace(/[.: ]/g, '')}`)
         
         var merger = new PDFMerger();
 
