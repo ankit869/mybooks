@@ -61,7 +61,7 @@ router.post('/doc-converter/upload_doc_files', upld.any('doc_file'), (req, res) 
 
 
 
-async function convert_to_pdf(inputpath,fname) {
+async function convert_to_pdf(inputpath,fname,dir) {
     try {        
         return new Promise(resolve => {
             toPdf(fs.readFileSync(inputpath)).then(
@@ -110,7 +110,7 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
             for(i=0;i<files.length;i++){
                 fileName=files[i]
                 filepath=path.join(directory,`/${fileName}`)
-                result=await convert_to_pdf(filepath,fileName)
+                result=await convert_to_pdf(filepath,fileName,directory)
                 if(!result){
                     rimraf(directory, function () { });
                     return res.sendStatus(503);
@@ -127,7 +127,7 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
             for(i=0;i<files.length;i++){
                 fileName=files[i]
                 filepath=path.join(directory,`/${fileName}`)
-                result=await convert_to_pdf(filepath,fileName)
+                result=await convert_to_pdf(filepath,fileName,directory)
                 if(!result){
                     rimraf(directory, function () { });
                     return res.sendStatus(503);
