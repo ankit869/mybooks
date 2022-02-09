@@ -1,4 +1,5 @@
 const log = require('log-to-file');
+const path = require("path");
 function execShellCommand(cmd) {
     try{
         const exec = require("child_process").exec;

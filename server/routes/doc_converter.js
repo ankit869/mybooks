@@ -112,7 +112,6 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
                 filepath=path.join(directory,`/${fileName}`)
                 result=await convert_to_pdf(filepath)
                 if(!result){
-                    console.log("error1")
                     rimraf(directory, function () { });
                     return res.sendStatus(503);
                 }else{
@@ -146,8 +145,6 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
             }
         }
 
-
-
         async function sendMerged(){
             merge(convertedFiles, path.join(directory,`/output/${mergepdf_name}`)).then(function(done){
                 archive.append(fs.createReadStream(path.join(directory,`/output/${mergepdf_name}`)),{ name: mergepdf_name });
@@ -177,7 +174,6 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
         }
         
     }catch(err){
-        console.log("err2---->"+err)
         log(err.stack, path.join(__dirname,'../error.log'))
         rimraf(directory, function () { });
         return res.sendStatus(503);
@@ -236,7 +232,6 @@ router.get("/doc-converter/mergepdf",async (req, res, next) => {
         })
 
     }catch(err){
-        console.log("err2---->"+err)
         log(err.stack, path.join(__dirname,'../error.log'))
         rimraf(directory, function () { });
         return res.sendStatus(503);
