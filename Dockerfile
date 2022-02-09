@@ -3,7 +3,7 @@ RUN apt-get update
 RUN apt-get install -y python
 RUN apt-get install -y python3-pip
 RUN pip install --upgrade pip
-RUN pip install PyPDF2>=1.21
+RUN pip install PyPDF2>=1.21 
 RUN apt-get install -y default-jdk
 RUN apt-get install -y default-jre
 RUN apt-get install -y libreoffice 
