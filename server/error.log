@@ -1,0 +1,25 @@
+2022.02.25, 16:12:57.0655 UTC -> MongooseError: Operation `users.findOne()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (C:\Users\ankit\OneDrive\MY CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:198:23)
+    at listOnTimeout (internal/timers.js:557:17)
+    at processTimers (internal/timers.js:500:7)
+2022.02.25, 16:15:15.0136 UTC -> NodeMailer ERROR
+2022.02.25, 16:15:27.0189 UTC -> MailGun ERROR
+2022.02.25, 16:16:18.0882 UTC -> NodeMailer ERROR
+2022.02.25, 16:18:23.0669 UTC -> NodeMailer ERROR
+2022.02.25, 16:18:27.0496 UTC -> NodeMailer ERROR
+2022.02.25, 16:22:05.0848 UTC -> NodeMailer ERROR
+2022.02.25, 16:22:06.0823 UTC -> NodeMailer ERROR
+2022.02.25, 16:24:23.0166 UTC -> NodeMailer ERROR
+2022.02.25, 16:24:30.0624 UTC -> NodeMailer ERROR
+2022.02.25, 16:24:58.0832 UTC -> NodeMailer ERROR
+2022.02.25, 16:25:01.0175 UTC -> NodeMailer ERROR
+2022.02.25, 18:27:46.0258 UTC -> NodeMailer ERROR
+2022.02.25, 18:27:48.0319 UTC -> NodeMailer ERROR
+2022.02.25, 18:28:10.0214 UTC -> NodeMailer ERROR
+2022.02.25, 18:28:11.0874 UTC -> NodeMailer ERROR
+2022.02.25, 18:33:45.0286 UTC -> MongooseError: Operation `users.findOne()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (C:\Users\ankit\OneDrive\MY CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:198:23)
+    at listOnTimeout (internal/timers.js:557:17)
+    at processTimers (internal/timers.js:500:7)
+2022.02.25, 18:40:09.0567 UTC -> NodeMailer ERROR
+2022.02.25, 18:40:11.0082 UTC -> NodeMailer ERROR

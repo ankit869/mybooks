@@ -46,6 +46,9 @@ router.get("/subscribe", (req, res) => {
     }
 
 });
+router.get("/null", (req, res) => {
+    res.redirect("/home")
+});
 
 router.get("/update_token",async (req, res) => {
     try {
@@ -62,7 +65,6 @@ router.get("/update_token",async (req, res) => {
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
-
 })
 
 router.get("/auth/google",
@@ -148,11 +150,11 @@ router.get('/api',async (req, res) => {
 })
 
 router.get('/t&c',async (req, res) => {
-    res.render("t&c");
+    res.render("policies/t&c");
 })
 
 router.get('/dmca', (req, res) => {
-    res.render("dmca");
+    res.render("policies/dmca");
 })
 
 router.get('/home',async (req, res) => {

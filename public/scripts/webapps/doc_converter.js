@@ -248,14 +248,14 @@ function convertIntoPdf(ismerge){
             }
     
             filesHTML+=`<div class="fileData">
-                        <img onclick="shareFile('${file.name}')" class="circle_share_icon" src="/images/circle-share.png" alt="">
-                        <img onclick="downloadFile('${file.name}')" class="circle_download_icon" src="/images/circle-download.png" alt="">
-                        <div class="fileInfo">
-                            <img class="file_icon" src="/images/pdf_icon.png" alt="">
-                            <span class="file_name" >${fileName}</span>
-                            <span class="file_size" >${fileSize}</span>
-                        </div>      
-                    </div>`
+                            <img onclick="shareFile('${file.name}')" class="circle_share_icon" src="/images/circle-share.png" alt="">
+                            <img onclick="downloadFile('${file.name}')" class="circle_download_icon" src="/images/circle-download.png" alt="">
+                            <div class="fileInfo">
+                                <img class="file_icon" src="/images/pdf_icon.png" alt="">
+                                <span class="file_name" >${fileName}</span>
+                                <span class="file_size" >${fileSize}</span>
+                            </div>      
+                        </div>`
             
             if(filesConverted.length==entries.length){
               $.LoadingOverlay("hide");

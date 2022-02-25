@@ -31,7 +31,7 @@ const {sendOTP,validateOTP}=require('./otp.js')
 const {client,redis_setkey}=require('./redis_conf.js')
 const sendNotification=require('./notification.js')
 const indexUrl_overGoogle=require('./google_indexing.js')
-const {CONTACT,USER,BOOK,BOOK_UNDER_REVIEW,DELETED_BOOK,REVIEW,FAVBOOK,MESSAGE}=require('./models.js');
+const {CONTACT,USER,BOOK,BOOK_UNDER_REVIEW,DELETED_BOOK,REVIEW,FAVBOOK,MESSAGE,ADMINUSER}=require('./models.js');
 const drive = require('./gdrive_setup.js')
 
 router.get('/admin-success', (req, res) => {
@@ -1962,7 +1962,11 @@ router.post('/admin-login', (req, res) => {
                                                         log(error, path.join(__dirname,'../error.log'))
                                                         res.send({ message: "Login successful, Redirecting...", status: "200", authUrl: '/home' })
                                                     }else{
-                                                        res.send({ message: "Login successful, Redirecting...", status: "200", authUrl: response })
+                                                        if(response==""){
+                                                            res.send({ message: "Login successful, Redirecting...", status: "200", authUrl: "/admin" })
+                                                        }else{
+                                                            res.send({ message: "Login successful, Redirecting...", status: "200", authUrl: response })
+                                                        }
                                                     }
                                                 });
                                             }
