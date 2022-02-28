@@ -31,7 +31,7 @@ const {sendOTP,validateOTP}=require('./otp.js')
 const {client,redis_setkey}=require('./redis_conf.js')
 const sendNotification=require('./notification.js')
 const indexUrl_overGoogle=require('./google_indexing.js')
-const {CONTACT,USER,BOOK,BOOK_UNDER_REVIEW,DELETED_BOOK,REVIEW,FAVBOOK,MESSAGE,ADMINUSER}=require('./models.js');
+const {CONTACT,USER,BOOK,BOOK_UNDER_REVIEW,RESOLVED_CONTACT,DELETED_BOOK,REVIEW,FAVBOOK,MESSAGE,ADMINUSER}=require('./models.js');
 const drive = require('./gdrive_setup.js')
 
 router.get('/admin-success', (req, res) => {
