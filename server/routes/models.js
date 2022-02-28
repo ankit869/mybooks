@@ -49,14 +49,20 @@ const reviewSchema = new mongoose.Schema({
     time: String,
     message: String
 })
+
+const categorySchema = new mongoose.Schema({
+    book_category: String,
+    book_subcategory: String,
+})
+
+
 const bookSchema = new mongoose.Schema({
     uploader_name: String,
     uploader_id: String,
     book_name: String,
     author_name: String,
     book_description: String,
-    book_category: String,
-    book_subcategory: String,
+    category: [categorySchema],
     book_cover_drive_link: String,
     book_cover_drive_id: String,
     book_cover_cloudinary_public_id: String,
@@ -76,17 +82,17 @@ const book_under_review_schema = new mongoose.Schema({
     book_id: String,
     book_name: String,
     user_id: String,
-    book_category: String,
+    category: [categorySchema],
     isUpdate: Boolean
 })
+
 const deletedBookSchema = new mongoose.Schema({
     uploader_name: String,
     uploader_id: String,
     book_name: String,
     author_name: String,
     book_description: String,
-    book_category: String,
-    book_subcategory: String,
+    category: [categorySchema],
     book_cover_drive_link: String,
     book_cover_drive_id: String,
     book_cover_cloudinary_public_id: String,
@@ -131,10 +137,11 @@ const FEED = mongoose.model("feedback", feedbackSchema);
 const USER = new mongoose.model('user', userSchema)
 const ADMINUSER = new mongoose.model('admin user', adminSchema)
 const BOOK = new mongoose.model('book', bookSchema)
+const BOOK_CATEGORY = new mongoose.model('book_category', categorySchema)
 const BOOK_UNDER_REVIEW = new mongoose.model('books_under_review', book_under_review_schema)
 const DELETED_BOOK = new mongoose.model('deleted book', deletedBookSchema)
 const REVIEW = new mongoose.model('review', reviewSchema)
 const FAVBOOK = new mongoose.model('favbook', favbooksSchema)
 const MESSAGE = new mongoose.model('notification', notificationSchema)
 
-module.exports={CONTACT,TOKEN,RESOLVED_CONTACT,FEED,USER,ADMINUSER,BOOK,BOOK_UNDER_REVIEW,DELETED_BOOK,REVIEW,FAVBOOK,MESSAGE}
+module.exports={CONTACT,TOKEN,RESOLVED_CONTACT,FEED,USER,ADMINUSER,BOOK_CATEGORY,BOOK,BOOK_UNDER_REVIEW,DELETED_BOOK,REVIEW,FAVBOOK,MESSAGE}

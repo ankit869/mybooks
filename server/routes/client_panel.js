@@ -32,7 +32,7 @@ const {sendOTP,validateOTP}=require('./otp.js')
 const {client,redis_setkey}=require('./redis_conf.js')
 const sendNotification=require('./notification.js')
 const drive = require('./gdrive_setup.js')
-const {CONTACT,TOKEN,FEED,USER,BOOK,BOOK_UNDER_REVIEW,REVIEW,FAVBOOK,MESSAGE}=require('./models.js');
+const {CONTACT,TOKEN,FEED,USER,BOOK,BOOK_UNDER_REVIEW,REVIEW,BOOK_CATEGORY,FAVBOOK,MESSAGE}=require('./models.js');
 
 // Subscribe Route
 router.get("/subscribe", (req, res) => {
@@ -171,13 +171,31 @@ router.get('/home',async (req, res) => {
                 log(err.stack, path.join(__dirname,'../error.log'))
             }
         })
-
     } catch (err) {
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
+})
+router.get('/tempupdate',async (req, res) => {
+    
+        BOOK.findOne({_id:"613b3997f9c806001648faf7"}, (err, book) => {
+            // books.forEach(function(book){
+            //     // console.log(book)
 
+                // console.log(book.book_subcategory)
+                // console.log(book.book_category)
+                console.log(book.book_category)
+                // const category={
+                //     book_category:book.book_category,
+                //     book_subcategory:book.book_subcategory
+                // }
+                // console.log(category)
+                // book.category.push(category)
 
+                // book.save();
+                // console.log(book.book_name+" updated")
+            })
+        // })
 })
 
 router.get('/user/:userid',async (req, res) => {
