@@ -125,10 +125,10 @@
                 <h1 class="font-design-h"><i class="fas fa-upload"></i> Upload Book</h1>
                 <hr>
                 <p id="upload-msg"></p>
-                <form id="upld-form" action="/upload" method="post" enctype="multipart/form-data">
+                <form id="upld-form" action="/upload" method="post" enctype="multipart/form-data" >
                    <input class="upload-input" name="book_name" maxlength='100' type="text" placeholder="Enter the book name" required>
                    <input class="upload-input" type="text" name="author_name" value="" placeholder="Name of the author (optional)">
-                   
+                   <input type="text" name="categories" hidden required>
                    <div class="drag-area">
                        <div id="hide_IMG">
                            <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
@@ -142,19 +142,44 @@
                            <button type="button" onclick="cancleImg()" id="cancle-image" ><i class="fas fa-times"></i></button>
                        </div>
                    </div>
-
-                   <%- include("../book-genres/categories") -%>
-                   <%- include("../book-genres/sub-category/ba") -%>
-                   <%- include("../book-genres/sub-category/bsc") -%>
-                   <%- include("../book-genres/sub-category/btech") -%>
-                   <%- include("../book-genres/sub-category/competetive") -%>
-                   <%- include("../book-genres/sub-category/diploma") -%>
-                   <%- include("../book-genres/sub-category/diploma") -%>
-                   <%- include("../book-genres/sub-category/pre_primary") -%>
-                   <%- include("../book-genres/sub-category/primary") -%>
-                   <%- include("../book-genres/sub-category/secondary") -%>
-                   <%- include("../book-genres/sub-category/post_graduation") -%>
-                   <%- include("../book-genres/sub-category/others") -%>
+                   <div  class="catgry_div">
+                      
+                   </div>
+                   <script>
+                        function ct_refresher() {
+                            ctHtml=`<%- include("../book-genres/categories_upt") -%>
+                            <%- include("../book-genres/sub-category_upt/ba") -%>
+                            <%- include("../book-genres/sub-category_upt/bsc") -%>
+                            <%- include("../book-genres/sub-category_upt/btech") -%>
+                            <%- include("../book-genres/sub-category_upt/competetive") -%>
+                            <%- include("../book-genres/sub-category_upt/diploma") -%>
+                            <%- include("../book-genres/sub-category_upt/diploma") -%>
+                            <%- include("../book-genres/sub-category_upt/pre_primary") -%>
+                            <%- include("../book-genres/sub-category_upt/primary") -%>
+                            <%- include("../book-genres/sub-category_upt/secondary") -%>
+                            <%- include("../book-genres/sub-category_upt/post_graduation") -%>
+                            <%- include("../book-genres/sub-category_upt/others") -%>`
+                            $(".category-selection-div").html(ctHtml);
+                        }
+                       
+                   </script>
+                    <div class="category-selection-div">
+                        <%- include("../book-genres/categories_upt") -%>
+                        <%- include("../book-genres/sub-category_upt/ba") -%>
+                        <%- include("../book-genres/sub-category_upt/bsc") -%>
+                        <%- include("../book-genres/sub-category_upt/btech") -%>
+                        <%- include("../book-genres/sub-category_upt/competetive") -%>
+                        <%- include("../book-genres/sub-category_upt/diploma") -%>
+                        <%- include("../book-genres/sub-category_upt/diploma") -%>
+                        <%- include("../book-genres/sub-category_upt/pre_primary") -%>
+                        <%- include("../book-genres/sub-category_upt/primary") -%>
+                        <%- include("../book-genres/sub-category_upt/secondary") -%>
+                        <%- include("../book-genres/sub-category_upt/post_graduation") -%>
+                        <%- include("../book-genres/sub-category_upt/others") -%>
+                    </div>
+                   
+                   <button type="button" class="btn_adding_category" onclick="addcategory()"><i class="fas fa-solid fa-plus"></i> Add this category</button>
+                   
                    <input class="upload-input" type="file" name="pdf_file" value="" id="file-input" accept=".pdf,.zip,.rar,.7zip" required>
                    <br>
                 </form>
@@ -187,7 +212,8 @@
         </div>
       
     </section>
-    
+    <div id="snackbar"></div>
+    <script src="/scripts/partials/select-upt.js" charset="utf-8"></script>
     <footer>
         <div>
             <% if(status=="block"){ %>

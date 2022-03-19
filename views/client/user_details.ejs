@@ -81,7 +81,7 @@
         </div>
         <% } %>
     </div>
-
+    <% if(user.id==current_userid){ %> 
     <div class="notificationCenter">
         <h4 align="center"><i class="fas fa-info-circle"></i> Notifications</h4>
         <% if(user.notifications=="") { %>
@@ -95,9 +95,9 @@
                   <p><%=message.msg%> <span> • <%=message.time%></span></p>
                 </div>
             <% }) %>
-                  
         <% } %>
     </div>
+    <% } %>
     <div id="snackbar">Request sent to our team</div>
     <footer>
 <%- include("../partials/footer") -%>      

@@ -140,10 +140,10 @@
             <div class="books">
             <% var i=0; %>
             <% books.forEach(function(book){ %>
-               <% if(book.book_category=="Bachelor of Technology (B.Tech)" && i<15) {%>
+               <% if(book.category.findIndex(category => category.book_category == "Bachelor of Technology (B.Tech)")!=-1 && i<15) {%>
                 <% i=i+1 %>
                 <div class="book-outer" >
-                    <div class="book">
+                    <div class="book" >
                         <button onclick="location.href='<%=book.book_file_download_link%>'" class="floating-add"><i class="fas fa-cloud-download-alt fa-2x"></i></button>
                         <img onclick="location.href='/book/<%=book.id%>'" class="book-cover" src="<%=book.book_cover_cloudinary_link%>" alt="" >
                         <hr>
@@ -178,7 +178,7 @@
             <div class="books">
             <% var i=0; %>
             <% books.forEach(function(book){ %>
-               <% if(book.book_category=="Bachelor of Science (B.Sc)" && i<15) {%>
+               <% if(book.category.findIndex(category => category.book_category === "Bachelor of Science (B.Sc)")!=-1 && i<15) {%>
                <% i=i+1 %>
                 <div class="book-outer" >
                     <div class="book">
@@ -216,7 +216,7 @@
             <div class="books">
             <% var i=0; %>
             <% books.forEach(function(book){ %>
-               <% if(book.book_category=="Bachelor of Arts (BA)" && i<15) {%>
+               <% if(book.category.findIndex(category => category.book_category === "Bachelor of Arts (BA)")!=-1 && i<15) {%>
                <% i=i+1 %>
                 <div class="book-outer" >
                     <div class="book">
@@ -254,7 +254,7 @@
             <div class="books">
             <% var i=0; %>
             <% books.forEach(function(book){ %>
-               <% if(book.book_category=="Competetive Exams" && i<15) {%>
+               <% if(book.category.findIndex(category => category.book_category === "Competetive Exams")!=-1 && i<15) {%>
                 <% i=i+1 %>
                 <div class="book-outer" >
                     <div class="book">
@@ -291,7 +291,7 @@
             <div class="books">
             <% var i=0; %>
             <% books.forEach(function(book){ %>
-               <% if(book.book_category=="Secondary" && i<15) {%>
+               <% if(book.category.findIndex(category => category.book_category === "Secondary")!=-1 && i<15) {%>
                <% i=i+1 %>
                 <div class="book-outer" >
                     <div class="book">
@@ -329,7 +329,7 @@
             <div class="books">
             <% var i=0; %>
             <% books.forEach(function(book){ %>
-               <% if(book.book_category=="Novel or Fiction" && i<15) {%>
+               <% if(book.category.findIndex(category => category.book_category === "Novel or Fiction")!=-1 && i<15) {%>
                <% i=i+1 %>
                 <div class="book-outer" >
                     <div class="book" >
@@ -401,5 +401,4 @@
             <% } %>
         </div>
   <%- include("../partials/footer") -%>      
-
-        
+   

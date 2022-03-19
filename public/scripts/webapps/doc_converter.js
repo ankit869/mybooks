@@ -280,7 +280,6 @@ async function downloadFile(fname){
 	a.download = fname;
 	const clickEvent = new MouseEvent("click");
 	a.dispatchEvent(clickEvent);
-
 }
 
 async function shareFile(fname){
