@@ -40,7 +40,7 @@
     order: 0;
   }
   
-  .selected,.selected-upt::after {
+  .selected::after,.selected-upt::after {
     content: "";
     background: url("/images/arrow-down.svg");
     background-size: contain;
@@ -63,6 +63,10 @@
   }
   
   .select-box .options-container.active + .selected::after {
+    transform: rotateX(180deg);
+    top: -8px;
+  }
+  .select-box .options-container.active + .selected-upt::after {
     transform: rotateX(180deg);
     top: -8px;
   }

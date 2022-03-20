@@ -1,0 +1,31 @@
+2022.03.19, 14:31:36.0465 UTC -> Error: File not found: .
+    at Gaxios._request (C:\Users\ankit\OneDrive\MY CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\gaxios\build\src\gaxios.js:129:23)
+    at processTicksAndRejections (internal/process/task_queues.js:95:5)
+    at async JWT.requestAsync (C:\Users\ankit\OneDrive\MY CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\google-auth-library\build\src\auth\oauth2client.js:345:18)
+    at async C:\Users\ankit\OneDrive\MY CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\server\routes\client_panel.js:876:34
+2022.03.19, 14:31:36.0880 UTC -> NodeMailer ERROR
+2022.03.19, 14:31:37.0948 UTC -> NodeMailer ERROR
+2022.03.20, 18:53:43.0553 UTC -> Error: File not found: .
+    at Gaxios._request (C:\Users\ankit\OneDrive\MY CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\gaxios\build\src\gaxios.js:129:23)
+    at processTicksAndRejections (internal/process/task_queues.js:95:5)
+    at async JWT.requestAsync (C:\Users\ankit\OneDrive\MY CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\google-auth-library\build\src\auth\oauth2client.js:345:18)
+    at async C:\Users\ankit\OneDrive\MY CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\server\routes\client_panel.js:912:30
+2022.03.20, 18:53:44.0121 UTC -> NodeMailer ERROR
+2022.03.20, 18:53:45.0046 UTC -> NodeMailer ERROR
+2022.03.20, 18:54:43.0534 UTC -> Error: Not Found
+    at Gaxios._request (C:\Users\ankit\OneDrive\MY CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\gaxios\build\src\gaxios.js:129:23)
+    at processTicksAndRejections (internal/process/task_queues.js:95:5)
+    at async JWT.requestAsync (C:\Users\ankit\OneDrive\MY CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\google-auth-library\build\src\auth\oauth2client.js:345:18)
+    at async C:\Users\ankit\OneDrive\MY CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\server\routes\client_panel.js:921:13
+2022.03.20, 18:54:44.0354 UTC -> NodeMailer ERROR
+2022.03.20, 18:54:45.0027 UTC -> NodeMailer ERROR
+2022.03.20, 18:55:50.0762 UTC -> WebPushError: Received unexpected response code
+2022.03.20, 19:06:00.0659 UTC -> WebPushError: Received unexpected response code
+2022.03.20, 19:08:07.0702 UTC -> Error: File not found: .
+    at Gaxios._request (C:\Users\ankit\OneDrive\MY CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\gaxios\build\src\gaxios.js:129:23)
+    at processTicksAndRejections (internal/process/task_queues.js:95:5)
+    at async JWT.requestAsync (C:\Users\ankit\OneDrive\MY CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\google-auth-library\build\src\auth\oauth2client.js:345:18)
+    at async C:\Users\ankit\OneDrive\MY CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\server\routes\client_panel.js:912:30
+2022.03.20, 19:08:08.0153 UTC -> NodeMailer ERROR
+2022.03.20, 19:08:08.0930 UTC -> NodeMailer ERROR
+2022.03.20, 19:13:13.0779 UTC -> WebPushError: Received unexpected response code

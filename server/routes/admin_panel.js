@@ -353,6 +353,7 @@ const upload = multer({
 }).fields([{ name: 'image_file', maxCount: 1 }, { name: 'pdf_file', maxCount: 1 }]);
 
 router.post("/admin/upload-edit", upload, async(req, res) => {
+    console.log(req.body)
     redis_setkey(req.ip+'-currloc', '/admin/upload-edit')
     try {
 
@@ -518,17 +519,22 @@ router.post("/admin/upload-edit", upload, async(req, res) => {
 
                         searchTag = req.body.book_name + "-" + req.body.author_name + "-" + req.body.category + "-" + req.body.sub_category + "-" + req.body.tags
                         searchTag = _.trim(_.toLower(searchTag)).replace(/[&\/\\#,+()$~%.^@!_=`'":*?<>{} ]/g, '');
-                        
-                        category = new BOOK_CATEGORY({
-                            book_category:req.body.category,
-                            book_subcategory:req.body.sub_category
+                        let categories=[]
+                        categoriesArr.forEach((ctgry)=>{
+                            searchTag+=ctgry.category+"-"+ctgry.subcategory
+                            categories.push(
+                                new BOOK_CATEGORY({
+                                    book_category:ctgry.category,
+                                    book_subcategory:ctgry.subcategory
+                                })
+                            )
                         })
                         if (req.body.book_id == "newbook") {
                             const book = new BOOK({
                                 book_name: req.body.book_name,
                                 author_name: req.body.author_name,
                                 book_description: req.body.description,
-                                category:category,
+                                category:[categories],
                                 book_cover_drive_link: book_cover_drive_link,
                                 book_cover_drive_id: book_cover_drive_id,
                                 book_cover_cloudinary_public_id: book_cover_cloudinary_public_id,
@@ -542,6 +548,7 @@ router.post("/admin/upload-edit", upload, async(req, res) => {
                                 uploader_id: req.user.id,
 
                             })
+                            console.log(book)
                             book.save(function(err, saved_book) {
                                 if(err){
                                     log(error, path.join(__dirname,'../error.log'))
@@ -579,7 +586,7 @@ router.post("/admin/upload-edit", upload, async(req, res) => {
                                         book_name: req.body.book_name,
                                         author_name: req.body.author_name,
                                         book_description: req.body.description,
-                                        category:category,
+                                        category:[categories],
                                         book_cover_drive_link: book_cover_drive_link,
                                         book_cover_drive_id: book_cover_drive_id,
                                         book_cover_cloudinary_public_id: book_cover_cloudinary_public_id,

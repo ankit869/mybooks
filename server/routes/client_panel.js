@@ -832,8 +832,8 @@ const upload = multer({
     storage: storage,
 }).fields([{ name: 'image_file', maxCount: 1 }, { name: 'pdf_file', maxCount: 1 }]);
 
-router.post("/upload", upload, async(req, res) => {
-    // try {
+router.post("/upload", upload, async(req, res) => { 
+    try {
         book_cover_drive_link = ""
         book_cover_cloudinary_link = ""
         book_cover_cloudinary_public_id = ""
@@ -899,7 +899,6 @@ router.post("/upload", upload, async(req, res) => {
                 });
                 book_cover_drive_link = result.data.webViewLink
             }
-
             var pdf_Metadata = {
                 'name': req.body.book_name,
                 parents: [pdf_folder_Id],
@@ -908,7 +907,6 @@ router.post("/upload", upload, async(req, res) => {
                 mimeType: req.files.pdf_file[0].mimetype,
                 body: fs.createReadStream(req.files.pdf_file[0].path)
             };
-
             const response = await drive.files.create({
                 resource: pdf_Metadata,
                 media: pdf_media,
@@ -938,7 +936,7 @@ router.post("/upload", upload, async(req, res) => {
 
 
             searchTag = req.body.book_name + "-" + req.body.author_name + "-"
-            let categories;
+            let categories=[];
             categoriesArr=JSON.parse(req.body.categories)
             categoriesArr.forEach((ctgry)=>{
                 searchTag+=ctgry.category+"-"+ctgry.subcategory
@@ -988,10 +986,10 @@ router.post("/upload", upload, async(req, res) => {
         } else {
             res.redirect("/login-error")
         }
-    // } catch (err) {
-    //     log(err.stack, path.join(__dirname,'../error.log'))
-    //     sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
-    // }
+    } catch (err) {
+        log(err.stack, path.join(__dirname,'../error.log'))
+        sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
+    }
 })
 
 router.post('/addTofav/:book_id',async (req, res) => {
