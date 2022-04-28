@@ -28,7 +28,7 @@ passport.use(new GoogleStrategy({
     },
     function(accessToken, refreshToken, profile, cb) {
         searchtag = _.trim(_.toLower(profile.displayName)).replace(/[&\/\\#,+()$~%.^@!_=`'":*?<>{} ]/g, '') + "-" + profile.emails[0].value;
-        USER.findOrCreate({ googleId: profile.id, name: profile.displayName, userimage: profile.photos[0].value, username: profile.emails[0].value, email: profile.emails[0].value },
+        USER.findOrCreate({ googleId: profile.id, name: profile.displayName, userimage: profile.photos[0].value, username: profile.emails[0].value, email: profile.emails[0].value, isGoogleUser:true },
             (err, user) => {
                 if (!err) {
                     return cb(err, user);
@@ -39,14 +39,7 @@ passport.use(new GoogleStrategy({
                 }
             }
         )
-
-        USER.findOne({ username: profile.emails[0].value }, (err, user) => {
-            if (err) {
-                log(err.stack, path.join(__dirname,'../error.log'))
-            }else{
-                sendmail('ankitkohli181@gmail.com', 'User logged in (google-mybooks)', 'name -' + profile.displayName + ' , ' + 'email -' + profile.emails[0].value, "")
-            }
-        })
+   
     })
 );
 

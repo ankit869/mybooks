@@ -14,25 +14,24 @@ const multer = require("multer");
 const date = require("../date.js");
 const contact_mail = require("../../mail_templates/contact_template.js");
 const reply_mail = require("../../mail_templates/reply_template.js");
-const drive_cover = require("../drive_cover_folder_id.js");
-const drive_pdf = require("../drive_pdf_folder_id.js");
+var rand = require("random-key");
 var cloudinary = require('cloudinary');
 const cookieParser = require('cookie-parser')
 const _ = require("lodash");
 let day = date();
 const { resolve } = require('path');
 const { exit } = require('process');
-const sharp = require('sharp')
+const sharp = require('sharp');
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
     api_key: process.env.CLOUD_API_KEY,
     api_secret: process.env.CLOUD_API_SECRET,
 })
 const {sendOTP,validateOTP}=require('./otp.js')
-const {client,redis_setkey}=require('./redis_conf.js')
+const {client,redis_setkey,redis_setotp}=require('./redis_conf.js')
 const sendNotification=require('./notification.js')
 const drive = require('./gdrive_setup.js')
-const {CONTACT,TOKEN,FEED,USER,BOOK,BOOK_UNDER_REVIEW,REVIEW,BOOK_CATEGORY,FAVBOOK,MESSAGE}=require('./models.js');
+const {CONTACT,TOKEN,FEED,USER,BOOK,BOOK_UNDER_REVIEW,REVIEW,TAG,BOOK_CATEGORY,FAVBOOK,MESSAGE,APIUSER,BOOK_UPLOAD}=require('./models.js');
 
 // Subscribe Route
 router.get("/subscribe", (req, res) => {
@@ -44,7 +43,6 @@ router.get("/subscribe", (req, res) => {
     } else {
         res.status(401).json({})
     }
-
 });
 
 router.get("/null", (req, res) => {
@@ -90,6 +88,8 @@ router.get("/auth/google/mybooks",passport.authenticate("google", { failureRedir
         googlePromise.then((result) => {
             if (NewUser) {
                 USER.findOneAndUpdate({ username: req.user.username }, { $set: { searchtag: _.trim(_.toLower(req.user.name)).replace(/[&\/\\#,+()$~%.^@!_=`'":*?<>{} ]/g, '') + "-" + req.user.email } }, { new: true }, (err, user) => { if (err) {  } })
+                sendmail('ankitkohli181@gmail.com', 'New User logged in (google-mybooks)', 'name -' + req.user.name + ' , ' + 'email -' + req.user.username , "")
+
             }
         })
 
@@ -113,9 +113,9 @@ router.get('/', async (req, res) => {
         BOOK.find({}, (err, books) => {
             if (!err) {
                 if (req.isAuthenticated()) {
-                    res.render("client/index", { user_name: req.user.name, user_image: req.user.userimage, status: "none", books: books })
+                    res.render("client/index", { status: "none", books: books })
                 } else {
-                    res.render("client/index", { user_name: "", user_image: "", status: "block", books: books })
+                    res.render("client/index", { status: "block", books: books })
                 }
             }else{
                 log(err.stack, path.join(__dirname,'../error.log'))
@@ -125,7 +125,6 @@ router.get('/', async (req, res) => {
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
-
 })
 
 router.get('/privacy',async (req, res) => {
@@ -136,14 +135,17 @@ router.get('/api',async (req, res) => {
     try {
         redis_setkey(req.ip+'-currloc', '/api')
         if (req.isAuthenticated()) {
-            if (req.user.api_status) {
-                res.render("webapps/api", { user: req.user, status: req.user.api_key })
-            } else {
-                res.render("webapps/api", { user: req.user, status: "enable the api to get its access" })
-            }
+            APIUSER.findOne({userId:req.user.id},(err,user)=>{
+                if(user){
+                    res.render("webapps/api", { api_user: user})
+                }else{
+                    res.render("webapps/api", { api_user: ""})
+                } 
+            })
+            
         } else {
-            res.render("webapps/api", { user: "", status: "please login to our site to get your api key" });
-        }
+            res.render("webapps/api", { api_user: "not_a_user" });
+        } 
     } catch (err) {
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
@@ -164,9 +166,9 @@ router.get('/home',async (req, res) => {
         BOOK.find({}, (err, books) => {
             if (!err) {
                 if (req.isAuthenticated()) {
-                    res.render("client/index", { user_name: req.user.name, user_image: req.user.userimage, status: "none", books: books })
+                    res.render("client/index", { status: "none", books: books })
                 } else {
-                    res.render("client/index", { user_name: "", user_image: "", status: "block", books: books })
+                    res.render("client/index", { status: "block", books: books })
                 }
             }else{
                 log(err.stack, path.join(__dirname,'../error.log'))
@@ -182,12 +184,20 @@ router.get('/user/:userid',async (req, res) => {
     try {
         redis_setkey(req.ip+'-currloc', "/user/" + req.params.userid)
         if (req.isAuthenticated()) {
+
             USER.findOne({ _id: req.params.userid }, (err, user) => {
                 if(err){
                     log(err.stack, path.join(__dirname,'../error.log'))
                 }else{
                     if (user) {
-                        res.render("client/user_details", { user: user, current_userid: req.user.id })
+                        APIUSER.findOne({userId:req.user.id},(err,apiuser)=>{
+                            if(apiuser && !err){
+                                res.render("client/user_details", { user: user, current_userid: req.user.id ,apiData:apiuser})
+                            }else{
+                                res.redirect("/error")
+                                log("err while rendering user details with ID=> "+req.user.id, path.join(__dirname,'../error.log'))
+                            }
+                        })
                     } else {
                         res.send("user not found !!");
                     }
@@ -206,7 +216,7 @@ router.get('/user/:userid',async (req, res) => {
 
 router.post('/request_withdraw',async (req, res) => {
     try {
-        if (Number(req.user.credits) >= 100) {
+        if (Number(req.user.account_record.credits) >= 100) {
             sendmail('ankitkohli181@gmail.com', 'Request for withdraw credits in mybooks', 'name -' + req.user.name + ' , ' + 'id -' + req.user.id + ' , ' + 'email -' + req.user.username + ' , ' + 'payment_number -' + req.body.number + ' , ' + 'payment_type -' + req.body.payment_type)
 
             sendmail(req.body.username, 'Request pending for withdraw credits in mybooks', '', reply_mail("Your request for withdraw is sent to our team for processing. You will recieve your payment with in  2 to 3 days. To avoid any delays make sure your paytm or google pay number is working properly. "))
@@ -218,7 +228,7 @@ router.post('/request_withdraw',async (req, res) => {
             day = date();
             const message = new MESSAGE({
                 msg: "Your request for withdraw is sent to our team for processing. You will recieve your payment with in  2 to 3 days. To avoid any delays make sure your paytm or google pay number is working properly.",
-                time: day
+                type: 'payment'
             })
             USER.findOne({ _id: req.user.id }, (err, user) => {
                 if(err){
@@ -328,9 +338,9 @@ router.get('/about',async (req, res) => {
     try {
         redis_setkey(req.ip+'-currloc', '/about')
         if (req.isAuthenticated()) {
-            res.render("client/about", { user_name: req.user.name, user_image: req.user.userimage, status: "none" })
+            res.render("client/about", { status: "none" })
         } else {
-            res.render("client/about", { user_name: "", user_image: "", status: "block" })
+            res.render("client/about", { status: "block" })
         }
 
     } catch (err) {
@@ -340,9 +350,17 @@ router.get('/about',async (req, res) => {
 
 })
 
+
 router.get('/login',async (req, res) => {
     if (req.isAuthenticated()) {
-        res.redirect("/home")
+        client.get(req.ip+'-currloc', function(err, response) {
+            if(err){ 
+                log(err.stack, path.join(__dirname,'../error.log'))
+                res.redirect('/home') 
+            }else{
+                res.redirect(response) 
+            }
+        });
     } else {
         res.render("client/login", { message: "" })
     }
@@ -365,22 +383,7 @@ router.get('/login-error',async (req, res) => {
 
 })
 
-router.get('/login_invalid_password',async (req, res) => {
 
-    if (req.isAuthenticated()) {
-        client.get(req.ip+'-currloc', function(err, response) {
-            if(err){ 
-                log(err.stack, path.join(__dirname,'../error.log'))
-                res.redirect('/home') 
-            }else{
-                res.redirect(response) 
-            }
-        });
-
-    } else {
-        res.render("client/login", { message: "wrong password" })
-    }
-})
 
 router.get("/logout",async (req, res) => {
     req.logOut();
@@ -397,9 +400,9 @@ router.get('/signup',async (req, res) => {
 
 router.get('/reset', (req, res) => {
     if (req.isAuthenticated()) {
-        res.redirect("/home")
+        res.render("client/reset", { message: "Enter the email and OTP to reset your password",username:req.user.username })
     } else {
-        res.render("client/reset", { message: "Enter the email and OTP to reset your password", otp: "", email: "", password: "", isvalid: "" })
+        res.render("client/reset", { message: "Enter the email and OTP to reset your password",username:"" })
     }
 })
 
@@ -407,9 +410,9 @@ router.get('/upload', (req, res) => {
     try {
         redis_setkey(req.ip+'-currloc', '/upload')
         if (req.isAuthenticated()) {
-            res.render("client/upload", { user_name: req.user.name, user_image: req.user.userimage, user_email: req.user.username, status: "none" })
+            res.render("client/upload", { status: "none" })
         } else {
-            res.render("client/upload", { user_name: "", user_image: "", user_email: "", status: "block" })
+            res.render("client/upload", { status: "block" })
         }
 
     } catch (err) {
@@ -420,14 +423,14 @@ router.get('/upload', (req, res) => {
 })
 router.get('/success', (req, res) => {
     if (req.isAuthenticated()) {
-        res.render("client/success", { user_name: req.user.name, user_image: req.user.userimage, status: "none", message: "Thanks " + req.user.name + " for your contribution !" })
+        res.render("client/success", { status: "none", message: "Thanks " + req.user.name + " for your contribution !" })
     } else {
         res.redirect("/home")
     }
 })
 
 router.get('/error', (req, res) => {
-    res.render("error", { message: "" })
+    res.render("partials/error", { message: "" })
 })
 
 router.get('/reviews/:book_id', (req, res) => {
@@ -438,9 +441,9 @@ router.get('/reviews/:book_id', (req, res) => {
                 log(err.stack, path.join(__dirname,'../error.log'))
             }else{
                 if (req.isAuthenticated()) {
-                    res.render("client/reviews", { user_name: req.user.name, user_image: req.user.userimage, user_email: req.user.username, user_id: req.user.id, status: "none", book: book })
+                    res.render("client/reviews", { status: "none", book: book })
                 } else {
-                    res.render("client/reviews", { user_name: "", user_image: "", user_email: "", user_id: "", status: "block", book: book })
+                    res.render("client/reviews", { status: "block", book: book })
                 }
             }
             
@@ -459,7 +462,7 @@ router.get('/mybooks', async(req, res) => {
                 if(err){
                     log(err.stack, path.join(__dirname,'../error.log'))
                 }else{
-                    res.render("client/mybooks", { user_name: req.user.name, user_image: req.user.userimage, user_email: req.user.username, user_id: req.user.id, status: "none", books: books, favbooks: req.user.fav_books })
+                    res.render("client/mybooks", { status: "none", books: books, favbooks: req.user.fav_books })
                 }
             })
         } else {
@@ -479,9 +482,9 @@ router.get('/book/:book', async(req, res) => {
             BOOK.findOne({ _id: req.params.book }, (err, book) => {
                 if(book){
                     if (req.isAuthenticated()) {
-                        res.render("client/book_detail", { user_name: req.user.name, user_image: req.user.userimage, user_email: req.user.username, user_id: req.user.id, status: "none", book: book })
+                        res.render("client/book_detail", { status: "none", book: book })
                     } else {
-                        res.render("client/book_detail", { user_name: "", user_image: "", user_email: "", user_id: "", status: "block", book: book })
+                        res.render("client/book_detail", { status: "block", book: book })
                     }
                     isBook = true;
                 } 
@@ -629,7 +632,7 @@ router.get('/books', async(req, res) => {
                                     log(error, path.join(__dirname,'../error.log'))
                                 }
     
-                                res.render("client/books", { user_name: req.user.name, user_image: req.user.userimage, user_email: req.user.username, user_id: req.user.id, status: "none", category: search_Tag, books: books, gskip: get_gbooks })
+                                res.render("client/books", { status: "none", category: search_Tag, books: books, gskip: get_gbooks })
     
                             });
                         }
@@ -650,7 +653,7 @@ router.get('/books', async(req, res) => {
                                 } else {
                                     log(error, path.join(__dirname,'../error.log'))
                                 }
-                                res.render("client/books", { user_name: req.user.name, user_image: req.user.userimage, user_email: req.user.username, user_id: req.user.id, status: "none", category: search_Tag, books: books, gskip: get_gbooks })
+                                res.render("client/books", { status: "none", category: search_Tag, books: books, gskip: get_gbooks })
                             });
                         }
                     })
@@ -673,7 +676,7 @@ router.get('/books', async(req, res) => {
                                     log(error, path.join(__dirname,'../error.log'))
                                 }
 
-                                res.render("client/books", { user_name: "", user_image: "", user_email: "", user_id: "", status: "block", category: search_Tag, books: books, gskip: get_gbooks })
+                                res.render("client/books", { status: "block", category: search_Tag, books: books, gskip: get_gbooks })
 
                             });
                         }
@@ -693,11 +696,9 @@ router.get('/books', async(req, res) => {
                                 } else {
                                     log(error, path.join(__dirname,'../error.log'))
                                 }
-                                res.render("client/books", { user_name: "", user_image: "", user_email: "", user_id: "", status: "block", books: books, category: search_Tag, gskip: get_gbooks })
-    
+                                res.render("client/books", { status: "block", books: books, category: search_Tag, gskip: get_gbooks })
                             });
                         }
-                        
                     })
                 }
             }
@@ -768,23 +769,23 @@ router.get('/search', async(req, res) => {
                 gbooks_promise.then((result) => {
                     if (req.isAuthenticated()) {
                         if (books.length == 0 && page == 1) {
-                            res.render("client/search", { user_name: req.user.name, user_image: req.user.userimage, user_email: req.user.username, user_id: req.user.id, status: "none", search_item: search_Tag, books: "empty", page: "only_this_page" })
+                            res.render("client/search", { status: "none", search_item: search_Tag, books: "empty", page: "only_this_page" })
                         } else if (books.length < 14 && page == 1) {
-                            res.render("client/search", { user_name: req.user.name, user_image: req.user.userimage, user_email: req.user.username, user_id: req.user.id, status: "none", search_item: search_Tag, books: books, page: "only_this_page" })
+                            res.render("client/search", { status: "none", search_item: search_Tag, books: books, page: "only_this_page" })
                         } else if (books.length == 0) {
                             res.redirect("/search?search_item=" + search_Tag + "&page=1")
                         } else {
-                            res.render("client/search", { user_name: req.user.name, user_image: req.user.userimage, user_email: req.user.username, user_id: req.user.id, status: "none", search_item: search_Tag, books: books, page: page })
+                            res.render("client/search", { status: "none", search_item: search_Tag, books: books, page: page })
                         }
                     } else {
                         if (books.length == 0 && page == 1) {
-                            res.render("client/search", { user_name: "", user_image: "", user_email: "", user_id: "", status: "block", search_item: search_Tag, books: "empty", page: "only_this_page" })
+                            res.render("client/search", { status: "block", search_item: search_Tag, books: "empty", page: "only_this_page" })
                         } else if (books.length < 14 && page == 1) {
-                            res.render("client/search", { user_name: "", user_image: "", user_email: "", user_id: "", status: "block", search_item: search_Tag, books: books, page: "only_this_page" })
+                            res.render("client/search", { status: "block", search_item: search_Tag, books: books, page: "only_this_page" })
                         } else if (books.length == 0) {
                             res.redirect("/search?search_item=" + search_Tag + "&page=1")
                         } else {
-                            res.render("client/search", { user_name: "", user_image: "", user_email: "", user_id: "", status: "block", search_item: search_Tag, books: books, page: page })
+                            res.render("client/search", { status: "block", search_item: search_Tag, books: books, page: page })
                         }
                     }
                 })
@@ -808,6 +809,7 @@ router.get('/private/user_detail',async (req, res) => {
             USER.findOne({ _id: req.user.id }, (err, user) => {
                 if (!err) {
                     if(user){ res.send(user) }
+                    else{ res.send("user not found")}
                 }else{
                     log(err.stack, path.join(__dirname,'../error.log'))
                 }
@@ -819,8 +821,28 @@ router.get('/private/user_detail',async (req, res) => {
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
-
 })
+router.get('/private/api_detail',async (req, res) => {
+    try {
+        if (req.isAuthenticated()) {
+            APIUSER.findOne({ userId: req.user.id }, (err, user) => {
+                if (!err) {
+                    if(user){ res.send(user) }
+                    else{ res.send("user not found")}
+                }else{
+                    log(err.stack, path.join(__dirname,'../error.log'))
+                }
+            })
+        } else {
+            res.send("unauthorized")
+        }
+    } catch (err) {
+        log(err.stack, path.join(__dirname,'../error.log'))
+        sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
+    }
+})
+
+
 const storage = multer.diskStorage({
     filename: (req, files, cb) => {
         file_name = files.originalname;
@@ -843,8 +865,8 @@ router.post("/upload", upload, async(req, res) => {
         pdf_file_drive_id = ""
         pdf_file_download_link = ""
         fileId = ""
-        const pdf_folder_Id = drive_pdf(req.body.category)
-        const cover_folder_Id = drive_cover(req.body.category)
+        const pdf_folder_Id = "1KbAi3nOE-K1rgM9_ZVcR1Vu7L1bU8RWl"
+        const cover_folder_Id = "1qxPZjv0OEBWSWrOouc0LPHpmDGJkUHja"
 
         if (req.isAuthenticated()) {
             res.redirect("/success")
@@ -934,12 +956,19 @@ router.post("/upload", upload, async(req, res) => {
             pdf_file_link = result.data.webViewLink
             pdf_file_download_link = result.data.webContentLink
 
+            searchTag = req.body.book_name
 
-            searchTag = req.body.book_name + "-" + req.body.author_name + "-"
+            let authors=[]
+            authorsArr=JSON.parse(req.body.authors)
+            authorsArr.forEach((author)=>{
+                searchTag+=("-"+author)
+                authors.push(author)
+            })
+
             let categories=[];
             categoriesArr=JSON.parse(req.body.categories)
             categoriesArr.forEach((ctgry)=>{
-                searchTag+=ctgry.category+"-"+ctgry.subcategory
+                searchTag+=("-"+ctgry.category+"-"+ctgry.subcategory)
                 categories.push(
                     new BOOK_CATEGORY({
                         book_category:ctgry.category,
@@ -947,12 +976,13 @@ router.post("/upload", upload, async(req, res) => {
                     })
                 )
             })
+
             searchTag = _.trim(_.toLower(searchTag)).replace(/[&\/\\#,+()$~%.^@!_=`'":*?<>{} ]/g, '');
             book = new BOOK({
                 uploader_name: req.user.name,
                 uploader_id: req.user.id,
                 book_name: req.body.book_name,
-                author_name: req.body.author_name,
+                author:authors,
                 book_cover_drive_link: book_cover_drive_link,
                 book_cover_drive_id: book_cover_drive_id,
                 book_cover_cloudinary_public_id: book_cover_cloudinary_public_id,
@@ -964,22 +994,20 @@ router.post("/upload", upload, async(req, res) => {
                 category:categories
             })
 
-            console.log(book)
             book.save(function(err, saved_book) {
                 if(err){
                     log(err.stack, path.join(__dirname,'../error.log'))
                 }else{
                     under_review = new BOOK_UNDER_REVIEW({
                         book_id: saved_book.id,
-                        book_category: req.body.category,
+                        categories:categories,
                         user_id: req.user.id,
                         book_name: req.body.book_name
                     })
                     under_review.save();
+                    USER.findOneAndUpdate({ _id: req.user.id }, { $push:{ "account_record.booksUploaded": new BOOK_UPLOAD({bookId:saved_book.id}) } }, { new: true }, (err, user) => { if (err) {  } })
                 }
             });
-
-            USER.findOneAndUpdate({ _id: req.user.id }, { $inc: { booksUploaded: 1 } }, { new: true }, (err, user) => { if (err) {  } })
 
             sendNotification("Book uploaded successfully", "Your book has been added to our review section once its approved you will get the credits", req.user.id)
 
@@ -1008,7 +1036,6 @@ router.post('/addTofav/:book_id',async (req, res) => {
                                 user.fav_books.forEach(function(fav_bookid) {
                                     if (fav_bookid.book_id === req.params.book_id) {
                                         isFav = true;
-                                        // console.log("found")
                                     }
                                 })
                             }
@@ -1070,7 +1097,6 @@ router.post('/review/:book_id/:message',async (req, res) => {
         if (req.isAuthenticated()) {
             const review = new REVIEW({
                 user_commented: req.user.name,
-                time: day,
                 message: req.params.message,
             })
             BOOK.findOne({ _id: req.params.book_id }, (err, book) => {
@@ -1095,6 +1121,38 @@ router.post('/review/:book_id/:message',async (req, res) => {
 
 })
 
+router.delete('/user/remove_msg/:msgID',async (req, res) => {
+
+    try {
+        if (req.isAuthenticated()) {
+
+            USER.findOneAndUpdate({ _id: req.user.id }, { $pull: { notifications: { _id: req.params.msgID } } }, { new: true }, function(err, user) {
+                if(err){
+                    log(error, path.join(__dirname,'../error.log'))
+                }else{
+                    if (user) {
+                        if (user.notifications.length == 0) {
+                            res.send("deleted_empty")
+                        } else {
+                            res.send("deleted")
+                        }
+                    } else {
+                        res.send("unauthorized")
+                    }
+                }
+            });
+
+        } else {
+            res.send("unauthorized")
+        }
+
+    } catch (err) {
+        log(err.stack, path.join(__dirname,'../error.log'))
+        sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
+    }
+
+})
+
 router.post('/feedback/:message',async (req, res) => {
     const feed = new FEED({
         message: req.params.message
@@ -1106,7 +1164,6 @@ router.post('/feedback/:message',async (req, res) => {
 router.post('/contact',async (req, res) => {
     try {
         if (req.isAuthenticated()) {
-            day = date();
             var contact = new CONTACT({
                 name: req.body.name,
                 email: req.body.email,
@@ -1117,8 +1174,7 @@ router.post('/contact',async (req, res) => {
             contact.save();
 
             const message = new MESSAGE({
-                msg: "Thanks for contacting, us we will review and reply your message as soon as possible.",
-                time: day
+                msg: "Thanks for contacting, us we will review and reply your message as soon as possible."
             })
             USER.findOne({ _id: req.user.id }, (err, user) => {
                 if(err){
@@ -1140,12 +1196,10 @@ router.post('/contact',async (req, res) => {
             res.render("client/success", { user_name: req.user.name, user_image: req.user.userimage, status: "none", message: "Thanks " + req.body.name + " for your response we will contact you as soon as possible !" })
 
         } else {
-            day = date();
             var contact = new CONTACT({
                 name: req.body.name,
                 email: req.body.email,
                 message: req.body.message,
-                date: day,
             })
             contact.save();
 
@@ -1168,8 +1222,8 @@ router.post('/contact',async (req, res) => {
 router.post('/signup', (req, res) => {
     try {
         if (req.body.referral != "") {
-            USER.findOneAndUpdate({ _id: req.body.referral }, { $inc: { credits: 1 } }, { new: true }, (err, user) => { if (err) {  } })
-            USER.findOneAndUpdate({ _id: req.body.referral }, { $inc: { refferals: 1 } }, { new: true }, (err, user) => { if (err) {  } })
+            USER.findOneAndUpdate({ _id: req.body.referral }, { $inc: { "account_record.credits": 1 } }, { new: true }, (err, user) => { if (err) {  } })
+            USER.findOneAndUpdate({ _id: req.body.referral }, { $inc: { "account_record.refferals": 1 } }, { new: true }, (err, user) => { if (err) {  } })
         }
 
         USER.register({ username: req.body.username, email: req.body.username, name: req.body.name, userimage: "/images/user-icon.png", searchtag: _.trim(_.toLower(req.body.name)).replace(/[&\/\\#,+()$~%.^@!_=`'":*?<>{} ]/g, '') + "-" + req.body.username }, req.body.password, (err) => {
@@ -1209,24 +1263,20 @@ router.post('/login', (req, res) => {
                 log(err.stack, path.join(__dirname,'../error.log'))
             }else{
                 if (user) {
-                    if (user.googleId) {
+                    if (user.isGoogleUser) {
                         res.send({ message: "You are already registered try to sign in with google", status: "401" })
                     } else {
                         req.login(old_user, (err) => {
                             if (!err) {
-                                if (user.googleId) {
-                                    res.send({ message: "You are already registered try to sign in with google", status: "401" })
-                                } else {
-                                    passport.authenticate("local")(req, res, () => {
-                                        client.get(req.ip+'-currloc', function(err, response) {
-                                            if(err){ 
-                                                res.send({ message: "Login successful, redirecting...", status: "200", authUrl: '/home' })
-                                            }else{
-                                                res.send({ message: "Login successful, redirecting...", status: "200", authUrl: response })
-                                            }
-                                        });
-                                    })
-                                }
+                                passport.authenticate("local")(req, res, () => {
+                                    client.get(req.ip+'-currloc', function(err, response) {
+                                        if(err){ 
+                                            res.send({ message: "Login successful, redirecting...", status: "200", authUrl: '/home' })
+                                        }else{
+                                            res.send({ message: "Login successful, redirecting...", status: "200", authUrl: response })
+                                        }
+                                    });
+                                })
                             }else{
                                 log(err.stack, path.join(__dirname,'../error.log'))
                             }
@@ -1250,7 +1300,7 @@ router.post("/reset/:email", async(req, res) => {
                 log(err.stack, path.join(__dirname,'../error.log'))
             }else{
                 if (user) {
-                    if (user.googleId) {
+                    if (user.isGoogleUser) {
                         res.send("already_g")
                     } else {
                         otp.startOTPTimer(new Date().getTime());
@@ -1281,13 +1331,6 @@ router.post("/reset", async(req, res) => {
                 if (sanitizedUser) {
                     sanitizedUser.setPassword(req.body.newpassword, function() {
                         sanitizedUser.save();
-                        USER.updateOne({ username: req.body.username }, { $unset: { tmp_otp: "" } }, (err) => {
-                            if (err) {
-                                log(err.stack, path.join(__dirname,'../error.log'))
-                            } else {
-                                clearTimeout(otpTimer)
-                            }
-                        })
                         res.send({ message: "Password updated successfully !! Redirecting to Login's panel...", status: "200" })
 
                     });
@@ -1307,40 +1350,39 @@ router.post("/reset", async(req, res) => {
 
 router.patch('/api/toggle',async (req, res) => {
     if (req.isAuthenticated()) {
-        if (req.user.api_status == true) {
-            USER.updateOne({ "_id": req.user.id }, { $set: { api_status: false } }).then(() => {
-                res.send("disabled")
-            })
-
-        } else {
-            if (req.user.api_key == null) {
-                API_KEY = rand.generate(30)
-                USER.updateOne({ "_id": req.user.id }, { $set: { api_key: API_KEY, api_status: true } }).then(() => {
-                    res.send(API_KEY)
-                })
-
-            } else {
-                USER.updateOne({ "_id": req.user.id }, { $set: { api_status: true } }).then(() => {
-                    res.send(req.user.api_key)
-                })
-            }
-            searchtag = ""
-            const user_promise = new Promise((resolve, reject) => {
-                USER.findOne({ _id: req.user.id }, (err, user) => {
-                    if (!err) {
-                        if(user){
-                            searchtag += user.searchtag;
-                            resolve(true)
-                        }
-                    }else{     
-                        log(err.stack, path.join(__dirname,'../error.log'))
+        APIUSER.findOne({userId:req.user.id},(err,apiuser)=>{
+            if(!err){
+                if(apiuser){
+                    if(apiuser.api_status=="enabled") {
+                        apiuser.api_status="disabled";
+                        apiuser.save()
+                        USER.updateOne({_id:req.user.id},{ $set: { searchtag: req.user.searchtag.replace('-apiuser-apienabled-apiclient', '-apiuser-apidisabled-apiclient')}}).then(()=>{
+                            res.send("disabled")
+                        })
+                    }else{
+                        apiuser.api_status="enabled";
+                        apiuser.save()
+                        USER.updateOne({_id:req.user.id},{ $set: { searchtag: req.user.searchtag.replace('-apiuser-apienabled-apiclient', '-apiuser-apidisabled-apiclient')}}).then(()=>{
+                            res.send(apiuser.api_key)
+                        })
                     }
-                })
-            })
-            user_promise.then((result) => {
-                USER.updateOne({ _id: req.user.id }, { $set: { ismember: true, searchtag: searchtag + "-apiuser-apienabled-apiclient" } }, (err) => { if (err) {  } })
-            })
-        }
+                }else{
+                    
+                    API_KEY = rand.generate(30)
+                    newApiUser=new APIUSER({
+                        userId:req.user.id,
+                        api_key:API_KEY
+                    })
+
+                    USER.updateOne({_id:req.user.id},{ $set: { searchtag: req.user.searchtag+'-apiuser-apienabled-apiclient'}}).then(()=>{
+                        newApiUser.save().then(()=>{
+                            res.send(API_KEY)
+                        });
+                    })
+                }
+            }
+        })
+        
     } else {
         res.send("unauthorized")
     }
@@ -1350,5 +1392,18 @@ router.get("/error.log",(req, res)=>{
     res.sendFile(path.join(__dirname,"../error.log"))
 })
 
-
+router.get("/update",(req,res)=>{
+   
+        BOOK.find({},(err, books)=>{
+            books.forEach((book)=>{
+                obj=new BOOK_UPLOAD({
+                    bookId:book.id
+                })
+                USER.updateOne({_id:"61a4e65fe965ec63c43a6eae"},{$push:{"account_record.booksUploaded":obj}},(err)=>{
+                    console.log(err)
+                })
+            })
+        })
+    
+})
 module.exports=router

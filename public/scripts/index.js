@@ -276,6 +276,8 @@ function sendotp_admin(){
                         $("#admin_key").prop('disabled',true)
                         $("#login-send").prop('disabled',true)
                     }
+                }else{
+                    $("#login-msg").text("Sorry we are having some mailing issues try again in sometime !!")
                 }
             }
         });
@@ -292,12 +294,18 @@ function sendotp_tome(){
         method: 'POST',
         contentType: 'application/json',
         success: function(response) {
-            $("#login-msg").text("OTP is successfully sent to Owner's mail")
-            $("#otp-btn").text("Resend OTP")
-            $("#reset_opt").prop('disabled',false)
-            $("#admin_unicode").prop('disabled',false)
-            $("#admin_key").prop('disabled',false)
-            $("#signup-send").prop('disabled',false)
+            console.log(response)
+            if(response){
+                $("#login-msg").text("OTP is successfully sent to Owner's mail")
+                $("#otp-btn").text("Resend OTP")
+                $("#reset_opt").prop('disabled',false)
+                $("#admin_unicode").prop('disabled',false)
+                $("#admin_key").prop('disabled',false)
+                $("#signup-send").prop('disabled',false)
+            }else{
+                $("#login-msg").text("Sorry we are having some mailing issues try again in sometime !!")
+            }
+            
         }
     });
     
@@ -409,10 +417,6 @@ window.addEventListener('load', () => {
                     $("."+favBook.book_id+"-fav").css("border-color","rgb(204,0, 85)")
                     $("."+favBook.book_id+"-fav i").addClass('fa-check-circle').removeClass('fa-heart');
                 })
-                if(response.api_status==true){
-                    $('.apikey .switch #toggle-2').prop("checked", true);
-                    $('#api-section .apikey span').css('display','inline-block')
-                }
                 function notifyMe(){
                     Notification.requestPermission().then(function(result) {
                         if(result=="granted"){
@@ -424,6 +428,19 @@ window.addEventListener('load', () => {
                     });
                 }
                 notifyMe();
+            }
+        }
+    });
+    $.ajax({
+        url:'/private/api_detail',
+        method: 'GET',
+        success: function(response) {
+            if(response.api_status=="enabled"){
+                $('.apikey .switch #toggle-2').prop("checked", true);
+                $('#api-section .apikey span').css('display','inline-block')
+            }else{
+                $('.apikey .switch #toggle-2').prop("checked", false);
+                $('#api-section .apikey span').text("enable the api to get its access")
             }
         }
     });
@@ -641,7 +658,7 @@ function submitwr(){
                 myFunction();
                 $("#f-btn").click();
             }else{
-                alert("Cannot proceed request due to low credits. Minimum 300 credits are required to request withdraw.")
+                alert("Cannot proceed request due to low credits. Minimum 100 credits are required to request withdraw.")
                 $("#f-btn").click();
             }
 
@@ -661,7 +678,7 @@ function submitusr(userID){
                 if(response!="unauthorized"){
                     myFunction();
                     showcredit(userID)
-                    $("."+userID+" .stats .credits").html(`<img src="/images/coin.png" alt="">${response.credits} credits`)
+                    $("."+userID+" .stats .credits").html(`<img src="/images/coin.png" alt="">${response.account_record.credits} credits`)
                 }else{
                     alert("Unauthorized access !!")
                 }
@@ -1006,4 +1023,18 @@ function send_reply(id){
 if((location.href).indexOf('/admin')>0){
     $(".home_link_for_admins").text("Home")
     $(".home_link_for_admins").attr("href","/home")
+}
+
+$("#upld-form").on("keypress",function(e){
+    if(e.key==="Enter"){
+        e.preventDefault();
+    }
+});
+
+function tagSelections(){
+    if($("#tgtype option").filter(':selected').text()=="custom"){
+        $(".customTag").css("display","block");
+    }else{
+        $(".customTag").css("display","none");
+    }
 }

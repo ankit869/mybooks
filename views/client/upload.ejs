@@ -127,7 +127,17 @@
                 <p id="upload-msg"></p>
                 <form id="upld-form" action="/upload" method="post" enctype="multipart/form-data" >
                    <input class="upload-input" name="book_name" maxlength='100' type="text" placeholder="Enter the book name" required>
-                   <input class="upload-input" type="text" name="author_name" value="" placeholder="Name of the author (optional)">
+                   <div class="auth_div">
+                       <span>Authors</span>
+                       <div class="author_div"></div>
+                   </div>
+                   <div class="authorInput">
+                     <input class="upload-input authorname" type="text" name="author_name" value="" placeholder="Name of the author (optional)">
+                     <button type="button" onclick="addauthor()"><i class="fas fa-solid fa-plus"></i></button>
+                   </div>
+                   <input type="text" name="authors" hidden >
+                   <input class="upload-input" name="publisher" maxlength='100' type="text" placeholder="Enter the publisher (optional)" >
+                   <input type="text" name="authors" hidden>
                    <input type="text" name="categories" hidden required>
                    <div class="drag-area">
                        <div id="hide_IMG">
@@ -142,11 +152,15 @@
                            <button type="button" onclick="cancleImg()" id="cancle-image" ><i class="fas fa-times"></i></button>
                        </div>
                    </div>
-                   <div  class="catgry_div">
-                      
+                   <div class="cat_div">
+                    <span>Book categories</span>
+                    <div  class="catgry_div">
+                    </div>
                    </div>
+                   
                    <script>
                         function ct_refresher() {
+                            $(".cat_div span").css("display","block")
                             ctHtml=`<%- include("../book-genres/categories_upt") -%>
                             <%- include("../book-genres/sub-category_upt/ba") -%>
                             <%- include("../book-genres/sub-category_upt/bsc") -%>

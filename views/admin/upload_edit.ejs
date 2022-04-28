@@ -91,9 +91,106 @@
                     <form id="upld-form" action="/admin/upload-edit" method="post" enctype="multipart/form-data">
                 <% } %>
                    <input class="upload-input" value="<%=book.book_name%>" maxlength='100' name="book_name" type="text" placeholder="Enter the book name" required>
-                   <input class="upload-input" value="<%=book.author_name%>" maxlength='150' type="text" name="author_name" placeholder="Name of the author (optional)">
-                   <input class="upload-input" value="<%=book.tags%>" type="text" maxlength='150' name="tags" placeholder="Enter tags (optional)">
-                   <input type="text" name="categories" hidden required>
+                   <div class="auth_div">
+                    <span>Authors</span>
+                    <div class="author_div"></div>
+                   </div>
+                   <div class="authorInput">
+                    <input class="upload-input authorname" type="text" name="author_name" value="" placeholder="Name of the author (optional)">
+                    <button type="button" onclick="addauthor()"><i class="fas fa-solid fa-plus"></i></button>
+                   </div>
+                   <input type="text" name="authors" hidden >
+                   <input class="upload-input" name="publisher" maxlength='100' type="text" placeholder="Enter the publisher (optional)" >
+                    <div class="tg_div">
+                        <span>Tags</span>
+                        <div class="tag_div"></div>
+                   </div>
+                    <style>
+                        .tagsinput{
+                            background-color:#151618;
+                            color:#8b25d5;
+                            margin:8px;
+                            padding:5px;
+                            border-radius:10px;
+                            text-align: left;
+                            display:flex;
+                            flex-direction:column;
+                        }
+                        .tagsinput div{
+                            display:flex;  
+                            font-size:20px;
+                        }
+                        .tagsinput button:hover{
+                            transform: scale(1.1);
+                        }
+                        .tagsinput button{
+                            background:none ;
+                            border:none;
+                            color:#6083e4;
+                            margin:5px;
+                            margin-top:20px;
+                            padding:5px;
+                            border-color:#6083e4;
+                        }
+                        .tagsinput select{
+                            background-color:#1c1e22 ;
+                            border-radius: 5px;
+                            color:#6083e4;
+                            border-color:#8b25d5;
+                            padding:5px;
+                        }
+                        .tagsinput div .tgtype,.tagsinput div .tgpriority{
+                            display:flex;
+                            flex-direction: column;
+                            margin:5px;
+                            padding:5px;  
+                        }
+                    </style>
+                    <div class="tagsinput">
+                        <div>
+                            <div class="tgtype">
+                                <label for="tgtype">Select tag type</label>
+                                <select id="tgtype" onchange="tagSelection(this)">
+                                <option value="featuredBook">featuredBook</option>
+                                <option value="topBook">topBook</option>
+                                <option value="mostCommented">mostCommented</option>
+                                <option value="mostLiked">mostLiked</option>
+                                <option value="recentUpload" >recentUpload</option>
+                                <option value="mostPurchased" >mostPurchased</option>
+                                <option value="mostFamous">mostFamous</option>
+                                <option value="restrictedContent">restrictedContent</option>
+                                <option value="speciallyForChildrens">speciallyForChildrens</option>
+                                <option value="speciallyForStudents">speciallyForStudents</option>
+                                <option value="outDated">outDated</option>
+                                <option value="custom">custom</option>
+                                </select>
+                            </div>
+                            <div class="tgpriority">
+                                <label for="tgpriority">Select tag priority</label>
+                                <select id="tgpriority">
+                                <option value="1" selected>1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                </select>
+                            </div>  
+
+                            <button type="button" onclick="addtag()"><i class="fas fa-solid fa-plus"></i> Add</button>
+                        </div>
+                        <input class="upload-input customTag" type="text" name="custom_tag" value="" placeholder="Enter the custom tag" style="display:none">
+                        <input class="upload-input tagDesc" type="text" name="tag_desc" value="" placeholder="Enter tag description (optional)">
+                    </div>
+                    
+                
+                   <input type="text" name="authors" hidden >
+                   <input type="text" name="tags" hidden >
+                   <input type="text" name="categories" hidden required >
                    <% if(isupt=="Update") {%> 
                         <input value="<%=book.id%>" name="book_id" type="text" hidden>
                         <input id="isUpldImg" value="1" type="text" name="isUpldImg" hidden>
@@ -114,14 +211,16 @@
                        <% if(isupt=="Update") {%> 
                            <img id="book-file-img" src='<%=book.book_cover_cloudinary_link%>'>
                        <% } else{%>
-                           <img id="book-file-img"'>
+                           <img id="book-file-img"'> 
                        <% } %>
                            <button type="button" onclick="cancleImg()" id="cancle-image" ><i class="fas fa-times"></i></button>
                        </div>
                    </div>
                    <textarea rows="5" cols="10" class="upload-input" type="text" maxlength='500' name="description" placeholder="Write description of book (optional)"><%=book.book_description%></textarea>
+                   <div class="cat_div">
+                    <span>Book categories</span>
                     <div  class="catgry_div">
-                      
+                    </div>
                    </div>
                    <script>
                         function ct_refresher() {
@@ -230,6 +329,7 @@
         }
     </script>
     <script src="/scripts/partials/select-upt.js" charset="utf-8"></script>
+    <div id="snackbar"></div>
     <footer>
         <div>
             <% if(status=="block"){ %>

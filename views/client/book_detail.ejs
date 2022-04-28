@@ -140,10 +140,31 @@
               <div class="book_detail">
                   <h3>&nbsp;<%=book.book_name%><span> • uploaded by <%=book.uploader_name%></span></h3>
                   <hr>
-                  <% if(book.author_name!=null && book.author_name!=""){ %>
-                     <p><span>Author / Publisher - </span><%=book.author_name%></p>
+                  <% if(book.author.length>0){ %>
+                    <p><span>Authors - </span>
+                        <% book.author.forEach((author,i)=>{ %>
+                            <% if(i==0) { %> 
+                                <%=author%> 
+                            <% } else { %>
+                               , <%=author%>
+                            <% } %>
+                        <% }) %>
+                    </p>
                   <% } %>
-                  <p><span>Category - </span><%=book.book_subcategory%></p>
+                  <% if(book.publisher!=null){ %>
+                    <p><span>Publisher - </span>
+                        <%=book.publisher%>
+                    </p>
+                  <% } %>
+                  <p><span>Category - </span>
+                    <% book.category.forEach((ctgry,i)=>{ %>
+                            <% if(i==0) { %> 
+                                <%=ctgry.book_subcategory%>
+                            <% } else { %>
+                            , <%=ctgry.book_subcategory%>
+                            <% } %>
+                    <% }) %>
+                  </p>
                   <% if(book.book_description!=null && book.book_description!=""){ %>
                     <p><span>Description - </span><%=book.book_description%></p>
                   <% } %>

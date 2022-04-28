@@ -14,14 +14,21 @@
         
         </div>
         <div class="apikey">
-            
-                <code class="api_key_status"><%=status%><span><i onclick="copy_apikey('<%=status%>')" class="fas fa-link"></i></span></code>
+                <% if(api_user!="not_a_user") {%>
+                    <% if(api_user.api_status=="enabled"){ %>
+                        <code class="api_key_status"><%=api_user.api_key%><span><i onclick="copy_apikey('<%=api_user.api_key%>')" class="fas fa-link"></i></span></code>            
+                    <% } else { %>
+                        <code class="api_key_status">enable the api to get its access</code>
+                    <% } %>
+                <% } else {%>
+                    <code class="api_key_status">please login to our site to get your api key</code>
+                <% } %>
                 <div id="wrapper" align="center">		
-                <div class="switch">
-                    <input id="toggle-2" class="toggle toggle-round-flat" type="checkbox" onchange="toggle_api()"/>
-                    <label for="toggle-2" style="font-weight:bold"></label>
-                </div>             
-            </div>
+                    <div class="switch">
+                        <input id="toggle-2" class="toggle toggle-round-flat" type="checkbox" onchange="toggle_api()"/>
+                        <label for="toggle-2" style="font-weight:bold"></label>
+                    </div> 
+                </div>
         </div>
     
     </section>

@@ -3,7 +3,8 @@ var subcategory="";
 var objId="";
 var isSelected=false;
 var categories=[]
-
+var authors=[]
+var tags=[]
 
 function initialize_selection(){
   const selectedAll = document.querySelectorAll(".selected-upt");
@@ -120,7 +121,7 @@ function addcategory(){
       }
     }
     if(!isFound){
-      objId=Date.now();
+      objId=category+Date.now();
       let category_html;
       if(category===subcategory){
         category_html=`<div class="catgry_view" onclick="showSubcat(this)">
@@ -145,6 +146,7 @@ function addcategory(){
         categories.push(ctgryObj);
         $("input[name='categories']").val(JSON.stringify(categories));
         $(".catgry_div").append(category_html)
+        $(".cat_div").css("display","block")
         category="";
         subcategory="";
         category_html="";
@@ -167,6 +169,9 @@ function addcategory(){
   }
 }
 function removecategory(id) {
+  if(categories.length==1){
+    $(".cat_div").css("display","none")
+  }
   for(i=0;i<categories.length;i++){
     if(categories[i].id==id){
       categories.splice(i,1)
@@ -182,3 +187,150 @@ function showSubcat(item){
 
 initialize_selection();
 
+function addauthor(){
+  authname={
+    id:$(".authorInput .authorname").val()+Date.now(),
+    name:$(".authorInput .authorname").val()
+  }
+  isFound=false;
+  if(authname.name!==""){ 
+    for(i=0;i<authors.length;i++){
+      if(authors[i].name==authname.name){
+        isFound=true;
+      }
+    }
+    if(!isFound){
+      if(authors.length>8){
+        $("#snackbar").text(`Maximum 8 authors can be seleted at a time !!`)
+        myFunction();
+      }else{
+        
+        authors.push(authname)
+        console.log(authors)
+        $(".auth_div").css("display","block")
+        author_html=`<div class="author_view">
+            <i onclick="this.parentElement.remove();rem_author('${authname.id}')" class="fa fa-times rem_author" aria-hidden="true"></i>
+            <p class="auth_name">&nbsp;${authname.name}</p>
+          </div>`
+        
+        $(".author_div").append(author_html)
+        $("input[name='authors']").val(JSON.stringify(authors));
+        $(".authorInput .authorname").val('')
+      }
+    }else{
+      $("#snackbar").text(`This author has already been added !!`)
+      myFunction();
+    }
+  }else{
+    $("#snackbar").text(`Please enter the author name !!`)
+    myFunction();
+  }
+}
+
+var authinput = $(".authorInput");
+
+// Execute a function when the user releases a key on the keyboard
+authinput.on("keyup", function(event) {
+  // Number 13 is the "Enter" key on the keyboard
+  if (event.keyCode === 13) {
+    // Cancel the default action, if needed
+    event.preventDefault();
+    // Trigger the button element with a click
+    addauthor()
+  }
+});
+
+function rem_author(id){
+  if(authors.length==1){
+    $(".auth_div").css("display","none")
+  }
+  
+  for(i=0;i<authors.length;i++){
+    if(authors[i].id==id){
+      authors.splice(i,1)
+      $("input[name='authors']").val(JSON.stringify(authors));
+    }
+  }
+}
+
+
+function addtag(){
+  tag={
+    id:$("#tgtype").children("option:selected").val()+Date.now(),
+    tagType:$("#tgtype").children("option:selected").val(),
+    customTag:$(".tagsinput .customTag").val(),
+    tagDesc:$(".tagsinput .tagdesc").val(),
+    priority:$("#tgpriority").children("option:selected").val(),
+  }
+  isFound=false;
+  for(i=0;i<tags.length;i++){
+    if(tags[i].tagType==tag.tagType && tags[i].customTag==tag.customTag){
+      isFound=true;
+    }
+  }
+
+  if(!isFound){
+    if(tags.length>8){
+      $("#snackbar").text(`Maximum 8 tags can be seleted at a time !!`)
+      myFunction();
+    }else{
+    
+      if(tag.tagType=="custom"){ 
+        if(tag.customTag==""){
+          $("#snackbar").text(`Please enter the custom tag !!`)
+          myFunction();
+          return;
+        }
+      }
+
+      tags.push(tag)
+
+      $(".tg_div").css("display","block")
+      tag_html=`<div class="tag_view">
+          <i onclick="this.parentElement.remove();rem_tag('${tag.id}')" class="fa fa-times rem_tag" aria-hidden="true"></i>`
+
+          if(tag.tagType=="custom"){
+            tag_html+=`<p class="tag">&nbsp;${tag.customTag} <span>( Priority : ${tag.priority} )</span></p>`
+          }else{
+            tag_html+=`<p class="tag">&nbsp;${tag.tagType} <span>( Priority : ${tag.priority} )</span></p>`
+          }
+        tag_html+=`</div>`
+      
+      $(".tag_div").append(tag_html)
+      $("input[name='tags']").val(JSON.stringify(tags));
+      $(".tagsinput .customTag").val('')
+      $(".tagsinput .tagDesc").val('')
+    }
+  }else{
+    $("#snackbar").text(`This tag has already been added !!`)
+    myFunction();
+  }
+}
+
+var taginput = $(".taginput");
+
+// Execute a function when the user releases a key on the keyboard
+taginput.on("keyup", function(event) {
+  // Number 13 is the "Enter" key on the keyboard
+  if (event.keyCode === 13) {
+    // Cancel the default action, if needed
+    event.preventDefault();
+    // Trigger the button element with a click
+    addtag()
+  }
+});
+
+function rem_tag(id){
+  if(tags.length==1){
+    $(".tg_div").css("display","none")
+  }
+  console.log(tags)
+  
+  for(i=0;i<tags.length;i++){
+    if(tags[i].id==id){
+      tags.splice(i,1)
+      console.log(tags)
+      $("input[name='tags']").val(JSON.stringify(tags));
+    }
+  }
+}

@@ -36,6 +36,10 @@ async function redis_setkey(key,value){
     client.set(key,value);
     client.expire(key,60*10);
 }
+async function redis_setotp(key,value){
+    client.set(key,value);
+    client.expire(key,60*10);
+}
 
-module.exports ={client,redis_setkey}
+module.exports ={client,redis_setkey,redis_setotp}
 

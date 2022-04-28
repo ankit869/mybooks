@@ -53,19 +53,12 @@
                 <hr>
                 <p id="login-msg"><%=message%></p>
                 <form id="log-form" class="reset-form" action="/reset" method="post">
-                   <input name="username" type="email" id="reset_emailInput" placeholder="Enter your email" value="<%=email%>" required>
-                   <% if(isvalid=="no"){ %>
-                        <button type="button" onclick="sendotp()" id="otp-btn">Resend OTP</button>
-                        <input name="otp" id="reset_opt" type="Number" placeholder="Enter your OTP" value="<%=otp%>" required>
-                        <input name="newpassword" id="reset_password" type="text" placeholder="Enter your new password" value="<%=password%>" required>
-                        <button class="font-design-b" id="reset-send">Reset</button>
-                    <% } else { %>
-                        <button type="button" onclick="sendotp()" id="otp-btn">Send OTP</button>
-                        <input name="otp" id="reset_opt" type="Number" placeholder="Enter your OTP" value="<%=otp%>" required disabled>
-                        <input name="newpassword" id="reset_password" type="text" placeholder="Enter your new password" value="<%=password%>" required disabled>
-                        <button class="font-design-b" id="reset-send" disabled>Reset</button>
-                    <% } %>
-                   
+                  <input name="username" type="email" id="reset_emailInput" placeholder="Enter your email" value="<%=username%>" required>
+                  <button type="button" onclick="sendotp()" id="otp-btn">Send OTP</button>
+                  <input name="otp" id="reset_opt" type="Number" placeholder="Enter your OTP" value="" required disabled>
+                  <input name="newpassword" id="reset_password" type="text" placeholder="Enter your new password" value="" required disabled>
+                  <button class="font-design-b" id="reset-send" disabled>Reset</button>
+                    
                 </form>
             </div>
             <div id="log-img2">

@@ -120,7 +120,10 @@
                    <% if(book.reviews!=""){ %>
                       <% book.reviews.forEach(function(review){ %>
                         <div class="comment-post">
-                         <p><%=review.message%><span>-by <%=review.user_commented%> •  <%=review.time%></span></p>
+                            <% const options = { month: 'long',day: 'numeric', year:'numeric' };
+                                const date=review.createdAt.toLocaleDateString("en-US", options); 
+                            %>
+                         <p><%=review.message%><span>-by <%=review.user_commented%> •  <%=date%></span></p>
                         </div>
                         <script>
                         

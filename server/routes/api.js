@@ -10,18 +10,18 @@ const sendmail = require('./mail.js')
 const log = require('log-to-file');
 const path = require("path")
 async function api_requests(key) {
-    USER.updateOne({ api_key: key }, { $inc: { api_requests: 1 } }, { new: true }, (err) => { if (err) {  } })
+    APIUSER.updateOne({ "api_key": key }, { $inc: { "api_requests": 1 } }, { new: true }, (err) => { if (err) {  } })
 }
 
 router.get('/api/:key/:parameter', (req, res) => {
 
     search_item = _.trim(_.toLower(req.params.parameter)).replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
-    USER.findOne({ api_key: req.params.key }, (err, user) => {
+    APIUSER.findOne({ "api_key": req.params.key }, (err, user) => {
         if(err){
             log(err, path.join(__dirname,'../error.log'))
         }else{
             if (user) {
-                if (user.api_status) {
+                if (user.api_status=="enabled") {
                     BOOK.find({ searchTag: { $regex: search_item, $options: '$i' } }).exec((err, books) => {
                         if(err){
                             log(err, path.join(__dirname,'../error.log'))
@@ -29,11 +29,18 @@ router.get('/api/:key/:parameter', (req, res) => {
                             api_requests(req.params.key)
                             BOOKS = []
                             books.forEach((book) => {
+                                categories=[]
+                                book.category.forEach((ctgry) => {
+                                    categories.push({
+                                        category:ctgry.book_category,
+                                        subcategory:ctgry.book_subcategory
+                                    })
+                                })
                                 book = {
                                     title: book.book_name,
-                                    author: book.author_name,
-                                    category: book.book_category,
-                                    sub_category: book.book_subcategory,
+                                    authors: book.author,
+                                    description: book.book_description,
+                                    categories: categories,
                                     thumbnail: book.book_cover_cloudinary_link,
                                     file_link: book.book_file_download_link
                                 }
@@ -55,12 +62,12 @@ router.get('/api/getbooks', (req, res) => {
     key = req.header('api-key')
     parameter = req.header('parameter')
     search_item = _.trim(_.lowerCase(_.toLower(parameter))).replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
-    USER.findOne({ api_key: key }, (err, user) => {
+    APIUSER.findOne({ "api_key": req.params.key }, (err, user) => {
         if(err){
             log(err, path.join(__dirname,'../error.log'))
         }else{
             if (user) {
-                if (user.api_status) {
+                if (user.api_status=="enabled") {
                     BOOK.find({ searchTag: { $regex: search_item, $options: '$i' } }).exec((err, books) => {
                         if(err){
                             log(err, path.join(__dirname,'../error.log'))
@@ -68,11 +75,18 @@ router.get('/api/getbooks', (req, res) => {
                             api_requests(key)
                             BOOKS = []
                             books.forEach((book) => {
+                                categories=[]
+                                book.category.forEach((ctgry) => {
+                                    categories.push({
+                                        category:ctgry.book_category,
+                                        subcategory:ctgry.book_subcategory
+                                    })
+                                })
                                 book = {
                                     title: book.book_name,
-                                    author: book.author_name,
-                                    category: book.book_category,
-                                    sub_category: book.book_subcategory,
+                                    authors: book.author,
+                                    description: book.book_description,
+                                    categories: categories,
                                     thumbnail: book.book_cover_cloudinary_link,
                                     file_link: book.book_file_download_link
                                 }

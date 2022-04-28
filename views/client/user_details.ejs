@@ -8,10 +8,10 @@
     <a onclick="history.back()" style="position:relative;left:30px;top:15px;" id="arrow" ><i style="color:#6083e4;" class="fas fa-long-arrow-alt-left fa-4x"></i></a>
     <div id="user_details" style="position:relative">
         <a href="/logout" style="position:absolute;right:10px;top:-40px;text-decoration:none;color:#6083e4;font-size:22px;"><i class="fas fa-sign-out-alt"></i> logout</a>
-        <% if(user.api_status){ %>
+        <% if(apiData.api_status=="enabled"){ %>
             <div class="user_api_status" align="center">
                 <code>Books API is enabled</code>
-                <code><%= user.api_requests %> requests</code>
+                <code><%= apiData.api_requests %> requests</code>
             </div>
             <style>
                 .details { margin-top: 18px; }
@@ -28,17 +28,17 @@
         <hr>
         <div class="stats">
             <div style="display: inline-block"> 
-                <p><img src="/images/coin.png" alt=""><%=user.credits%> credits</p> 
+                <p><img src="/images/coin.png" alt=""><%=user.account_record.credits%> credits</p> 
             </div>
             <div style="display: inline-block"> 
-                <p><img src="/images/upload.png" alt=""><%=user.booksUploaded%> books</p>
+                <p><img src="/images/upload.png" alt=""><%=user.account_record.booksUploaded.length%> books</p>
             </div>
             <div style="display: inline-block"> 
-                <p><img src="/images/referrals.png" alt=""><%=user.refferals%> referrals</p>
+                <p><img src="/images/referrals.png" alt=""><%=user.account_record.refferals%> referrals</p>
             </div>
-            <% if(user.unicode!=null) { %>
+            <% if(user.membershipType=="admin" && user.ismember) { %>
             <div style="display: inline-block"> 
-                <p><img src="/images/reply.png" alt=""><%=user.q_resolved%> query</p>
+                <p><img src="/images/reply.png" alt=""><%=user.account_record.q_resolved%> query</p>
             </div>
             <% } %>
         </div>
@@ -92,7 +92,10 @@
             <% user.notifications.forEach((message)=>{ %>
                 <div class="notification <%=message.id%>">
                   <i onclick="removemsg('<%=message.id%>')" class="fa fa-times " aria-hidden="true"></i>
-                  <p><%=message.msg%> <span> • <%=message.time%></span></p>
+                  <% const options = { month: 'long',day: 'numeric', year:'numeric' };
+                     const date=message.createdAt.toLocaleDateString("en-US", options); 
+                   %>
+                  <p><%=message.msg%> <span> • <%=date%></span></p>
                 </div>
             <% }) %>
         <% } %>
