@@ -7,6 +7,7 @@ selectedAll.forEach((selected) => {
   const optionsList = optionsContainer.querySelectorAll(".option");
 
   selected.addEventListener("click", () => {
+    // console.log("im clicked")
     if (optionsContainer.classList.contains("active")) {
       optionsContainer.classList.remove("active");
     } else {
@@ -30,13 +31,13 @@ selectedAll.forEach((selected) => {
   optionsList.forEach(function(o){
     o.addEventListener("click", function(){
       selected.innerHTML = o.querySelector("label").innerHTML;
+      
       this.firstElementChild.checked="on"
       optionsContainer.classList.remove("active");
       var term=selected.innerHTML
       var selectedTerm = selected.innerHTML.toLowerCase();
       selectedTerm = selectedTerm.replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
       var book_type_id=String("#"+selectedTerm);
-
 
       if(book_type_id=="#bachelorofcommercebcom" || book_type_id=="#others" || book_type_id=="#novelorfiction" || book_type_id=="#bachelorsofbusinessadministrationbba" ||    book_type_id=="#bachelorsofcomputerapplicationbca" || book_type_id=="#bachelorofeducationbed"){
 

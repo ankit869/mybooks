@@ -50,19 +50,32 @@ const reviewSchema = new mongoose.Schema({
     message: String
 })
 
+<<<<<<< HEAD
 const categorySchema = new mongoose.Schema({
     book_category: String,
     book_subcategory: String,
 })
 
 
+=======
+const categorySchema=new mongoose.Schema({
+    book_category:String,
+    book_subcategory:String
+})
+>>>>>>> ce065de483734954165f26ddab74e8ff2a23eae2
 const bookSchema = new mongoose.Schema({
     uploader_name: String,
     uploader_id: String,
     book_name: String,
     author_name: String,
     book_description: String,
+<<<<<<< HEAD
     category: [categorySchema],
+=======
+    book_category: String,
+    book_subcategory: String,
+    category:[categorySchema],
+>>>>>>> ce065de483734954165f26ddab74e8ff2a23eae2
     book_cover_drive_link: String,
     book_cover_drive_id: String,
     book_cover_cloudinary_public_id: String,
@@ -92,7 +105,13 @@ const deletedBookSchema = new mongoose.Schema({
     book_name: String,
     author_name: String,
     book_description: String,
+<<<<<<< HEAD
     category: [categorySchema],
+=======
+    book_category: String,
+    book_subcategory: String,
+    category:[categorySchema],
+>>>>>>> ce065de483734954165f26ddab74e8ff2a23eae2
     book_cover_drive_link: String,
     book_cover_drive_id: String,
     book_cover_cloudinary_public_id: String,
@@ -132,8 +151,6 @@ const feedbackSchema = {
     message: String
 };
 const FEED = mongoose.model("feedback", feedbackSchema);
-
-
 const USER = new mongoose.model('user', userSchema)
 const ADMINUSER = new mongoose.model('admin user', adminSchema)
 const BOOK = new mongoose.model('book', bookSchema)
@@ -144,4 +161,8 @@ const REVIEW = new mongoose.model('review', reviewSchema)
 const FAVBOOK = new mongoose.model('favbook', favbooksSchema)
 const MESSAGE = new mongoose.model('notification', notificationSchema)
 
+<<<<<<< HEAD
 module.exports={CONTACT,TOKEN,RESOLVED_CONTACT,FEED,USER,ADMINUSER,BOOK_CATEGORY,BOOK,BOOK_UNDER_REVIEW,DELETED_BOOK,REVIEW,FAVBOOK,MESSAGE}
+=======
+module.exports={CONTACT,TOKEN,RESOLVED_CONTACT,FEED,USER,ADMINUSER,BOOK,BOOK_CATEGORY,BOOK_UNDER_REVIEW,DELETED_BOOK,REVIEW,FAVBOOK,MESSAGE}
+>>>>>>> ce065de483734954165f26ddab74e8ff2a23eae2

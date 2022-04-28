@@ -939,8 +939,9 @@ function request(){
         method: 'GET',
         contentType: 'application/json',
         success: function(response) {
-            console.log(response);
+            console.log("response :"+response);
             if(response=="Email sent"){
+                $('#snackbar').text('Request sent successfully to our team')
                 myFunction()
             }
             else{

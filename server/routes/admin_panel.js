@@ -31,7 +31,7 @@ const {sendOTP,validateOTP}=require('./otp.js')
 const {client,redis_setkey}=require('./redis_conf.js')
 const sendNotification=require('./notification.js')
 const indexUrl_overGoogle=require('./google_indexing.js')
-const {CONTACT,USER,BOOK,BOOK_UNDER_REVIEW,RESOLVED_CONTACT,DELETED_BOOK,REVIEW,FAVBOOK,MESSAGE,ADMINUSER}=require('./models.js');
+const {CONTACT,USER,BOOK,BOOK_UNDER_REVIEW,RESOLVED_CONTACT,DELETED_BOOK,BOOK_CATEGORY,REVIEW,FAVBOOK,MESSAGE,ADMINUSER}=require('./models.js');
 const drive = require('./gdrive_setup.js')
 
 router.get('/admin-success', (req, res) => {
@@ -518,13 +518,17 @@ router.post("/admin/upload-edit", upload, async(req, res) => {
 
                         searchTag = req.body.book_name + "-" + req.body.author_name + "-" + req.body.category + "-" + req.body.sub_category + "-" + req.body.tags
                         searchTag = _.trim(_.toLower(searchTag)).replace(/[&\/\\#,+()$~%.^@!_=`'":*?<>{} ]/g, '');
+                        
+                        category = new BOOK_CATEGORY({
+                            book_category:req.body.category,
+                            book_subcategory:req.body.sub_category
+                        })
                         if (req.body.book_id == "newbook") {
                             const book = new BOOK({
                                 book_name: req.body.book_name,
                                 author_name: req.body.author_name,
                                 book_description: req.body.description,
-                                book_category: req.body.category,
-                                book_subcategory: req.body.sub_category,
+                                category:category,
                                 book_cover_drive_link: book_cover_drive_link,
                                 book_cover_drive_id: book_cover_drive_id,
                                 book_cover_cloudinary_public_id: book_cover_cloudinary_public_id,
@@ -575,8 +579,7 @@ router.post("/admin/upload-edit", upload, async(req, res) => {
                                         book_name: req.body.book_name,
                                         author_name: req.body.author_name,
                                         book_description: req.body.description,
-                                        book_category: req.body.category,
-                                        book_subcategory: req.body.sub_category,
+                                        category:category,
                                         book_cover_drive_link: book_cover_drive_link,
                                         book_cover_drive_id: book_cover_drive_id,
                                         book_cover_cloudinary_public_id: book_cover_cloudinary_public_id,
@@ -1998,6 +2001,7 @@ router.post('/admin-login', (req, res) => {
 })
 router.get('/request_access', (req, res) => {
     sendmail('ankitkohli181@gmail.com', 'Requesting admin access', 'username -' + req.user.username, "")
+    res.send("Email sent")
 })
 
 

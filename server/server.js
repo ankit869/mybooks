@@ -90,7 +90,6 @@ app.get('/run_cmd',async (req,res)=>{
     }else{
         res.send("unauthorized Access to the server !! ERROR 401")
     }
-    
 })
 
 app.post("/services/deploy",siteupld.any(),(req,res)=>{
@@ -112,7 +111,9 @@ app.listen(port, (err) => {
 // -----------multi-threaded-mode-------------
 // const totalCPUs = require("os").cpus().length;
 
+// const totalCPUs = 3;
 
+<<<<<<< HEAD
 // const totalCPUs = 3;
 
 // if (cluster.isMaster) {
@@ -125,6 +126,18 @@ app.listen(port, (err) => {
 //     cluster.fork();
 //   }
 
+=======
+// if (cluster.isMaster) {
+//   console.log(`Server is running in cluster-mode at http://localhost:${port}/`);
+//   console.log(`Number of CPUs is ${totalCPUs}`);
+//   console.log(`Master ${process.pid} is running`);
+
+//   // Fork workers.
+//   for (let i = 0; i < totalCPUs; i++) {
+//     cluster.fork();
+//   }
+
+>>>>>>> ce065de483734954165f26ddab74e8ff2a23eae2
 //   cluster.on("exit", (worker, code, signal) => {
 //     console.log(`worker ${worker.process.pid} died`);
 //     console.log("Let's fork another worker!");

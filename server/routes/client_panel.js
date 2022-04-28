@@ -46,6 +46,7 @@ router.get("/subscribe", (req, res) => {
     }
 
 });
+
 router.get("/null", (req, res) => {
     res.redirect("/home")
 });
@@ -175,6 +176,7 @@ router.get('/home',async (req, res) => {
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
+<<<<<<< HEAD
 })
 router.get('/tempupdate',async (req, res) => {
     
@@ -196,6 +198,8 @@ router.get('/tempupdate',async (req, res) => {
                 // console.log(book.book_name+" updated")
             })
         // })
+=======
+>>>>>>> ce065de483734954165f26ddab74e8ff2a23eae2
 })
 
 router.get('/user/:userid',async (req, res) => {
@@ -257,9 +261,7 @@ router.post('/request_withdraw',async (req, res) => {
     } catch (err) {
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
-
     }
-
 })
 
 router.get('/sitemap.xml', (req, res) => {
@@ -398,11 +400,10 @@ router.get('/login_invalid_password',async (req, res) => {
                 res.redirect(response) 
             }
         });
+
     } else {
         res.render("client/login", { message: "wrong password" })
-
     }
-
 })
 
 router.get("/logout",async (req, res) => {
@@ -468,19 +469,17 @@ router.get('/reviews/:book_id', (req, res) => {
             }
             
         })
-
     } catch (err) {
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
-
 })
 
 router.get('/mybooks', async(req, res) => {
     try {
         redis_setkey(req.ip+'-currloc', "/mybooks")
         if (req.isAuthenticated()) {
-            BOOK.find({}, (err, books) => {
+            BOOK.find({},(err, books) => {
                 if(err){
                     log(err.stack, path.join(__dirname,'../error.log'))
                 }else{
@@ -494,8 +493,6 @@ router.get('/mybooks', async(req, res) => {
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
-
-
 })
 
 router.get('/book/:book', async(req, res) => {
@@ -608,7 +605,7 @@ router.get('/get_more_books', async(req, res) => {
             })
         }
 
-    } catch (err) {
+    }catch (err) {
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
@@ -617,11 +614,10 @@ router.get('/get_more_books', async(req, res) => {
 
 router.get('/books', async(req, res) => {
     try {
-
         get_gbooks = 0;
         search_item = req.query.searchtag
         search_Tag = req.query.searchtag
-
+        
         redis_setkey(req.ip+'-currloc', "/books?searchtag=" + search_Tag)
 
         search_item = _.trim(_.toLower(search_item)).replace(/[&\/\\#,+()$~%.`'":*?<>{} ]/g, '');
@@ -679,7 +675,6 @@ router.get('/books', async(req, res) => {
                                     log(error, path.join(__dirname,'../error.log'))
                                 }
                                 res.render("client/books", { user_name: req.user.name, user_image: req.user.userimage, user_email: req.user.username, user_id: req.user.id, status: "none", category: search_Tag, books: books, gskip: get_gbooks })
-    
                             });
                         }
                     })
@@ -862,7 +857,7 @@ const upload = multer({
 }).fields([{ name: 'image_file', maxCount: 1 }, { name: 'pdf_file', maxCount: 1 }]);
 
 router.post("/upload", upload, async(req, res) => {
-    try {
+    // try {
         book_cover_drive_link = ""
         book_cover_cloudinary_link = ""
         book_cover_cloudinary_public_id = ""
@@ -927,7 +922,6 @@ router.post("/upload", upload, async(req, res) => {
                     fields: 'webViewLink, webContentLink',
                 });
                 book_cover_drive_link = result.data.webViewLink
-
             }
 
             var pdf_Metadata = {
@@ -967,16 +961,24 @@ router.post("/upload", upload, async(req, res) => {
             pdf_file_download_link = result.data.webContentLink
 
 
-            searchTag = req.body.book_name + "-" + req.body.author_name + "-" + req.body.category + "-" + req.body.sub_category
+            searchTag = req.body.book_name + "-" + req.body.author_name + "-"
+            let categories;
+            categoriesArr=JSON.parse(req.body.categories)
+            categoriesArr.forEach((ctgry)=>{
+                searchTag+=ctgry.category+"-"+ctgry.subcategory
+                categories.push(
+                    new BOOK_CATEGORY({
+                        book_category:ctgry.category,
+                        book_subcategory:ctgry.subcategory
+                    })
+                )
+            })
             searchTag = _.trim(_.toLower(searchTag)).replace(/[&\/\\#,+()$~%.^@!_=`'":*?<>{} ]/g, '');
-
             book = new BOOK({
                 uploader_name: req.user.name,
                 uploader_id: req.user.id,
                 book_name: req.body.book_name,
                 author_name: req.body.author_name,
-                book_category: req.body.category,
-                book_subcategory: req.body.sub_category,
                 book_cover_drive_link: book_cover_drive_link,
                 book_cover_drive_id: book_cover_drive_id,
                 book_cover_cloudinary_public_id: book_cover_cloudinary_public_id,
@@ -984,7 +986,8 @@ router.post("/upload", upload, async(req, res) => {
                 book_file_link: pdf_file_link,
                 book_file_drive_id: pdf_file_drive_id,
                 book_file_download_link: pdf_file_download_link,
-                searchTag: searchTag
+                searchTag: searchTag,
+                category:categories
             })
 
             console.log(book)
@@ -1009,10 +1012,10 @@ router.post("/upload", upload, async(req, res) => {
         } else {
             res.redirect("/login-error")
         }
-    } catch (err) {
-        log(err.stack, path.join(__dirname,'../error.log'))
-        sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
-    }
+    // } catch (err) {
+    //     log(err.stack, path.join(__dirname,'../error.log'))
+    //     sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
+    // }
 })
 
 router.post('/addTofav/:book_id',async (req, res) => {
