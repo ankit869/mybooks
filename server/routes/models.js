@@ -143,10 +143,19 @@ const reviewSchema = new mongoose.Schema({
     message: { type: String,required: true }
 })
 
+<<<<<<< HEAD
+const categorySchema = new mongoose.Schema({
+    book_category: String,
+    book_subcategory: String,
+})
+
+
+=======
 const categorySchema=new mongoose.Schema({
     book_category: { type: String,required: true },
     book_subcategory: { type: String,required: true }
 })
+<<<<<<< HEAD
 
 const tagSchema=new mongoose.Schema({
     tagName: { type: String,required: true },
@@ -167,6 +176,9 @@ function tagLimit(val) {
     return val.length <= 20;
 }
 
+=======
+>>>>>>> ce065de483734954165f26ddab74e8ff2a23eae2
+>>>>>>> 5f18a2e88d24e8ba29bd0679e5680c96427a2f32
 const bookSchema = new mongoose.Schema({
 
     uploader_name: { type: String,required: true },
@@ -175,6 +187,7 @@ const bookSchema = new mongoose.Schema({
     publisher:String,
     author:[String],
     book_description: String,
+<<<<<<< HEAD
     category:[categorySchema],
     book_cover_drive_link: { type: String,required: true},
     book_cover_drive_id: { type: String,required: true},
@@ -186,6 +199,25 @@ const bookSchema = new mongoose.Schema({
     book_tags: { type: [tagSchema],validate: [tagLimit, 'book tags exceeds the limit of 20']},
     searchTag: { type: String,required: true},
     createdAt: { type: Date, default: Date.now, required: true },
+=======
+<<<<<<< HEAD
+    category: [categorySchema],
+=======
+    book_category: String,
+    book_subcategory: String,
+    category:[categorySchema],
+>>>>>>> ce065de483734954165f26ddab74e8ff2a23eae2
+    book_cover_drive_link: String,
+    book_cover_drive_id: String,
+    book_cover_cloudinary_public_id: String,
+    book_cover_cloudinary_link: String,
+    book_file_link: String,
+    book_file_download_link: String,
+    book_file_drive_id: String,
+    tags: String,
+    searchTag: String,
+    createdAt: { type: Date, default: Date.now },
+>>>>>>> 5f18a2e88d24e8ba29bd0679e5680c96427a2f32
     updatedAt: { type: Date },
     deletedAt: { type: Date },
     updatedId: { type: mongoose.Schema.Types.ObjectId, ref: 'user'},
@@ -193,9 +225,44 @@ const bookSchema = new mongoose.Schema({
 })
 
 const book_under_review_schema = new mongoose.Schema({
+<<<<<<< HEAD
     book_id: { type: mongoose.Schema.Types.ObjectId, ref: 'book', required: true},
     isUpdate: {type: Boolean,required:true},
     createdAt: { type: Date, default: Date.now, required: true }
+=======
+    book_id: String,
+    book_name: String,
+    user_id: String,
+    category: [categorySchema],
+    isUpdate: Boolean
+})
+
+const deletedBookSchema = new mongoose.Schema({
+    uploader_name: String,
+    uploader_id: String,
+    book_name: String,
+    author_name: String,
+    book_description: String,
+<<<<<<< HEAD
+    category: [categorySchema],
+=======
+    book_category: String,
+    book_subcategory: String,
+    category:[categorySchema],
+>>>>>>> ce065de483734954165f26ddab74e8ff2a23eae2
+    book_cover_drive_link: String,
+    book_cover_drive_id: String,
+    book_cover_cloudinary_public_id: String,
+    book_cover_cloudinary_link: String,
+    book_file_link: String,
+    book_file_download_link: String,
+    book_file_drive_id: String,
+    tags: String,
+    searchTag: String,
+    deletedAt: { type: Date, default: Date.now },
+    admin_userID: String,
+    reviews: [reviewSchema]
+>>>>>>> 5f18a2e88d24e8ba29bd0679e5680c96427a2f32
 })
 
 const deletedBookSchema = bookSchema
@@ -247,8 +314,16 @@ const REVIEW = new mongoose.model('review', reviewSchema)
 const FAVBOOK = new mongoose.model('favbook', favbooksSchema)
 const MESSAGE = new mongoose.model('notification', notificationSchema)
 
+<<<<<<< HEAD
 module.exports={
     CONTACT,TOKEN,RESOLVED_CONTACT,FEED,USER,ADMINUSER,BOOK,TAG,
     BOOK_CATEGORY,BOOK_UNDER_REVIEW,DELETED_BOOK,REVIEW,FAVBOOK,
     MESSAGE,APIUSER,DOCUSER,BOOK_UPLOAD
 }
+=======
+<<<<<<< HEAD
+module.exports={CONTACT,TOKEN,RESOLVED_CONTACT,FEED,USER,ADMINUSER,BOOK_CATEGORY,BOOK,BOOK_UNDER_REVIEW,DELETED_BOOK,REVIEW,FAVBOOK,MESSAGE}
+=======
+module.exports={CONTACT,TOKEN,RESOLVED_CONTACT,FEED,USER,ADMINUSER,BOOK,BOOK_CATEGORY,BOOK_UNDER_REVIEW,DELETED_BOOK,REVIEW,FAVBOOK,MESSAGE}
+>>>>>>> ce065de483734954165f26ddab74e8ff2a23eae2
+>>>>>>> 5f18a2e88d24e8ba29bd0679e5680c96427a2f32

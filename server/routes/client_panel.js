@@ -178,6 +178,30 @@ router.get('/home',async (req, res) => {
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
+<<<<<<< HEAD
+})
+router.get('/tempupdate',async (req, res) => {
+    
+        BOOK.findOne({_id:"613b3997f9c806001648faf7"}, (err, book) => {
+            // books.forEach(function(book){
+            //     // console.log(book)
+
+                // console.log(book.book_subcategory)
+                // console.log(book.book_category)
+                console.log(book.book_category)
+                // const category={
+                //     book_category:book.book_category,
+                //     book_subcategory:book.book_subcategory
+                // }
+                // console.log(category)
+                // book.category.push(category)
+
+                // book.save();
+                // console.log(book.book_name+" updated")
+            })
+        // })
+=======
+>>>>>>> ce065de483734954165f26ddab74e8ff2a23eae2
 })
 
 router.get('/user/:userid',async (req, res) => {
