@@ -28,7 +28,7 @@ passport.use(new GoogleStrategy({
     },
     function(accessToken, refreshToken, profile, cb) {
         searchtag = _.trim(_.toLower(profile.displayName)).replace(/[&\/\\#,+()$~%.^@!_=`'":*?<>{} ]/g, '') + "-" + profile.emails[0].value;
-        USER.findOrCreate({ googleId: profile.id, name: profile.displayName, userimage: profile.photos[0].value, username: profile.emails[0].value, email: profile.emails[0].value, isGoogleUser:true },
+        USER.findOrCreate({ googleId: profile.id, name: profile.displayName, userimage: profile.photos[0].value, username: profile.emails[0].value, isGoogleUser:true },
             (err, user) => {
                 if (!err) {
                     return cb(err, user);
@@ -39,7 +39,6 @@ passport.use(new GoogleStrategy({
                 }
             }
         )
-   
     })
 );
 

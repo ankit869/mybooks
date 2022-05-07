@@ -4,7 +4,7 @@
 <title>Online DocScanner | myBooks</title>
 </head>
 
-<body onload='checkAuth("<%=status%>")'>
+<body >
 <style>
     
 </style>
@@ -29,7 +29,7 @@
     
 </div>
 
-<div id="pdfCreator" >
+<div id="pdfCreator">
     <br>
     <div class="take_a_shot" align="center">
         <a onclick="close_camera()" style="position:absolute;left:30px;top:8px;transform:scale(0.9)" ><i style="color:#6083e4;" class="fas fa-long-arrow-alt-left fa-4x"></i></a>
@@ -54,7 +54,7 @@
         </div>
         
     </div>
-    <section id="scanner_section">
+    <section id="scanner_section" >
         <div class="top_scanr_heading">
             <h1>Convert images to PDF files</h1>
             <h5>Easily convert your image files to PDF with Online DocScanner for free</h5>
@@ -273,7 +273,7 @@
             <p>No files selected</p>
         </div>
     </section>
-    <div style="display:none;text-align:center;flex-direction:column;align-items:center;justify-content:center" id="pdf_progress" style="display:none;">
+    <div style="display:none;text-align:center;flex-direction:column;align-items:center;justify-content:center;color:white;" id="pdf_progress" style="display:none;">
         <br>
         <p id="progress-percent" style="display:none;margin-left:8px;margin-right:8px;">0%</p>
         <div class="progress" style="display:none;margin-left:8px;margin-right:8px;">

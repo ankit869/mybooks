@@ -47,7 +47,6 @@ const userSchema = new mongoose.Schema({
     },
     username: { type: String,required: true,index:{unique:true}},
     isPremiumUser: { type: Boolean,required: true,default:false },
-    email: { type: String,required: true,index:{unique:true}},
     fav_books: [favbooksSchema],
     notifications: [notificationSchema],
     ismember:{type:Boolean,required:true,default:false},
@@ -149,18 +148,21 @@ const categorySchema=new mongoose.Schema({
 })
 
 const tagSchema=new mongoose.Schema({
-    tagName: { type: String,required: true },
+    customTag: { type: String,required: function(){
+        return this.tagType=="custom"
+    } },
     tagType: {
         type:String,
-        enum: ['featuredBook','topBook','mostCommented','mostLiked','recentUpload','mostPurchased','mostFamous','normalTag'],
-        default:'normalTag',
+        enum: ['featuredBook','topBook','mostCommented','mostLiked','recentUpload','mostPurchased','mostFamous','speciallyForChildrens','speciallyForStudents','outDated','custom'],
+        default:'featuredBook',
         required: true,
     },
     priority:{
         type:Number,
         max: 10,
         default:1
-    }
+    },
+    description: { type: String}
 })
 
 function tagLimit(val) {
@@ -198,7 +200,27 @@ const book_under_review_schema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now, required: true }
 })
 
-const deletedBookSchema = bookSchema
+const deletedBookSchema = new mongoose.Schema({
+    uploader_id: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true},
+    book_name: { type: String,required: true },
+    publisher:String,
+    author:[String],
+    book_description: String,
+    category:[categorySchema],
+    book_cover_drive_link: { type: String,required: true},
+    book_cover_drive_id: { type: String,required: true},
+    book_cover_cloudinary_public_id: { type: String,required: true},
+    book_cover_cloudinary_link: { type: String,required: true},
+    book_file_link: { type: String,required: true},
+    book_file_download_link: { type: String,required: true},
+    book_file_drive_id: { type: String,required: true},
+    book_tags: { type: [tagSchema],validate: [tagLimit, 'book tags exceeds the limit of 20']},
+    searchTag: { type: String,required: true},
+    createdAt: { type: Date, default: Date.now, required: true },
+    deletedAt: { type: Date },
+    adminId: { type: mongoose.Schema.Types.ObjectId, ref: 'admin_user'},
+    reviews: [reviewSchema]
+})
 
 const contactSchema = {
     name: { type: String,required: true},

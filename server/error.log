@@ -1,32 +1,82 @@
-2022.04.21, 05:10:49.0802 UTC -> NodeMailer ERROR
-2022.04.21, 05:10:50.0256 UTC -> NodeMailer ERROR
-2022.04.21, 05:11:34.0204 UTC -> NodeMailer ERROR
-2022.04.21, 05:11:34.0878 UTC -> NodeMailer ERROR
-2022.04.21, 05:18:26.0092 UTC -> NodeMailer ERROR
-2022.04.21, 05:18:26.0739 UTC -> NodeMailer ERROR
-2022.04.21, 05:37:31.0046 UTC -> NodeMailer ERROR
-2022.04.21, 05:37:31.0683 UTC -> NodeMailer ERROR
-2022.04.21, 05:37:56.0431 UTC -> NodeMailer ERROR
-2022.04.21, 05:37:57.0092 UTC -> NodeMailer ERROR
-2022.04.21, 08:28:29.0213 UTC -> err while rendering user details with ID=> 61a4e65fe965ec63c43a6eae
-2022.04.21, 08:28:36.0152 UTC -> err while rendering user details with ID=> 61a4e65fe965ec63c43a6eae
-2022.04.21, 08:33:32.0512 UTC -> err while rendering user details with ID=> 61a4e65fe965ec63c43a6eae
-2022.04.21, 13:13:21.0524 UTC -> NodeMailer ERROR
-2022.04.21, 13:13:22.0221 UTC -> NodeMailer ERROR
-2022.04.21, 13:14:05.0416 UTC -> NodeMailer ERROR
-2022.04.21, 13:14:06.0137 UTC -> NodeMailer ERROR
-2022.04.21, 13:14:42.0062 UTC -> NodeMailer ERROR
-2022.04.21, 13:14:42.0696 UTC -> NodeMailer ERROR
-2022.04.21, 13:23:53.0395 UTC -> NodeMailer ERROR
-2022.04.21, 13:23:54.0053 UTC -> NodeMailer ERROR
-2022.04.21, 13:24:41.0310 UTC -> NodeMailer ERROR
-2022.04.21, 13:24:41.0979 UTC -> NodeMailer ERROR
-2022.04.21, 14:56:33.0942 UTC -> NodeMailer ERROR
-2022.04.21, 14:56:34.0632 UTC -> NodeMailer ERROR
-2022.04.28, 13:52:38.0224 UTC -> Error: Bad Request. User message: ""
-    at Gaxios._request (C:\Users\Dell\MY-CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\gaxios\build\src\gaxios.js:129:23)
+2022.05.07, 08:48:04.0980 UTC -> SyntaxError: Unexpected token o in JSON at position 1
+    at JSON.parse (<anonymous>)
+    at C:\Users\Dell\MY-CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\server\routes\admin_panel.js:413:33
     at processTicksAndRejections (node:internal/process/task_queues:96:5)
-    at async JWT.requestAsync (C:\Users\Dell\MY-CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\google-auth-library\build\src\auth\oauth2client.js:345:18)
-    at async C:\Users\Dell\MY-CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\server\routes\client_panel.js:907:17
-2022.04.28, 13:52:38.0718 UTC -> NodeMailer ERROR
-2022.04.28, 13:52:40.0165 UTC -> NodeMailer ERROR
+2022.05.07, 08:48:05.0411 UTC -> NodeMailer ERROR
+2022.05.07, 08:48:06.0045 UTC -> NodeMailer ERROR
+2022.05.07, 08:51:44.0763 UTC -> SyntaxError: Unexpected token o in JSON at position 1
+    at JSON.parse (<anonymous>)
+    at C:\Users\Dell\MY-CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\server\routes\admin_panel.js:418:36
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+2022.05.07, 08:51:45.0353 UTC -> NodeMailer ERROR
+2022.05.07, 08:51:45.0876 UTC -> NodeMailer ERROR
+2022.05.07, 09:06:58.0860 UTC -> WebPushError: Received unexpected response code
+2022.05.07, 09:06:58.0891 UTC -> NodeMailer ERROR
+2022.05.07, 09:07:00.0452 UTC -> NodeMailer ERROR
+2022.05.07, 12:33:50.0436 UTC -> NodeMailer ERROR
+2022.05.07, 12:33:51.0072 UTC -> NodeMailer ERROR
+2022.05.07, 12:39:22.0945 UTC -> NodeMailer ERROR
+2022.05.07, 12:39:23.0137 UTC -> WebPushError: Received unexpected response code
+2022.05.07, 12:39:23.0634 UTC -> NodeMailer ERROR
+2022.05.07, 12:42:45.0801 UTC -> MongooseError: Operation `users.findOne()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (C:\Users\Dell\MY-CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:198:23)
+    at listOnTimeout (node:internal/timers:559:17)
+    at processTimers (node:internal/timers:502:7)
+2022.05.07, 12:44:20.0995 UTC -> NodeMailer ERROR
+2022.05.07, 12:44:21.0428 UTC -> WebPushError: Received unexpected response code
+2022.05.07, 12:44:21.0686 UTC -> NodeMailer ERROR
+2022.05.07, 12:44:35.0649 UTC -> NodeMailer ERROR
+2022.05.07, 12:44:35.0769 UTC -> WebPushError: Received unexpected response code
+2022.05.07, 12:44:36.0341 UTC -> NodeMailer ERROR
+2022.05.07, 12:44:54.0298 UTC -> NodeMailer ERROR
+2022.05.07, 12:44:54.0741 UTC -> WebPushError: Received unexpected response code
+2022.05.07, 12:44:55.0209 UTC -> NodeMailer ERROR
+2022.05.07, 13:19:34.0356 UTC -> SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>)
+    at C:\Users\Dell\MY-CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\server\routes\admin_panel.js:412:33
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+2022.05.07, 13:19:34.0872 UTC -> NodeMailer ERROR
+2022.05.07, 13:19:35.0571 UTC -> NodeMailer ERROR
+2022.05.07, 13:21:10.0361 UTC -> SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>)
+    at C:\Users\Dell\MY-CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\server\routes\admin_panel.js:412:33
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+2022.05.07, 13:21:10.0821 UTC -> NodeMailer ERROR
+2022.05.07, 13:21:12.0136 UTC -> NodeMailer ERROR
+2022.05.07, 13:22:46.0439 UTC -> SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>)
+    at C:\Users\Dell\MY-CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\server\routes\admin_panel.js:412:33
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+2022.05.07, 13:22:46.0902 UTC -> NodeMailer ERROR
+2022.05.07, 13:22:47.0602 UTC -> NodeMailer ERROR
+2022.05.07, 13:24:25.0666 UTC -> SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>)
+    at C:\Users\Dell\MY-CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\server\routes\admin_panel.js:412:33
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+2022.05.07, 13:24:26.0230 UTC -> NodeMailer ERROR
+2022.05.07, 13:24:26.0760 UTC -> NodeMailer ERROR
+2022.05.07, 13:38:57.0134 UTC -> MongooseServerSelectionError: Could not connect to any servers in your MongoDB Atlas cluster. One common reason is that you're trying to access the database from an IP that isn't whitelisted. Make sure your current IP address is on your Atlas cluster's IP whitelist: https://docs.atlas.mongodb.com/security-whitelist/
+    at Function.Model.$wrapCallback (C:\Users\Dell\MY-CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\mongoose\lib\model.js:5087:32)
+    at C:\Users\Dell\MY-CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\mongoose\lib\query.js:4510:21
+    at promiseOrCallback (C:\Users\Dell\MY-CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\mongoose\lib\helpers\promiseOrCallback.js:10:12)
+    at model.Query.exec (C:\Users\Dell\MY-CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\mongoose\lib\query.js:4509:10)
+    at model.Query.Query.findOne (C:\Users\Dell\MY-CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\mongoose\lib\query.js:2329:8)
+    at Function.findOne (C:\Users\Dell\MY-CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\mongoose\lib\model.js:2267:13)
+    at Function.findById (C:\Users\Dell\MY-CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\mongoose\lib\model.js:2207:15)
+    at C:\Users\Dell\MY-CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\server\routes\passport.js:15:10
+    at pass (C:\Users\Dell\MY-CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\passport\lib\authenticator.js:357:9)
+    at Authenticator.deserializeUser (C:\Users\Dell\MY-CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\passport\lib\authenticator.js:362:5)
+    at SessionStrategy.authenticate (C:\Users\Dell\MY-CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\passport\lib\strategies\session.js:60:10)
+    at attempt (C:\Users\Dell\MY-CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\passport\lib\middleware\authenticate.js:366:16)
+    at authenticate (C:\Users\Dell\MY-CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\passport\lib\middleware\authenticate.js:367:7)
+    at Layer.handle [as handle_request] (C:\Users\Dell\MY-CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\Dell\MY-CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\express\lib\router\index.js:323:13)
+    at C:\Users\Dell\MY-CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\express\lib\router\index.js:284:7
+2022.05.07, 13:40:02.0431 UTC -> Error: Command failed: soffice --headless --convert-to pdf C:\Users\Dell\AppData\Local\Temp/1651930802331.2678 --outdir C:\Users\Dell\AppData\Local\Temp/1651930802332.094
+'soffice' is not recognized as an internal or external command,
+operable program or batch file.
+
+    at ChildProcess.exithandler (node:child_process:399:12)
+    at ChildProcess.emit (node:events:526:28)
+    at maybeClose (node:internal/child_process:1092:16)
+    at Process.ChildProcess._handle.onexit (node:internal/child_process:302:5)

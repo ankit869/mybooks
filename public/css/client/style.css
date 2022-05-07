@@ -493,7 +493,6 @@ footer button:hover{
     margin-top: -47px;
 }
 #no_favbooks{
-    height: 340px;
     text-align: center;
     display: flex;
     align-items: center;
@@ -940,6 +939,20 @@ footer button:hover{
 @media(max-width:350px){
     .course-title {
         font-size: 20px;
+    }
+}
+
+auth{
+    display:none;
+}
+
+noauth{
+    display: none;
+}
+
+@media(min-height:890px){
+    .main_search section{
+        height:100vh;
     }
 }
 

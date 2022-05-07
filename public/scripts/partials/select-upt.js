@@ -66,8 +66,8 @@ function initialize_selection(){
         if(o.firstElementChild.name=="category"){
           category=selected.innerHTML;
           subcategory=""
-          if(document.cookie.indexOf('temp_category=')){
-            temp_category=document.cookie["temp_category"]
+          if(getCookie("temp_category").indexOf('temp_category=')){
+            temp_category=getCookie("temp_category")
             if($("input[name='category']:checked").val()!=temp_category){
                $("input[name='sub_category']:checked").prop('checked', false)
                document.cookie = "temp_category=none ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
@@ -206,7 +206,7 @@ function addauthor(){
       }else{
         
         authors.push(authname)
-        console.log(authors)
+       
         $(".auth_div").css("display","block")
         author_html=`<div class="author_view">
             <i onclick="this.parentElement.remove();rem_author('${authname.id}')" class="fa fa-times rem_author" aria-hidden="true"></i>

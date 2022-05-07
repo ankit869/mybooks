@@ -1,3 +1,14 @@
+var AUTH=false;
+
+window.getCookie = function(name) {
+    var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    if (match) return match[2];
+}
+
+
+$("auth").css("display", "none");
+$("notauth").css("display", "none");
+
 $(".dropdown").on('click',()=>{
   if($(".dropdown i").hasClass("fas fa-caret-down")){
       $(".dropdown i").removeClass("fas fa-caret-down")
@@ -183,7 +194,6 @@ $(".admin-login-form").on("submit",(event)=>{
         method: 'POST',
         data: $(".admin-login-form").serialize(),
         success: function(response) {
-            
             if(response.status=="401"){
                 $("#login-msg").text((response.message))
             }else{
@@ -332,7 +342,7 @@ function add_to_fav(book_id){
         method: 'POST',
         contentType: 'application/json',
         success: function(response) {
-            
+                console.log(response)
                 if(response=="unauthorized") {
                     window.location.href="/login-error"
                 }
@@ -373,11 +383,10 @@ function add_to_fav(book_id){
                                 }
                             }
                         </style>-->`)
-
-                        $("#snackbar").text("Book Removed from favourite")
-                        myFunction();
-
+ 
                     }
+                    $("#snackbar").text("Book Removed from favourite")
+                    myFunction();
                     $("."+book_id).css("color","rgb(252, 127, 169)")
                     $("."+book_id+"-fav").css("border-color","rgb(252, 127, 169)")
                     $("."+book_id+"-fav").css("color","rgb(252, 127, 169)")
@@ -417,6 +426,11 @@ window.addEventListener('load', () => {
                     $("."+favBook.book_id+"-fav").css("border-color","rgb(204,0, 85)")
                     $("."+favBook.book_id+"-fav i").addClass('fa-check-circle').removeClass('fa-heart');
                 })
+
+                AUTH=true;
+                $("auth").css("display", "block");
+                $("notauth").css("display", "none");
+
                 function notifyMe(){
                     Notification.requestPermission().then(function(result) {
                         if(result=="granted"){
@@ -428,6 +442,9 @@ window.addEventListener('load', () => {
                     });
                 }
                 notifyMe();
+            }else{
+                $("auth").css("display", "none");
+                $("notauth").css("display", "block");
             }
         }
     });
@@ -463,6 +480,9 @@ function favbooks(){
         }
     });
 }
+function isAuthenticated(){
+    if(AUTH){return true;}else{false;}
+}
 
 function books_under_review(){
     $.ajax({
@@ -482,11 +502,9 @@ function books_under_review(){
 
 
 $("#post-review").on('submit',(event)=>{
-  
     event.preventDefault();
     message=$("#review-msg-input").val();
     book_id=$("#book_id_reviewed").val();
-    
     $.ajax({
         url:'/review/'+book_id+'/'+message,
         method: 'POST',
@@ -500,8 +518,10 @@ $("#post-review").on('submit',(event)=>{
                 str=""
 
                 response.reviews.forEach(function(review){
+                    date=new Date(review.createdAt);
+                    date=date.toLocaleDateString("en-US", { month: 'long',day: 'numeric', year:'numeric' })
                     str+=`<div class="comment-post">
-                     <p>${review.message}<span> -by ${review.user_commented} ~ ${review.time}</span></p>
+                     <p>${review.message}<span> -by ${review.user_commented} ~ ${date}</span></p>
                     </div>`
   
                 })
@@ -802,15 +822,10 @@ function playpop(){
     audio.play();
 }
 
-auth=""
-function checkAuth(status){
-   auth=status 
-}
-
 
 $("#upld-form").ajaxForm({
     beforeSend:function(){
-        if(auth=="block"){
+        if(!AUTH){
           window.location.href="/login-error"
         }
         else{
@@ -917,11 +932,12 @@ function review_book(book_id){
 
     }
 }
-function add_to_review(book_id,book_category,book_name){
+function add_to_review(book_id){
+    
     var isConfirm=confirm("Are you sure, want to review again ? ")
     if(isConfirm){
         $.ajax({
-            url: '/admin/add_to_review/'+book_id+'/'+book_category+'/'+book_name,
+            url: '/admin/add_to_review/'+book_id,
             method: 'GET',
             contentType: 'application/json',
             success: function(response) { 
@@ -930,6 +946,10 @@ function add_to_review(book_id,book_category,book_name){
                 $("#"+book_id+" .isreviewed").html(`<button onclick="location.href='/admin/under-review?book_id=${book_id}'" class="floating-add2"><i class="fas fa-clipboard-list fa-2x"></i></button>`)
 
                 myFunction()
+
+                if(response.status=="401"){
+                    location.href="/login-error"
+                }
             }
         });
 
@@ -1031,10 +1051,14 @@ $("#upld-form").on("keypress",function(e){
     }
 });
 
-function tagSelections(){
+function tagSelection(){
     if($("#tgtype option").filter(':selected').text()=="custom"){
         $(".customTag").css("display","block");
     }else{
         $(".customTag").css("display","none");
     }
 }
+
+// function toggleZoomScreen() {
+//     document.body.style.zoom = "90%";
+// } 

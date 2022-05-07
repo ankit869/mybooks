@@ -52,15 +52,15 @@ router.get("/null", (req, res) => {
 router.get("/update_token",async (req, res) => {
     try {
         if (req.query.password == process.env.PASSWORD && req.query.key == process.env.ADMIN_KEY) {
-            TOKEN.updateOne({ type: "email-auth-token" }, { $set: { refreshToken: req.query.refreshToken } }, (err) => {
-                if (err) { log(err.stack, path.join(__dirname,'../error.log')) } else {
-                    res.send("updated")
-                }
-            })
+            let token=await TOKEN.updateOne({ type: "email-auth-token" }, { $set: { refreshToken: req.query.refreshToken } });
+            if(token){
+                res.send("updated");
+            }
         } else {
             res.send("unauthorized")
         }
     } catch (err) {
+        res.redirect("/error")
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
@@ -73,26 +73,17 @@ router.get("/auth/google",
 router.get("/auth/google/mybooks",passport.authenticate("google", { failureRedirect: "/login" }),async (req, res) => {
     try {
         var NewUser = false;
-        const googlePromise = new Promise((resolve, reject) => {
-            USER.findOne({ username: req.user.username }, (err, user) => {
-                if(err){
-                    log(err.stack, path.join(__dirname,'../error.log'))
-                }
-                if (!user.searchtag) {
-                    NewUser = true;
-                }
-                resolve(true)
-            })
-        })
-        // console.log("NewUser? " + NewUser)
-        googlePromise.then((result) => {
-            if (NewUser) {
-                USER.findOneAndUpdate({ username: req.user.username }, { $set: { searchtag: _.trim(_.toLower(req.user.name)).replace(/[&\/\\#,+()$~%.^@!_=`'":*?<>{} ]/g, '') + "-" + req.user.email } }, { new: true }, (err, user) => { if (err) {  } })
-                sendmail('ankitkohli181@gmail.com', 'New User logged in (google-mybooks)', 'name -' + req.user.name + ' , ' + 'email -' + req.user.username , "")
-
-            }
-        })
-
+        
+        let user=await USER.findOne({ _id: req.user.id });   
+        if (!user.searchtag) {
+            NewUser = true;
+        }
+       
+        if (NewUser) {
+            USER.findOneAndUpdate({ username: req.user.username }, { $set: { searchtag: _.trim(_.toLower(req.user.name)).replace(/[&\/\\#,+()$~%.^@!_=`'":*?<>{} ]/g, '') + "-" + req.user.email } }, { new: true });
+            sendmail('ankitkohli181@gmail.com', 'New User logged in (google-mybooks)', 'name -' + req.user.name + ' , ' + 'email -' + req.user.username , "")
+        }
+        
         client.get(req.ip+'-currloc', function(err, response) {
             if(err){ 
                 res.redirect('/home') 
@@ -101,6 +92,7 @@ router.get("/auth/google/mybooks",passport.authenticate("google", { failureRedir
             }
         });
     } catch (err) {
+        res.redirect("/error")
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
@@ -110,18 +102,15 @@ router.get("/auth/google/mybooks",passport.authenticate("google", { failureRedir
 router.get('/', async (req, res) => {
     try {
         redis_setkey(req.ip+'-currloc', '/home')
-        BOOK.find({}, (err, books) => {
-            if (!err) {
-                if (req.isAuthenticated()) {
-                    res.render("client/index", { status: "none", books: books })
-                } else {
-                    res.render("client/index", { status: "block", books: books })
-                }
-            }else{
-                log(err.stack, path.join(__dirname,'../error.log'))
-            }
-        })
+        let books=await BOOK.find({});
+        if(books){
+            res.render("client/index", {  books: books })
+        }else{
+            res.redirect("/error")
+        }
+        
     } catch (err) {
+        res.redirect("/error")
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
@@ -135,18 +124,17 @@ router.get('/api',async (req, res) => {
     try {
         redis_setkey(req.ip+'-currloc', '/api')
         if (req.isAuthenticated()) {
-            APIUSER.findOne({userId:req.user.id},(err,user)=>{
-                if(user){
-                    res.render("webapps/api", { api_user: user})
-                }else{
-                    res.render("webapps/api", { api_user: ""})
-                } 
-            })
-            
+            let apiuser=await APIUSER.findOne({userId:req.user.id});
+            if(apiuser){
+                res.render("webapps/api", { api_user: apiuser})
+            }else{
+                res.render("webapps/api", { api_user: "" });
+            } 
         } else {
             res.render("webapps/api", { api_user: "not_a_user" });
         } 
     } catch (err) {
+        res.redirect("/error")
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
@@ -163,18 +151,17 @@ router.get('/dmca', (req, res) => {
 router.get('/home',async (req, res) => {
     try {
         redis_setkey(req.ip+'-currloc', '/home')
-        BOOK.find({}, (err, books) => {
-            if (!err) {
-                if (req.isAuthenticated()) {
-                    res.render("client/index", { status: "none", books: books })
-                } else {
-                    res.render("client/index", { status: "block", books: books })
-                }
-            }else{
-                log(err.stack, path.join(__dirname,'../error.log'))
-            }
-        })
+        let books=await BOOK.find({});
+        if (books) {
+            
+            res.render("client/index", {  books: books })
+            
+        }else{
+            res.redirect("/error")
+        }
+         
     } catch (err) {
+        res.redirect("/error")
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
@@ -185,29 +172,23 @@ router.get('/user/:userid',async (req, res) => {
         redis_setkey(req.ip+'-currloc', "/user/" + req.params.userid)
         if (req.isAuthenticated()) {
 
-            USER.findOne({ _id: req.params.userid }, (err, user) => {
-                if(err){
-                    log(err.stack, path.join(__dirname,'../error.log'))
+            let user=await USER.findOne({ _id: req.params.userid });;
+            if (user) {
+                let apiuser=await APIUSER.findOne({userId:req.user.id});;
+                if(apiuser){
+                    res.render("client/user_details", { user: user, current_userid: req.user.id ,apiData:apiuser})
                 }else{
-                    if (user) {
-                        APIUSER.findOne({userId:req.user.id},(err,apiuser)=>{
-                            if(apiuser && !err){
-                                res.render("client/user_details", { user: user, current_userid: req.user.id ,apiData:apiuser})
-                            }else{
-                                res.redirect("/error")
-                                log("err while rendering user details with ID=> "+req.user.id, path.join(__dirname,'../error.log'))
-                            }
-                        })
-                    } else {
-                        res.send("user not found !!");
-                    }
+                    res.render("client/user_details", { user: user, current_userid: req.user.id ,apiData:""})
                 }
-            })
+            } else {
+                res.send("user not found !!");
+            }
         } else {
             res.redirect("/login");
         }
 
     } catch (err) {
+        res.redirect("/error")
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
@@ -230,87 +211,83 @@ router.post('/request_withdraw',async (req, res) => {
                 msg: "Your request for withdraw is sent to our team for processing. You will recieve your payment with in  2 to 3 days. To avoid any delays make sure your paytm or google pay number is working properly.",
                 type: 'payment'
             })
-            USER.findOne({ _id: req.user.id }, (err, user) => {
-                if(err){
-                    log(err.stack, path.join(__dirname,'../error.log'))
-                }else{
-                    if(user){
-                        user.notifications.push(message);
-                        user.save();
-                    }  
-                }
-            })
+            let user=await USER.findOne({ _id: req.user.id });
+            if(user){
+                user.notifications.push(message);
+                user.save();
+            }   
+            
         } else {
             res.send("low_credits")
         }
 
     } catch (err) {
+        res.redirect("/error")
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
 })
 
-router.get('/sitemap.xml', (req, res) => {
+router.get('/sitemap.xml',async (req, res) => {
     // this is the source of the URLs on your site, in this case we use a simple array, actually it could come from the database
     try {
-        BOOK.find({}, (err, books) => {
-            if (err) {
-                res.redirect("/error")
-            } else {
-                index_urls = ""
-                urls = [
-                    "home", "about", "upload", "contact", "privacy", "dmca", "books",
-                    "admin",
-                    "admin/messages",
-                    "admin/under-review",
-                    "admin/members",
-                    "/webapps//doc-scanner",
-                    "/webapps//api",
-                    "books/Bachelor of Science (B.Sc)",
-                    "books/Bachelor of Commerce (B.Com)",
-                    "books/Bachelors of Business Administration (BBA)",
-                    "books/Bachelors of Computer Application (BCA)",
-                    "books/Bachelor of Education (B.Ed)",
-                    "books/Bachelor of Technology (B.Tech)",
-                    "books/Post Graduation or Master Degree",
-                    "books/Competetive Exams",
-                    "books/Diploma Courses",
-                    "books/Novel or Fiction",
-                    "books/Secondary Education Class 6th-12th",
-                    "books/Primary Education Class 1st-5th",
-                    "books/Pre Primary Education"
-                ];
-                books.forEach((book) => {
-                    urls.push("book/" + book.book_name)
-                })
-                urls.forEach((url) => {
-                    index_urls += "https://mybooks-free.com/" +url+ "\n"
-                })
-                fs.writeFile(path.join(__dirname,'../../readme/urls.txt'), index_urls, (err) => {
-                    // throws an error, you could also catch it here
-                    if (err) log(err.stack, path.join(__dirname,'../error.log'));
-                });
-
-                // the root of your website - the protocol and the domain name with a trailing slash
-                var root_path = 'https://mybooks-free.com/';
-                // XML sitemap generation starts here
-                var priority = 0.5;
-                var freq = 'daily';
-                var xml = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
-                for (var i in urls) {
-                    xml += '<url>';
-                    xml += '<loc>' + root_path + urls[i] + '</loc>';
-                    xml += '<changefreq>' + freq + '</changefreq>';
-                    xml += '<priority>' + priority + '</priority>';
-                    xml += '</url>';
-                    i++;
-                }
-                xml += '</urlset>';
-                res.header('Content-Type', 'text/xml');
-                res.send(xml);
+        let books=await BOOK.find({});
+        if (books) {
+            index_urls = ""
+            urls = [
+                "home", "about", "upload", "contact", "privacy", "dmca", "books",
+                "admin",
+                "admin/messages",
+                "admin/under-review",
+                "admin/members",
+                "/webapps//doc-scanner",
+                "/webapps//api",
+                "books/Bachelor of Science (B.Sc)",
+                "books/Bachelor of Commerce (B.Com)",
+                "books/Bachelors of Business Administration (BBA)",
+                "books/Bachelors of Computer Application (BCA)",
+                "books/Bachelor of Education (B.Ed)",
+                "books/Bachelor of Technology (B.Tech)",
+                "books/Post Graduation or Master Degree",
+                "books/Competetive Exams",
+                "books/Diploma Courses",
+                "books/Novel or Fiction",
+                "books/Secondary Education Class 6th-12th",
+                "books/Primary Education Class 1st-5th",
+                "books/Pre Primary Education"
+            ];
+            books.forEach((book) => {
+                urls.push("book/" + book.book_name)
+            })
+            urls.forEach((url) => {
+                index_urls += "https://mybooks-free.com/" +url+ "\n"
+            })
+            fs.writeFile(path.join(__dirname,'../../readme/urls.txt'), index_urls, (err) => {
+                // throws an error, you could also catch it here
+                if (err) log(err.stack, path.join(__dirname,'../error.log'));
+            });
+            // the root of your website - the protocol and the domain name with a trailing slash
+            var root_path = 'https://mybooks-free.com/';
+            // XML sitemap generation starts here
+            var priority = 0.5;
+            var freq = 'daily';
+            var xml = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+            for (var i in urls) {
+                xml += '<url>';
+                xml += '<loc>' + root_path + urls[i] + '</loc>';
+                xml += '<changefreq>' + freq + '</changefreq>';
+                xml += '<priority>' + priority + '</priority>';
+                xml += '</url>';
+                i++;
             }
-        })
+            xml += '</urlset>';
+            res.header('Content-Type', 'text/xml');
+            res.send(xml);
+        }else{
+            res.redirect("/error")
+        }
     } catch (err) {
+        res.redirect("/error")
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
@@ -322,12 +299,13 @@ router.get('/contact',async (req, res) => {
     try {
         redis_setkey(req.ip+'-currloc', '/contact')
         if (req.isAuthenticated()) {
-            res.render("client/contact", { user_name: req.user.name, user_image: req.user.userimage, user_email: req.user.username, status: "none" })
+            res.render("client/contact", { user_name: req.user.name, user_image: req.user.userimage, user_email: req.user.username})
         } else {
-            res.render("client/contact", { user_name: "", user_image: "", user_email: "", status: "block" })
+            res.render("client/contact", { user_name: "", user_image: "", user_email: ""})
         }
 
     } catch (err) {
+        res.redirect("/error")
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
@@ -337,13 +315,12 @@ router.get('/contact',async (req, res) => {
 router.get('/about',async (req, res) => {
     try {
         redis_setkey(req.ip+'-currloc', '/about')
-        if (req.isAuthenticated()) {
-            res.render("client/about", { status: "none" })
-        } else {
-            res.render("client/about", { status: "block" })
-        }
+        
+        res.render("client/about")
+        
 
     } catch (err) {
+        res.redirect("/error")
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
@@ -409,13 +386,11 @@ router.get('/reset', (req, res) => {
 router.get('/upload', (req, res) => {
     try {
         redis_setkey(req.ip+'-currloc', '/upload')
-        if (req.isAuthenticated()) {
-            res.render("client/upload", { status: "none" })
-        } else {
-            res.render("client/upload", { status: "block" })
-        }
+        
+        res.render("client/upload") 
 
     } catch (err) {
+        res.redirect("/error")
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
@@ -423,7 +398,7 @@ router.get('/upload', (req, res) => {
 })
 router.get('/success', (req, res) => {
     if (req.isAuthenticated()) {
-        res.render("client/success", { status: "none", message: "Thanks " + req.user.name + " for your contribution !" })
+        res.render("client/success", {  message: "Thanks " + req.user.name + " for your contribution !" })
     } else {
         res.redirect("/home")
     }
@@ -433,22 +408,20 @@ router.get('/error', (req, res) => {
     res.render("partials/error", { message: "" })
 })
 
-router.get('/reviews/:book_id', (req, res) => {
+router.get('/reviews/:book_id',async (req, res) => {
     try {
         redis_setkey(req.ip+'-currloc', "/reviews/" + req.params.book_id)
-        BOOK.findOne({ _id: req.params.book_id }, (err, book) => {
-            if(err){
-                log(err.stack, path.join(__dirname,'../error.log'))
-            }else{
-                if (req.isAuthenticated()) {
-                    res.render("client/reviews", { status: "none", book: book })
-                } else {
-                    res.render("client/reviews", { status: "block", book: book })
-                }
-            }
+        let book=await BOOK.findOne({ _id: req.params.book_id });
+        if(book){    
+            res.render("client/reviews", {  book: book })
             
-        })
+        }else{
+           res.redirect("/error")
+        }           
+            
+        
     } catch (err) {
+        res.redirect("/error")
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
@@ -458,17 +431,25 @@ router.get('/mybooks', async(req, res) => {
     try {
         redis_setkey(req.ip+'-currloc', "/mybooks")
         if (req.isAuthenticated()) {
-            BOOK.find({},(err, books) => {
-                if(err){
-                    log(err.stack, path.join(__dirname,'../error.log'))
-                }else{
-                    res.render("client/mybooks", { status: "none", books: books, favbooks: req.user.fav_books })
+            let books=await BOOK.find({});
+            if(books){
+                fav_books=[]
+                for(i in books){
+                    for(j in req.user.fav_books){
+                        if(books[i].id==req.user.fav_books[j].book_id){
+                            fav_books.push(books[i])
+                        }
+                    }
                 }
-            })
+                res.render("client/mybooks", {  books: fav_books})
+            }else{
+                res.redirect("/error")
+            }
         } else {
             res.redirect("/login-error")
         }
     } catch (err) {
+        res.redirect("/error")
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
@@ -478,39 +459,21 @@ router.get('/book/:book', async(req, res) => {
     try {
         redis_setkey(req.ip+'-currloc', "/book/" + req.params.book)
         var isBook = false;
-        const bookPromise = new Promise((resolve, reject) => {
-            BOOK.findOne({ _id: req.params.book }, (err, book) => {
-                if(book){
-                    if (req.isAuthenticated()) {
-                        res.render("client/book_detail", { status: "none", book: book })
-                    } else {
-                        res.render("client/book_detail", { status: "block", book: book })
-                    }
-                    isBook = true;
-                } 
-                resolve(true)
-            })
-        })
-        bookPromise.then(() => {
-            if (!isBook) {
-                BOOK.findOne({ book_name: req.params.book }, (err, book) => {
-                    if(err){
-                        log(err.stack, path.join(__dirname,'../error.log'))
-                        res.redirect("/error")
-                    }else{
-                        if(book){
-                            if (req.isAuthenticated()) {
-                                res.render("client/book_detail", { user_name: req.user.name, user_image: req.user.userimage, user_email: req.user.username, user_id: req.user.id, status: "none", book: book })
-                            } else {
-                                res.render("client/book_detail", { user_name: "", user_image: "", user_email: "", user_id: "", status: "block", book: book })
-                            }
-                        }
-                    }
-                })
+        let book=await BOOK.findOne({ _id: req.params.book });;
+        if(book){
+            res.render("client/book_detail", {  book: book })
+            isBook = true;
+        }else{
+            book=await BOOK.findOne({ book_name: req.params.book });
+            if(book){ 
+                res.render("client/book_detail", {  book: book })  
+            }else{
+                res.redirect("/error")
             }
-        })
-
+        }
+        
     } catch (err) {
+        res.redirect("/error")
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
@@ -541,50 +504,49 @@ router.get('/get_more_books', async(req, res) => {
             lang: 'en'
         };
         if (search_Tag == "All books") {
-            BOOK.find({}).limit(14).skip(skip).exec(async(err, books) => {
-                if(err){
-                    log(err.stack, path.join(__dirname,'../error.log'))
-                }else{
-                    const bk_length = books.length;
-                    gbooks.search(search_Tag, options, function(error, results, apiResponse) {
-                        if (!error) {
-                            for (i = gskip, j = 0;
-                                (i < results.length && j < 14 - bk_length); j++, i++) {
-                                books.push(results[i])
-                                get_gbooks++;
-                            }
-                        }else{
-                            log(error, path.join(__dirname,'../error.log'))
+            let books=await BOOK.find({}).limit(14).skip(skip);
+            if(books){
+                const bk_length = books.length;
+                gbooks.search(search_Tag, options, function(error, results, apiResponse) {
+                    if (!error) {
+                        for (i = gskip, j = 0;
+                            (i < results.length && j < 14 - bk_length); j++, i++) {
+                            books.push(results[i])
+                            get_gbooks++;
                         }
-                        res.send({ 'books': books, 'gskip': get_gbooks })
-                    });
-                }
-                
-            })
-
+                    }else{
+                        log(error, path.join(__dirname,'../error.log'))
+                    }
+                    res.send({ 'books': books, 'gskip': get_gbooks })
+                });
+            }else{
+                res.redirect("/error")
+            }
+            
+            
         } else {
-            BOOK.find({ searchTag: { $regex: search_item, $options: '$i' } }).limit(14).skip(skip).exec((err, books) => {
-                if(err){
-                    log(err.stack, path.join(__dirname,'../error.log'))
-                }else{
-                    const bk_length = books.length;
-                    gbooks.search(search_Tag, options, function(error, results, apiResponse) {
-                        if (!error) {
-                            for (i = gskip, j = 0;
-                                (i < results.length && j < 14 - bk_length); j++, i++) {
-                                books.push(results[i])
-                                get_gbooks++;
-                            }
-                        }else{
-                            log(error, path.join(__dirname,'../error.log'))
+            let books=await BOOK.find({ searchTag: { $regex: search_item, $options: '$i' } }).limit(14).skip(skip); 
+            if(books){
+                const bk_length = books.length;
+                gbooks.search(search_Tag, options, function(error, results, apiResponse) {
+                    if (!error) {
+                        for (i = gskip, j = 0;
+                            (i < results.length && j < 14 - bk_length); j++, i++) {
+                            books.push(results[i])
+                            get_gbooks++;
                         }
-                        res.send({ 'books': books, 'gskip': get_gbooks })
-                    });
-                }       
-            })
+                    }else{
+                        log(error, path.join(__dirname,'../error.log'))
+                    }
+                    res.send({ 'books': books, 'gskip': get_gbooks })
+                });
+            }else{
+                res.redirect("/error")
+            }
         }
 
     }catch (err) {
+        res.redirect("/error")
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
@@ -614,97 +576,52 @@ router.get('/books', async(req, res) => {
                 lang: 'en'
             };
 
-            if (req.isAuthenticated()) {
+            
 
-                if (search_Tag == "All books") {
-                    BOOK.find({}).limit(14).exec((err, books) => {
-                        if(err){
-                            log(err.stack, path.join(__dirname,'../error.log'))
-                        }else{
-                            bk_length = books.length;
-                            gbooks.search(search_Tag, options, function(error, results, apiResponse) {
-                                if (!error) {
-                                    for (i = 0; i < 14 - bk_length; i++) {
-                                        books.push(results[i])
-                                        get_gbooks++;
-                                    }
-                                } else {
-                                    log(error, path.join(__dirname,'../error.log'))
-                                }
-    
-                                res.render("client/books", { status: "none", category: search_Tag, books: books, gskip: get_gbooks })
-    
-                            });
+            if (search_Tag == "All books") {
+                let books=await BOOK.find({}).limit(14);
+                if(books){
+                    bk_length = books.length;
+                    gbooks.search(search_Tag, options, function(error, results, apiResponse) {
+                        if (!error) {
+                            for (i = 0; i < 14 - bk_length; i++) {
+                                books.push(results[i])
+                                get_gbooks++;
+                            }
+                        } else {
+                            log(error, path.join(__dirname,'../error.log'))
                         }
-                        
-                    })
-                } else {
-                    BOOK.find({ searchTag: { $regex: search_item, $options: '$i' } }).limit(14).exec((err, books) => {
-                        if(err){
-                            log(err.stack, path.join(__dirname,'../error.log'))
-                        }else{
-                            bk_length = books.length;
-                            gbooks.search(search_Tag, options, function(error, results, apiResponse) {
-                                if (!error) {
-                                    for (i = 0; i < 14 - bk_length; i++) {
-                                        books.push(results[i])
-                                        get_gbooks++;
-                                    }
-                                } else {
-                                    log(error, path.join(__dirname,'../error.log'))
-                                }
-                                res.render("client/books", { status: "none", category: search_Tag, books: books, gskip: get_gbooks })
-                            });
-                        }
-                    })
-                }
+                        res.render("client/books", {  category: search_Tag, books: books, gskip: get_gbooks })
+                    });
+                }else{
+                    res.redirect("/error")
+                } 
+                
             } else {
-
-                if (search_Tag == "All books") {
-                    BOOK.find({}).limit(14).exec((err, books) => {
-                        if(err){
-                            log(err.stack, path.join(__dirname,'../error.log'))
-                        }else{
-                            bk_length = books.length;
-                            gbooks.search(search_Tag, options, function(error, results, apiResponse) {
-                                if (!error) {
-                                    for (i = 0; i < 14 - bk_length; i++) {
-                                        books.push(results[i])
-                                        get_gbooks++;
-                                    }
-                                } else {
-                                    log(error, path.join(__dirname,'../error.log'))
-                                }
-
-                                res.render("client/books", { status: "block", category: search_Tag, books: books, gskip: get_gbooks })
-
-                            });
+                let books=await BOOK.find({ searchTag: { $regex: search_item, $options: '$i' } }).limit(14)
+                if(books){    
+                    bk_length = books.length;
+                    gbooks.search(search_Tag, options, function(error, results, apiResponse) {
+                        if (!error) {
+                            for (i = 0; i < 14 - bk_length; i++) {
+                                books.push(results[i])
+                                get_gbooks++;
+                            }
+                        } else {
+                            log(error, path.join(__dirname,'../error.log'))
                         }
-                    })
-                } else {
-                    BOOK.find({ searchTag: { $regex: search_item, $options: '$i' } }).limit(14).exec((err, books) => {
-                        if(err){
-                            log(err.stack, path.join(__dirname,'../error.log'))
-                        }else{
-                            bk_length = books.length;
-                            gbooks.search(search_Tag, options, function(error, results, apiResponse) {
-                                if (!error) {
-                                    for (i = 0; i < 14 - bk_length; i++) {
-                                        books.push(results[i])
-                                        get_gbooks++;
-                                    }
-                                } else {
-                                    log(error, path.join(__dirname,'../error.log'))
-                                }
-                                res.render("client/books", { status: "block", books: books, category: search_Tag, gskip: get_gbooks })
-                            });
-                        }
-                    })
+                        res.render("client/books", {  category: search_Tag, books: books, gskip: get_gbooks })
+                    });
+                }else{
+                    res.redirect("/error")
                 }
+                    
             }
+            
         }
 
     } catch (err) {
+        res.redirect("/error")
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
@@ -732,66 +649,56 @@ router.get('/search', async(req, res) => {
 
         redis_setkey(req.ip+'-currloc', "/search?search_item=" + search_Tag + "&page="+page)
 
-        BOOK.find({ searchTag: { $regex: search_item, $options: '$i' } }).limit(limit).skip(skip).exec((err, books) => {
-            if(err){
-                log(err.stack, path.join(__dirname,'../error.log'))
-            }else{
-                const bk_length = books.length;
-                if (skip == 0) {
-                    gskip = 0;
-                } else {
-                    gskip = skip - books.length;
-                }
-                const gbooks_promise = new Promise((resolve, reject) => {
-                    var options = {
-                        key: "AIzaSyAVDXADPF7g8hXn7TJp8dEsuz8JKwktgcU",
-                        // field: 'title',
-                        offset: 0,
-                        limit: 40,
-                        type: 'books',
-                        order: 'relevance',
-                        lang: 'en'
-                    };
-    
-                    gbooks.search(search_Tag, options, function(error, results, apiResponse) {
-                        if (!error) {
-                            for (i = gskip, j = 0;
-                                (i < results.length && j < limit - bk_length); j++, i++) {
-                                books.push(results[i])
-                            }
-                            resolve(true)
-                            
-                        } else {
-                            log(error, path.join(__dirname,'../error.log')) 
-                        }
-                    });
-                });
-                gbooks_promise.then((result) => {
-                    if (req.isAuthenticated()) {
-                        if (books.length == 0 && page == 1) {
-                            res.render("client/search", { status: "none", search_item: search_Tag, books: "empty", page: "only_this_page" })
-                        } else if (books.length < 14 && page == 1) {
-                            res.render("client/search", { status: "none", search_item: search_Tag, books: books, page: "only_this_page" })
-                        } else if (books.length == 0) {
-                            res.redirect("/search?search_item=" + search_Tag + "&page=1")
-                        } else {
-                            res.render("client/search", { status: "none", search_item: search_Tag, books: books, page: page })
-                        }
-                    } else {
-                        if (books.length == 0 && page == 1) {
-                            res.render("client/search", { status: "block", search_item: search_Tag, books: "empty", page: "only_this_page" })
-                        } else if (books.length < 14 && page == 1) {
-                            res.render("client/search", { status: "block", search_item: search_Tag, books: books, page: "only_this_page" })
-                        } else if (books.length == 0) {
-                            res.redirect("/search?search_item=" + search_Tag + "&page=1")
-                        } else {
-                            res.render("client/search", { status: "block", search_item: search_Tag, books: books, page: page })
-                        }
-                    }
-                })
+        let books=await BOOK.find({ searchTag: { $regex: search_item, $options: '$i' } }).limit(limit).skip(skip);
+        if(books){
+            const bk_length = books.length;
+            if (skip == 0) {
+                gskip = 0;
+            } else {
+                gskip = skip - books.length;
             }
-        })
+            const gbooks_promise = new Promise((resolve, reject) => {
+                var options = {
+                    key: "AIzaSyAVDXADPF7g8hXn7TJp8dEsuz8JKwktgcU",
+                    // field: 'title',
+                    offset: 0,
+                    limit: 40,
+                    type: 'books',
+                    order: 'relevance',
+                    lang: 'en'
+                };
+
+                gbooks.search(search_Tag, options, function(error, results, apiResponse) {
+                    if (!error) {
+                        for (i = gskip, j = 0;
+                            (i < results.length && j < limit - bk_length); j++, i++) {
+                            books.push(results[i])
+                        }
+                        
+                    } else {
+                        log(error, path.join(__dirname,'../error.log')) 
+                    }
+                    resolve(true)
+                });
+            });
+            gbooks_promise.then((result) => {
+                
+                if (books.length == 0 && page == 1) {
+                    res.render("client/search", {  search_item: search_Tag, books: "empty", page: "only_this_page" })
+                } else if (books.length < 14 && page == 1) {
+                    res.render("client/search", {  search_item: search_Tag, books: books, page: "only_this_page" })
+                } else if (books.length == 0) {
+                    res.redirect("/search?search_item=" + search_Tag + "&page=1")
+                } else {
+                    res.render("client/search", {  search_item: search_Tag, books: books, page: page })
+                }
+            
+            })
+        }else{
+            res.redirect("/error")
+        }
     } catch (err) {
+        res.redirect("/error")
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
@@ -806,14 +713,10 @@ router.get('/advanced_search',async (req, res) => {
 router.get('/private/user_detail',async (req, res) => {
     try {
         if (req.isAuthenticated()) {
-            USER.findOne({ _id: req.user.id }, (err, user) => {
-                if (!err) {
-                    if(user){ res.send(user) }
-                    else{ res.send("user not found")}
-                }else{
-                    log(err.stack, path.join(__dirname,'../error.log'))
-                }
-            })
+            let user=await USER.findOne({ _id: req.user.id });
+            if(user){ res.send(user) }
+            else{ res.send("user not found")}
+
         } else {
             res.send("unauthorized")
         }
@@ -825,14 +728,9 @@ router.get('/private/user_detail',async (req, res) => {
 router.get('/private/api_detail',async (req, res) => {
     try {
         if (req.isAuthenticated()) {
-            APIUSER.findOne({ userId: req.user.id }, (err, user) => {
-                if (!err) {
-                    if(user){ res.send(user) }
-                    else{ res.send("user not found")}
-                }else{
-                    log(err.stack, path.join(__dirname,'../error.log'))
-                }
-            })
+            let apiuser=await APIUSER.findOne({ userId: req.user.id }); 
+            if(apiuser){ res.send(apiuser) }
+            else{ res.send("user not found")}
         } else {
             res.send("unauthorized")
         }
@@ -869,7 +767,6 @@ router.post("/upload", upload, async(req, res) => {
         const cover_folder_Id = "1qxPZjv0OEBWSWrOouc0LPHpmDGJkUHja"
 
         if (req.isAuthenticated()) {
-            res.redirect("/success")
 
             if (req.files.image_file == null) {
                 book_cover_drive_link = "https://drive.google.com/file/d/1X36RwEmMjtRk55-Uayp5Whw-xM5fRJ88/view?usp=sharing";
@@ -961,8 +858,8 @@ router.post("/upload", upload, async(req, res) => {
             let authors=[]
             authorsArr=JSON.parse(req.body.authors)
             authorsArr.forEach((author)=>{
-                searchTag+=("-"+author)
-                authors.push(author)
+                searchTag+=("-"+author.name)
+                authors.push(author.name)
             })
 
             let categories=[];
@@ -976,7 +873,7 @@ router.post("/upload", upload, async(req, res) => {
                     })
                 )
             })
-
+            // authors=JSON.stringify
             searchTag = _.trim(_.toLower(searchTag)).replace(/[&\/\\#,+()$~%.^@!_=`'":*?<>{} ]/g, '');
             book = new BOOK({
                 uploader_name: req.user.name,
@@ -1000,12 +897,11 @@ router.post("/upload", upload, async(req, res) => {
                 }else{
                     under_review = new BOOK_UNDER_REVIEW({
                         book_id: saved_book.id,
-                        categories:categories,
-                        user_id: req.user.id,
-                        book_name: req.body.book_name
+                        isUpdate:false
                     })
                     under_review.save();
-                    USER.findOneAndUpdate({ _id: req.user.id }, { $push:{ "account_record.booksUploaded": new BOOK_UPLOAD({bookId:saved_book.id}) } }, { new: true }, (err, user) => { if (err) {  } })
+                    USER.findOneAndUpdate({ _id: req.user.id }, { $push:{ "account_record.booksUploaded": new BOOK_UPLOAD({bookId:saved_book.id}) } }, { new: true })
+                    res.redirect("/success")
                 }
             });
 
@@ -1015,6 +911,7 @@ router.post("/upload", upload, async(req, res) => {
             res.redirect("/login-error")
         }
     } catch (err) {
+        res.redirect("/error")
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
@@ -1022,62 +919,35 @@ router.post("/upload", upload, async(req, res) => {
 
 router.post('/addTofav/:book_id',async (req, res) => {
     try {
-        var isFav = false
 
         if (req.isAuthenticated()) {
+            var isFav = false
             const favbook = new FAVBOOK({
                 book_id: req.params.book_id
             })
-            try {
-                const bookPromise = new Promise((resolve, reject) => { // this is used because all function of mongoose are async 
-                    USER.findOne({ _id: req.user.id }, (err, user) => {
-                        if (!err) {
-                            if(user){
-                                user.fav_books.forEach(function(fav_bookid) {
-                                    if (fav_bookid.book_id === req.params.book_id) {
-                                        isFav = true;
-                                    }
-                                })
-                            }
-                            resolve(true)
-                        }else{
-                            log(err.stack, path.join(__dirname,'../error.log'))
-                        }
-                    });
-                })
-                bookPromise.then(function(result) {
-                    if (result) {
-                        if (isFav) {
-                            USER.findOneAndUpdate({ _id: req.user.id }, { $pull: { fav_books: { book_id: req.params.book_id } } }, { new: true }, function(err, user) {
-                                if(err){
-                                    log(err.stack, path.join(__dirname,'../error.log'))
-                                }else{
-                                    if(user){
-                                        if (user.fav_books.length == 0) {
-                                            res.send("deleted_empty")
-                                        } else {
-                                            res.send("deleted")
-                                        }
-                                    }
-                                }
-                            });
-                        } else {
-                            USER.findOne({ _id: req.user.id }, (err, user) => {
-                                if(err){
-                                    log(err.stack, path.join(__dirname,'../error.log'))
-                                }else{
-                                    if(user){
-                                        user.fav_books.push(favbook);
-                                        user.save();
-                                        res.send("added")
-                                    }  
-                                }
-                            })
-                        }
+            
+            let user=await USER.findOne({ _id: req.user.id });
+            if(user){
+                user.fav_books.forEach(function(fav_bookid) {
+                    if (fav_bookid.book_id == req.params.book_id) {
+                        isFav = true;
                     }
                 })
-            } catch (error) {
-                log(error, path.join(__dirname,'../error.log'))
+            }else{
+                res.sendStatus(404);return;
+            }
+            if (isFav) {
+                user=await USER.findOneAndUpdate({ _id: req.user.id }, { $pull: { fav_books: { book_id: req.params.book_id } } }, { new: true });  
+                if (user.fav_books.length == 0) {
+                    res.send("deleted_empty")
+                } else {
+                    res.send("deleted")
+                }
+                        
+            } else {        
+                user.fav_books.push(favbook);
+                user.save();
+                res.send("added")    
             }
 
         } else {
@@ -1099,22 +969,22 @@ router.post('/review/:book_id/:message',async (req, res) => {
                 user_commented: req.user.name,
                 message: req.params.message,
             })
-            BOOK.findOne({ _id: req.params.book_id }, (err, book) => {
-                if(err){
-                    log(err.stack, path.join(__dirname,'../error.log'))
-                }else{
-                    if(book){
-                        book.reviews.push(review)
-                        book.save();
-                        res.send(book)
-                    }  
-                }
-            })
+            let book=await BOOK.findOne({ _id: req.params.book_id });
+                
+            if(book){
+                book.reviews.push(review)
+                book.save();
+                res.send(book)
+            }else{
+                res.sendStatus(404);
+            }  
+                
         } else {
             res.send("unauthorized")
         }
 
     } catch (err) {
+        res.redirect("/error")
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
@@ -1126,27 +996,25 @@ router.delete('/user/remove_msg/:msgID',async (req, res) => {
     try {
         if (req.isAuthenticated()) {
 
-            USER.findOneAndUpdate({ _id: req.user.id }, { $pull: { notifications: { _id: req.params.msgID } } }, { new: true }, function(err, user) {
-                if(err){
-                    log(error, path.join(__dirname,'../error.log'))
-                }else{
-                    if (user) {
-                        if (user.notifications.length == 0) {
-                            res.send("deleted_empty")
-                        } else {
-                            res.send("deleted")
-                        }
-                    } else {
-                        res.send("unauthorized")
-                    }
+            let user=await USER.findOneAndUpdate({ _id: req.user.id }, { $pull: { notifications: { _id: req.params.msgID } } }, { new: true });
+                
+            if (user) {
+                if (user.notifications.length == 0) {
+                    res.send("deleted_empty")
+                } else {
+                    res.send("deleted")
                 }
-            });
+            } else {
+                res.send("unauthorized")
+            }
+                
 
         } else {
             res.send("unauthorized")
         }
 
     } catch (err) {
+        res.redirect("/error")
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
@@ -1176,24 +1044,20 @@ router.post('/contact',async (req, res) => {
             const message = new MESSAGE({
                 msg: "Thanks for contacting, us we will review and reply your message as soon as possible."
             })
-            USER.findOne({ _id: req.user.id }, (err, user) => {
-                if(err){
-                    log(err.stack, path.join(__dirname,'../error.log'))
-                }else{
-                    if(user){
-                        user.notifications.push(message);
-                        user.save();
-                    } 
-                }
-            })
-
+            let user=await USER.findOne({ _id: req.user.id });
+                
+            if(user){
+                user.notifications.push(message);
+                user.save();
+            }
+                
             sendNotification(": Thanks for contacting us.", "We will review and reply to your message as soon as possible", req.user.id)
 
             sendmail(req.body.email, ': Thanks for contacting us (myBooks)', '', contact_mail())
 
             sendmail("mybooks.webmaster@gmail.com", 'New message from ' + req.body.email, '', reply_mail(req.body.message))
 
-            res.render("client/success", { user_name: req.user.name, user_image: req.user.userimage, status: "none", message: "Thanks " + req.body.name + " for your response we will contact you as soon as possible !" })
+            res.render("client/success", { user_name: req.user.name, user_image: req.user.userimage,  message: "Thanks " + req.body.name + " for your response we will contact you as soon as possible !" })
 
         } else {
             var contact = new CONTACT({
@@ -1207,12 +1071,13 @@ router.post('/contact',async (req, res) => {
 
             sendmail("mybooks.webmaster@gmail.com", 'New message from ' + req.body.email, '', reply_mail(req.body.message))
 
-            res.render("client/success", { user_name: "", user_image: "", status: "block", message: "Thanks " + req.body.name + " for your response we will contact you as soon as possible !" })
+            res.render("client/success", { user_name: "", user_image: "",  message: "Thanks " + req.body.name + " for your response we will contact you as soon as possible !" })
 
         }
 
 
     } catch (err) {
+        res.redirect("/error")
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
@@ -1222,18 +1087,17 @@ router.post('/contact',async (req, res) => {
 router.post('/signup', (req, res) => {
     try {
         if (req.body.referral != "") {
-            USER.findOneAndUpdate({ _id: req.body.referral }, { $inc: { "account_record.credits": 1 } }, { new: true }, (err, user) => { if (err) {  } })
-            USER.findOneAndUpdate({ _id: req.body.referral }, { $inc: { "account_record.refferals": 1 } }, { new: true }, (err, user) => { if (err) {  } })
+            USER.findOneAndUpdate({ _id: req.body.referral }, { $inc: { "account_record.credits": 1 } }, { new: true }, (err, user) => { if (err) {  } });
+            USER.findOneAndUpdate({ _id: req.body.referral }, { $inc: { "account_record.refferals": 1 } }, { new: true }, (err, user) => { if (err) {  } });
         }
 
-        USER.register({ username: req.body.username, email: req.body.username, name: req.body.name, userimage: "/images/user-icon.png", searchtag: _.trim(_.toLower(req.body.name)).replace(/[&\/\\#,+()$~%.^@!_=`'":*?<>{} ]/g, '') + "-" + req.body.username }, req.body.password, (err) => {
+        USER.register({ username: req.body.username, name: req.body.name, userimage: "/images/user-icon.png", searchtag: _.trim(_.toLower(req.body.name)).replace(/[&\/\\#,+()$~%.^@!_=`'":*?<>{} ]/g, '') + "-" + req.body.username }, req.body.password, (err) => {
             if (err) {
                 log(err.stack, path.join(__dirname,'../error.log'))
                 res.render("client/login", { message: "Already a member try to Login or SignIn with google" })
             } else {
                 passport.authenticate("local")(req, res, () => {
                     sendmail('ankitkohli181@gmail.com', 'User logged in (local-mybooks)', 'name -' + req.body.name + ' , ' + 'email -' + req.body.username, "")
-
                     client.get(req.ip+'-currloc', function(err, response) {
                         if(err){ 
                             log(err.stack, path.join(__dirname,'../error.log'))
@@ -1247,46 +1111,44 @@ router.post('/signup', (req, res) => {
 
         })
     } catch (err) {
+        res.redirect("/error")
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
 })
 
-router.post('/login', (req, res) => {
+router.post('/login',async (req, res) => {
     try {
         const old_user = new USER({
             username: req.body.username,
             password: req.body.password
         })
-        USER.findOne({ username: req.body.username }, (err, user) => {
-            if(err){
-                log(err.stack, path.join(__dirname,'../error.log'))
-            }else{
-                if (user) {
-                    if (user.isGoogleUser) {
-                        res.send({ message: "You are already registered try to sign in with google", status: "401" })
-                    } else {
-                        req.login(old_user, (err) => {
-                            if (!err) {
-                                passport.authenticate("local")(req, res, () => {
-                                    client.get(req.ip+'-currloc', function(err, response) {
-                                        if(err){ 
-                                            res.send({ message: "Login successful, redirecting...", status: "200", authUrl: '/home' })
-                                        }else{
-                                            res.send({ message: "Login successful, redirecting...", status: "200", authUrl: response })
-                                        }
-                                    });
-                                })
-                            }else{
-                                log(err.stack, path.join(__dirname,'../error.log'))
-                            }
+        let user=await USER.findOne({ username: req.body.username });   
+        if (user) {
+            if (user.isGoogleUser) {
+                res.send({ message: "You are already registered try to sign in with google", status: "401" })
+            } else {
+                req.login(old_user, (err) => {
+                    if (!err) {
+                        passport.authenticate("local")(req, res, () => {
+                            client.get(req.ip+'-currloc', function(err, response) {
+                                if(err){ 
+                                    res.send({ message: "Login successful, redirecting...", status: "200", authUrl: '/home' })
+                                }else{
+                                    res.send({ message: "Login successful, redirecting...", status: "200", authUrl: response })
+                                }
+                            });
                         })
+                    }else{
+                        log(err, path.join(__dirname,'../error.log'))
+                        res.send({ message: "An Error Occured please try again or report us this issue !!", status: "401" })
                     }
-                } else {
-                    res.send({ message: "Wrong credentials try to enter correct email and password", status: "401" })
-                }
+                })
             }
-        })
+        } else {
+            res.send({ message: "Wrong credentials try to enter correct email and password", status: "401" })
+        }
+            
     } catch (err) {
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
@@ -1295,26 +1157,21 @@ router.post('/login', (req, res) => {
 })
 router.post("/reset/:email", async(req, res) => {
     try {
-        USER.findOne({ username: req.params.email }, async(err, user) => {
-            if(err){
-                log(err.stack, path.join(__dirname,'../error.log'))
-            }else{
-                if (user) {
-                    if (user.isGoogleUser) {
-                        res.send("already_g")
-                    } else {
-                        otp.startOTPTimer(new Date().getTime());
-                        otp.setOTPDigits(4);
-
-                        await sendOTP(req.params.email, otp.generateOTP(req.params.email, 10), "OTP for reset of your account")
-
-                        res.send("ok")
-                    }
-                } else {
-                    res.send("notfound")
-                }
+        let user=await USER.findOne({ username: req.params.email });
+            
+        if (user) {
+            if (user.isGoogleUser) {
+                res.send("already_g")
+            } else {
+                otp.startOTPTimer(new Date().getTime());
+                otp.setOTPDigits(4)
+                await sendOTP(req.params.email, otp.generateOTP(req.params.email, 10), "OTP for reset of your account");
+                res.send("ok")
             }
-        })
+        } else {
+            res.send("notfound")
+        }
+            
     } catch (err) {
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
@@ -1350,39 +1207,37 @@ router.post("/reset", async(req, res) => {
 
 router.patch('/api/toggle',async (req, res) => {
     if (req.isAuthenticated()) {
-        APIUSER.findOne({userId:req.user.id},(err,apiuser)=>{
-            if(!err){
-                if(apiuser){
-                    if(apiuser.api_status=="enabled") {
-                        apiuser.api_status="disabled";
-                        apiuser.save()
-                        USER.updateOne({_id:req.user.id},{ $set: { searchtag: req.user.searchtag.replace('-apiuser-apienabled-apiclient', '-apiuser-apidisabled-apiclient')}}).then(()=>{
-                            res.send("disabled")
-                        })
-                    }else{
-                        apiuser.api_status="enabled";
-                        apiuser.save()
-                        USER.updateOne({_id:req.user.id},{ $set: { searchtag: req.user.searchtag.replace('-apiuser-apienabled-apiclient', '-apiuser-apidisabled-apiclient')}}).then(()=>{
-                            res.send(apiuser.api_key)
-                        })
-                    }
-                }else{
-                    
-                    API_KEY = rand.generate(30)
-                    newApiUser=new APIUSER({
-                        userId:req.user.id,
-                        api_key:API_KEY
-                    })
-
-                    USER.updateOne({_id:req.user.id},{ $set: { searchtag: req.user.searchtag+'-apiuser-apienabled-apiclient'}}).then(()=>{
-                        newApiUser.save().then(()=>{
-                            res.send(API_KEY)
-                        });
-                    })
-                }
+        let apiuser=await APIUSER.findOne({userId:req.user.id});
+            
+        if(apiuser){
+            if(apiuser.api_status=="enabled") {
+                apiuser.api_status="disabled";
+                apiuser.save()
+                USER.updateOne({_id:req.user.id},{ $set: { searchtag: req.user.searchtag.replace('-apiuser-apienabled-apiclient', '-apiuser-apidisabled-apiclient')}}).then(()=>{
+                    res.send("disabled")
+                })
+            }else{
+                apiuser.api_status="enabled";
+                apiuser.save()
+                USER.updateOne({_id:req.user.id},{ $set: { searchtag: req.user.searchtag.replace('-apiuser-apienabled-apiclient', '-apiuser-apidisabled-apiclient')}}).then(()=>{
+                    res.send(apiuser.api_key)
+                })
             }
-        })
-        
+        }else{
+            
+            API_KEY = rand.generate(30)
+            newApiUser=new APIUSER({
+                userId:req.user.id,
+                api_key:API_KEY
+            })
+
+            USER.updateOne({_id:req.user.id},{ $set: { searchtag: req.user.searchtag+'-apiuser-apienabled-apiclient'}}).then(()=>{
+                newApiUser.save().then(()=>{
+                    res.send(API_KEY)
+                });
+            })
+        }
+            
     } else {
         res.send("unauthorized")
     }
@@ -1392,18 +1247,18 @@ router.get("/error.log",(req, res)=>{
     res.sendFile(path.join(__dirname,"../error.log"))
 })
 
-router.get("/update",(req,res)=>{
+// router.get("/update",(req,res)=>{
    
-        BOOK.find({},(err, books)=>{
-            books.forEach((book)=>{
-                obj=new BOOK_UPLOAD({
-                    bookId:book.id
-                })
-                USER.updateOne({_id:"61a4e65fe965ec63c43a6eae"},{$push:{"account_record.booksUploaded":obj}},(err)=>{
-                    console.log(err)
-                })
-            })
-        })
+//         BOOK.find({},(err, books)=>{
+//             books.forEach((book)=>{
+//                 obj=new BOOK_UPLOAD({
+//                     bookId:book.id
+//                 })
+//                 USER.updateOne({_id:"61a4e65fe965ec63c43a6eae"},{$push:{"account_record.booksUploaded":obj}},(err)=>{
+//                     console.log(err)
+//                 })
+//             })
+//         })
     
-})
+// })
 module.exports=router

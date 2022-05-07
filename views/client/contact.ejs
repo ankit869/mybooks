@@ -23,7 +23,8 @@
         }
     }
 </style>-->
-<body onload='checkAuth("<%=status%>")'>
+
+<body >
     <div class="nanobar my-class" id="my-id" style="position: fixed;">
       <div class="bar"></div>
     </div>
@@ -49,12 +50,13 @@
                 </div>  
                 <ul id="navbar-ul2">
                     <div id="hide-access">
-                      <% if(status=="block"){ %>
-                        <button onclick="location.href='/signup'"><i class="fas fa-sign-in-alt"></i> SignUp</button>
-                        <button onclick="location.href='/login'">Login</button>
-                      <% } else {%>
-                        <button onclick="location.href='/logout'"><i class="fas fa-sign-out-alt"></i> Logout</button>
-                      <% } %>
+                       <notauth>
+                            <button onclick="location.href='/signup'"><i class="fas fa-sign-in-alt"></i> SignUp</button>
+                            <button onclick="location.href='/login'">Login</button>
+                        </notauth>
+                        <auth>
+                            <button onclick="location.href='/logout'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                        </auth>
                     </div>
                     <button onclick="location.href='/upload'"><i class="fas fa-plus"></i> Upload</button>
                 </ul>
@@ -106,62 +108,66 @@
                 <%- include("../drop-links/sidebar_links") -%>
             </div>
             <div class="side-login">
-                <% if(status=="block"){ %>
+                <notauth>
                   <button onclick="location.href='/login'">Login</button>
                   <button onclick="location.href='/signup'"><i class="fas fa-sign-in-alt"></i> SignUp</button>
-                <% } else {%>
-                  <button onclick="location.href='/logout'"><i class="fas fa-sign-out-alt"></i> Logout</button>
-                <% } %>
+                </notauth>
+                <auth>
+                    <button onclick="location.href='/logout'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </auth>
             </div>
         </div>
     </div>
     <br>
-    <section id="contact-section">
+    <main_body class="main_contact">
+        <section id="contact-section">
         
-        <div id="contact">
-            <div id="contact-icons">
-                <div>
-                    <i class="fab fa-facebook-square fa-9x"></i>
-                    <i class="fas fa-envelope-square fa-9x"></i>
+            <div id="contact">
+                <div id="contact-icons">
+                    <div>
+                        <i class="fab fa-facebook-square fa-9x"></i>
+                        <i class="fas fa-envelope-square fa-9x"></i>
+                    </div>
+                    <div>
+                        <i class="fas fa-phone-square fa-9x"></i>
+                        <i class="fab fa-instagram-square fa-9x"></i>
+                    </div>  
                 </div>
-                <div>
-                    <i class="fas fa-phone-square fa-9x"></i>
-                    <i class="fab fa-instagram-square fa-9x"></i>
-                </div>  
+               <div id="contact-form">
+                    <h1 class="font-design-h">Contact us</h1>
+                    <form id="cont-form" action="/contact" method="post">
+                       <input name="name" type="text" placeholder="Enter your name" value="<%=user_name%>" required>
+                       <input name="email" type="email" placeholder="Enter your email" value="<%=user_email%>" required>
+                       <textarea name="message" cols="20" rows="6" placeholder="Enter your message" maxlength="325" required></textarea>
+                       <button class="font-design-b" id="send">Send</button>
+                    </form>
+                </div>
             </div>
-           <div id="contact-form">
-                <h1 class="font-design-h">Contact us</h1>
-                <form id="cont-form" action="/contact" method="post">
-                   <input name="name" type="text" placeholder="Enter your name" value="<%=user_name%>" required>
-                   <input name="email" type="email" placeholder="Enter your email" value="<%=user_email%>" required>
-                   <textarea name="message" cols="20" rows="6" placeholder="Enter your message" maxlength="325" required></textarea>
-                   <button class="font-design-b" id="send">Send</button>
-                </form>
+            
+        </section>
+        <br>
+        <section id="help">
+            <button class="font-design-b" id="f-btn" onclick="showfeed()"><i class="fas fa-pen"></i> feedback</button>
+            <div>
+              <form class="submitfd" id="feedback">
+                  <p class="font-design-p">Help us to imrove our site</p>
+                  <hr>
+                  <textarea name="text" id="feedtxt" cols="6" rows="6" placeholder="Type here" required></textarea>
+                  <button class="font-design-b feed-btn" id="fd" type="submit">submit</button>
+                  <hr>
+                  <br>
+              </form>
             </div>
-        </div>
-        
-    </section>
-    <br>
-    <section id="help">
-        <button class="font-design-b" id="f-btn" onclick="showfeed()"><i class="fas fa-pen"></i> feedback</button>
-        <div>
-          <form class="submitfd" id="feedback">
-              <p class="font-design-p">Help us to imrove our site</p>
-              <hr>
-              <textarea name="text" id="feedtxt" cols="6" rows="6" placeholder="Type here" required></textarea>
-              <button class="font-design-b feed-btn" id="fd" type="submit">submit</button>
-              <hr>
-              <br>
-          </form>
-        </div>
-    </section>
+        </section>
+    </main_body>
+    
     <footer>
         <div>
-            <% if(status=="block"){ %>
+            <notauth>
                <button onclick="location.href='/login'">Login</button>
                <button onclick="location.href='/signup'">SignUp</button>
                <button onclick="location.href='/auth/google'" class="google"><i class="fab fa-google"></i> SignIn</button>
-            <% } %>
+            </notauth>
         </div>
   <%- include("../partials/footer") -%>      
 

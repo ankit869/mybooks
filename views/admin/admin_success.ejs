@@ -43,7 +43,8 @@
     }
 
 </style>-->
-<body onload='checkAuth("<%=status%>")'>
+
+<body >
     <div class="nanobar my-class" id="my-id" style="position: fixed;">
       <div class="bar"></div>
     </div>
@@ -68,7 +69,7 @@
                 </div>  
                 <ul id="navbar-ul2">
                     <div id="hide-access">
-                      <% if(status=="block"){ %>
+                      <% if(!isAuthenticated){ %>
                         <button onclick="location.href='/admin-signup'"><i class="fas fa-sign-in-alt"></i> SignUp</button>
                         <button onclick="location.href='/admin-login'">Login</button>
                       <% } else {%>
@@ -109,27 +110,30 @@
     </div>
     
     <br>
-    <section id="success-section">
-        <button id="playme" onclick="playsuccess()" style="display:none"></button>
-        <div id="success">
-           <i class="fas fa-check-circle"></i>
-           <br>
-           <p><%=message%></p>
-        </div>
-    </section>
-    <section id="help">
-        <button class="font-design-b" id="f-btn" onclick="showfeed()"><i class="fas fa-pen"></i> feedback</button>
-        <div>
-          <form class="submitfd" id="feedback">
-              <p class="font-design-p">Help us to imrove our site</p>
-              <hr>
-              <textarea name="text" id="feedtxt" cols="6" rows="6" placeholder="Type here" required></textarea>
-              <button class="font-design-b feed-btn" id="fd" type="submit">Submit</button>
-              <hr>
-              <br>
-          </form>
-        </div>
-    </section>
+    <main_body class="main_admin_success">
+        <section id="success-section">
+            <button id="playme" onclick="playsuccess()" style="display:none"></button>
+            <div id="success">
+               <i class="fas fa-check-circle"></i>
+               <br>
+               <p><%=message%></p>
+            </div>
+        </section>
+        <section id="help">
+            <button class="font-design-b" id="f-btn" onclick="showfeed()"><i class="fas fa-pen"></i> feedback</button>
+            <div>
+              <form class="submitfd" id="feedback">
+                  <p class="font-design-p">Help us to imrove our site</p>
+                  <hr>
+                  <textarea name="text" id="feedtxt" cols="6" rows="6" placeholder="Type here" required></textarea>
+                  <button class="font-design-b feed-btn" id="fd" type="submit">Submit</button>
+                  <hr>
+                  <br>
+              </form>
+            </div>
+        </section>
+    </main_body>
+   
     <br>
     <footer>
        

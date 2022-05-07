@@ -1,3 +1,8 @@
+@media(min-height:500px){
+    main_body #contact-section{
+        height:100vh ;
+    }
+}
 #contact-icons i{
     color:rgba(86,117,248,.55);
     margin:25px;

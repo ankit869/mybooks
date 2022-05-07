@@ -1,3 +1,12 @@
+@media(min-height:1300px){
+    main_body #book-section{
+        height:100vh ;
+    }
+}
+main_body #no_favbooks{
+    height:80vh ;
+}
+
 .book_layout{
     display:flex;
     justify-content:center;

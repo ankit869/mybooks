@@ -47,7 +47,8 @@
         
     }
 </style>
-<body onload='checkAuth("<%=status%>")'>
+
+<body >
     <div class="nanobar my-class" id="my-id" style="position: fixed;">
       <div class="bar"></div>
     </div>
@@ -71,12 +72,13 @@
                 </div>  
                 <ul id="navbar-ul2">
                     <div id="hide-access">
-                      <% if(status=="block"){ %>
-                        <button onclick="location.href='/admin-signup'"><i class="fas fa-sign-in-alt"></i> SignUp</button>
-                        <button onclick="location.href='/admin-login'">Login</button>
-                      <% } else {%>
-                        <button onclick="location.href='/logout'"><i class="fas fa-sign-out-alt"></i> Logout</button>
-                      <% } %>
+                        <notauth>
+                            <button onclick="location.href='/login'">Login</button>
+                            <button onclick="location.href='/signup'"><i class="fas fa-sign-in-alt"></i> SignUp</button>
+                        </notauth>
+                        <auth>
+                            <button onclick="location.href='/logout'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                        </auth>
                     </div>
                     <button onclick="location.href='/admin/upload-edit/newbook'"><i class="fas fa-plus"></i> Upload</button>
                     <button onclick="location.href='/admin/members'"><i class="fas fa-users-cog"></i></button>
@@ -110,71 +112,72 @@
             <i class="fas fa-book-reader"></i>
         </div>
     </div>
-    <br>
-    <h2 class="course-title">Review section</h2>
-    <hr>
-    <br>
     
-    <section id="book_review_section">
-        <div class="course">
-          
-            <% if(under_review==""){ %>
-                <div id="no_favbooks">
-                    <i class="fas fa-frown fa-4x"></i>
-                    <h2>No new books to review !</h2>
-                </div>
-                <!--<style>
-                    footer{
-                      text-align: center;
-                      background: none;
-                      position: fixed;
-                      bottom:0px;
-                      width: 100%;
-                    }
-                    @media(max-height:840px){
-                         footer{
+    <main_body class="admin_under_review">
+        <section id="book_review_section">
+            <div class="course">
+              
+                <% if(books.length==0){ %>
+                    <div id="no_favbooks">
+                        <i class="fas fa-frown fa-4x"></i>
+                        <h2>No new books to review !</h2>
+                    </div>
+                    <!--<style>
+                        footer{
                           text-align: center;
                           background: none;
-                          position: relative;
-                          bottom:-15px;
+                          position: fixed;
+                          bottom:0px;
                           width: 100%;
                         }
-                    }
-                </style>-->
-            <% } else {%>
-                <div class="course-books" id="list_fav_books">
-                    <% books.forEach(function(book){ %>
-                       <% under_review.forEach(function(books_id){ %>
-                            <% if(books_id.book_id==book.id) {%>
-                                 <div class="book-outer" id="<%=book.id%>">
-                                    <div class="book">
-                                        <button onclick="review_book('<%=books_id.book_id%>')" class="floating-add2"><i class="fas fa-clipboard-list fa-2x"></i></button>
-                                        <button onclick="location.href='/admin/upload-edit/<%=book.id%>/?&isupt=Update'" class="floating-edit"><i class="far fa-edit fa-2x"></i></button>
-                                        <button onclick="remove_book('<%=book.id%>')" class="floating-delete"><i class="fas fa-trash-alt fa-2x"></i></button>
-                                        <img onclick="location.href='/book/<%=book.id%>'" class="book-cover" src="<%=book.book_cover_cloudinary_link%>" alt="" >
-                                        <hr>
-                                        <div class="user-download">
-                                            <a class="book-read" href="<%=book.book_file_link%>" target="_blank">Read</a>
-                                            <button onclick="location.href='/reviews/<%=book.id%>'" class="review-book"><i class="fas fa-comment-dots fa-2x"></i></button>
-                                            <button onclick="add_to_fav('<%=book.id%>')" id="add_fav"><i class="fas fa-heart fa-2x <%=book.id%>"></i></button>
-                                        </div>
-                                    </div>
-                                    <% if(book.book_name.length<=65){ %>
-                                        <p class="book-name"><%=book.book_name%></p>
-                                    <% } else {%>
-                                        <p class="book-name"><%=book.book_name.substr(0,65)%> ...</p>
-                                    <% } %>
-                                </div>  
-                            <% } %> 
-                       <% }) %>
-                <% }) %>   
-               </div>
-
-               
-          <% } %>   
-        </div> 
-        
-    </section>
+                        @media(max-height:840px){
+                             footer{
+                              text-align: center;
+                              background: none;
+                              position: relative;
+                              bottom:-15px;
+                              width: 100%;
+                            }
+                        }
+                    </style>-->
+                <% } else {%>
+                    <br>
+                    <h2 class="course-title">Review section</h2>
+                    <hr>
+                    <br>
+                    <div class="course-books" id="list_fav_books">
+                        <% books.forEach(function(book){ %>
+                           
+                        <div class="book-outer" id="<%=book.id%>">
+                           <div class="book">
+                               <button onclick="review_book('<%=book.id%>')" class="floating-add2"><i class="fas fa-clipboard-list fa-2x"></i></button>
+                               <button onclick="location.href='/admin/upload-edit/<%=book.id%>/?&isupt=Update'" class="floating-edit"><i class="far fa-edit fa-2x"></i></button>
+                               <button onclick="remove_book('<%=book.id%>')" class="floating-delete"><i class="fas fa-trash-alt fa-2x"></i></button>
+                               <img onclick="location.href='/book/<%=book.id%>'" class="book-cover" src="<%=book.book_cover_cloudinary_link%>" alt="" >
+                               <hr>
+                               <div class="user-download">
+                                   <a class="book-read" href="<%=book.book_file_link%>" target="_blank">Read</a>
+                                   <button onclick="location.href='/reviews/<%=book.id%>'" class="review-book"><i class="fas fa-comment-dots fa-2x"></i></button>
+                                   <button onclick="add_to_fav('<%=book.id%>')" id="add_fav"><i class="fas fa-heart fa-2x <%=book.id%>"></i></button>
+                               </div>
+                           </div>
+                           <% if(book.book_name.length<=65){ %>
+                               <p class="book-name"><%=book.book_name%></p>
+                           <% } else {%>
+                               <p class="book-name"><%=book.book_name.substr(0,65)%> ...</p>
+                           <% } %>
+                        </div>  
+                              
+                    <% }) %>   
+                   </div>
+    
+                   
+              <% } %>   
+            </div> 
+            
+        </section>
+    </main_body>
+    
     <div id="snackbar">Successfully reviewed</div>
     <br>
     <footer>

@@ -36,7 +36,8 @@
 </style>
 <body>
      <br><br>
-    <section class="admin-login" id="login-section">
+     <main_body class="main_admin_login">
+      <section class="admin-login" id="login-section">
         <div id="login">
             <div id="log-img1">
               <i class="fas fa-key fa-10x"></i>
@@ -45,13 +46,13 @@
                 <h1 class="font-design-h">Admin-Login</h1>
                 <hr>
                 <p id="login-msg"><%=message%></p>
-                <form id="log-form" class="admin-login-form" action="/admin-login" method="post">
+                <form id="log-form" class="admin-login-form" method="post">
                   
                    <input name="username" id="admin_emailInput"  value="<%=mail%>" type="text" placeholder="Enter your email" required>
                    <button type="button"  onclick="sendotp_admin()" id="otp-btn">Send OTP</button>
-                   <input name="otp" id="reset_opt" type="Number" value="<%=otp%>" placeholder="Enter your OTP" value="" required >
-                   <input name="unicode" id="admin_unicode" type="text" value="<%=unicode%>" placeholder="Enter your unicode" required >
-                   <input name="adminkey" id="admin_key" type="text" value="<%=key%>" placeholder="Enter admin-key" required >
+                   <input name="otp" id="reset_opt" type="Number" placeholder="Enter your OTP" value="" required disabled>
+                   <input name="unicode" id="admin_unicode" type="text"  placeholder="Enter your unicode" required disabled>
+                   <input name="adminkey" id="admin_key" type="text" placeholder="Enter admin-key" required disabled>
                    <a href="#" onclick="request()">Request Access ?</a>
                    <button class="font-design-b" id="login-send" >Login</button>
                    
@@ -64,9 +65,9 @@
             </div>
         </div>
         
-    </section>
-    <br><br><br>
-    <section id="help">
+      </section>
+      <br><br><br>
+      <div id="help">
         <button class="font-design-b" id="f-btn" onclick="showfeed()"><i class="fas fa-pen"></i> feedback</button>
         <div>
           <form class="submitfd" id="feedback">
@@ -77,7 +78,9 @@
               <hr>
           </form>
         </div>
-    </section>
+      </div>
+     </main_body>
+    
     <div style="transform:scale(0.9);" id="container-51fe2e96c8f38b505accab9b34487033"></div>
     <footer>
     <div id="copyrights">

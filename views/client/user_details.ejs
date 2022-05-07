@@ -6,101 +6,104 @@
 
 <body>
     <a onclick="history.back()" style="position:relative;left:30px;top:15px;" id="arrow" ><i style="color:#6083e4;" class="fas fa-long-arrow-alt-left fa-4x"></i></a>
-    <div id="user_details" style="position:relative">
-        <a href="/logout" style="position:absolute;right:10px;top:-40px;text-decoration:none;color:#6083e4;font-size:22px;"><i class="fas fa-sign-out-alt"></i> logout</a>
-        <% if(apiData.api_status=="enabled"){ %>
-            <div class="user_api_status" align="center">
-                <code>Books API is enabled</code>
-                <code><%= apiData.api_requests %> requests</code>
+    <main_body class="main_userdetail">
+        <div id="user_details" style="position:relative">
+            <a href="/logout" style="position:absolute;right:10px;top:-40px;text-decoration:none;color:#6083e4;font-size:22px;"><i class="fas fa-sign-out-alt"></i> logout</a>
+            <% if(apiData.api_status=="enabled"){ %>
+                <div class="user_api_status" align="center">
+                    <code>Books API is enabled</code>
+                    <code><%= apiData.api_requests %> requests</code>
+                </div>
+                <style>
+                    .details { margin-top: 18px; }
+                </style>
+            <% } %>
+            <div class="details">
+                <img src="<%=user.userimage%>" alt="">
+                <div style="margin-top:10px;">
+                    <h3 style="color:#6083e4;"><%=user.name%></h3>
+                    <p class="dont-break-out"><i style="color:#6083e4;" class="fas fa-envelope"></i>&nbsp; <%=user.username%></p> 
+                </div>
             </div>
-            <style>
-                .details { margin-top: 18px; }
-            </style>
-        <% } %>
-        <div class="details">
-            <img src="<%=user.userimage%>" alt="">
-            <div style="margin-top:10px;">
-                <h3 style="color:#6083e4;"><%=user.name%></h3>
-                <p class="dont-break-out"><i style="color:#6083e4;" class="fas fa-envelope"></i>&nbsp; <%=user.username%></p> 
+    
+            <hr>
+            <div class="stats">
+                <div style="display: inline-block"> 
+                    <p><img src="/images/coin.png" alt=""><%=user.account_record.credits%> credits</p> 
+                </div>
+                <div style="display: inline-block"> 
+                    <p><img src="/images/upload.png" alt=""><%=user.account_record.booksUploaded.length%> books</p>
+                </div>
+                <div style="display: inline-block"> 
+                    <p><img src="/images/referrals.png" alt=""><%=user.account_record.refferals%> referrals</p>
+                </div>
+                <% if(user.membershipType=="admin" && user.ismember) { %>
+                <div style="display: inline-block"> 
+                    <p><img src="/images/reply.png" alt=""><%=user.account_record.q_resolved%> query</p>
+                </div>
+                <% } %>
             </div>
-        </div>
-
-        <hr>
-        <div class="stats">
-            <div style="display: inline-block"> 
-                <p><img src="/images/coin.png" alt=""><%=user.account_record.credits%> credits</p> 
+            
+            <div align="center" class="user_referral_link">
+                <a  style="font-size:20px;color:#6083e4;cursor:pointer;" onclick="copy_referral('<%=user.id%>')"><i class="fas fa-link"></i> Referral link</a>
             </div>
-            <div style="display: inline-block"> 
-                <p><img src="/images/upload.png" alt=""><%=user.account_record.booksUploaded.length%> books</p>
-            </div>
-            <div style="display: inline-block"> 
-                <p><img src="/images/referrals.png" alt=""><%=user.account_record.refferals%> referrals</p>
-            </div>
-            <% if(user.membershipType=="admin" && user.ismember) { %>
-            <div style="display: inline-block"> 
-                <p><img src="/images/reply.png" alt=""><%=user.account_record.q_resolved%> query</p>
+    
+            <br>
+            <% if(user.id==current_userid){ %> 
+            <div id="help">
+                <button class="font-design-b" id="f-btn" onclick="showfeed()"><i class="fas fa-credit-card"></i> Request withdraw</button>
+                <div class="submitwr">
+                  <form onsubmit="event.preventDefault(); return submitwr();"  id="feedback">
+                      <div style="display:flex;justify-content:center;" >
+                          <img src="/images/gpay.png" width="165px" height="36px" alt="">
+                          <img src="/images/paytm.png" style="position:relative;bottom:12px;" width="120px" height="60px" alt="">
+                      </div>
+                      <p class="font-design-p">Enter your details to request withdraw</p>
+                      <hr>
+                       <div align="left">
+                            <p style="color:#d4d4e0;margin:3px;transform:scale(0.85)">* 1.5 credit = 1 rs </p>
+                            <p style="color:#d4d4e0;margin:3px;transform:scale(0.85)">* 0.5 credit for each novel or story or fiction or other book </p>
+                            <p style="color:#d4d4e0;margin:3px;transform:scale(0.85)">* 1 credit for each course book </p>
+                            <p style="color:#d4d4e0;margin:3px;transform:scale(0.85)">* 1 credit for each referral </p>
+                            <p style="color:#d4d4e0;margin:3px;transform:scale(0.85)">* minimum 100 credits can be withdraw</p>
+                        </div>
+                      <div style="display:flex;justify-content:center;align-items:center;" class="payment-selection">
+                          <input type="radio" id="paytm" name="payment_type" value="paytm" required>
+                          <label style="color:#00b9f1;transform:scale(1.1);" for="paytm">Paytm</label><br>
+                          <input type="radio" id="google-pay" name="payment_type" value="google-pay" required>
+                          <label style="color:#de5246;transform:scale(1.1);" for="google-pay">Google pay</label><br>
+                      </div>
+                      <input style="transform:scale(1.05);padding:5px;padding-left:8px;border-radius:8px;" type="number" style="margin:10px;border-radius: 15px;outline:none;padding:10px;background-color: #fafaff;border:none;" name="number" id="feedtxt"  rows="2" placeholder="Enter  number " required></input><br>
+                      <button style="transform:scale(1.1);" class="font-design-b feed-btn" id="fd" type="submit">&nbsp;Request&nbsp;</button>
+                        <br>
+                      <hr>
+                  </form>
+                </div>
             </div>
             <% } %>
         </div>
-        
-        <div align="center" class="user_referral_link">
-            <a  style="font-size:20px;color:#6083e4;cursor:pointer;" onclick="copy_referral('<%=user.id%>')"><i class="fas fa-link"></i> Referral link</a>
-        </div>
-
-        <br>
         <% if(user.id==current_userid){ %> 
-        <div id="help">
-            <button class="font-design-b" id="f-btn" onclick="showfeed()"><i class="fas fa-credit-card"></i> Request withdraw</button>
-            <div class="submitwr">
-              <form onsubmit="event.preventDefault(); return submitwr();"  id="feedback">
-                  <div style="display:flex;justify-content:center;" >
-                      <img src="/images/gpay.png" width="165px" height="36px" alt="">
-                      <img src="/images/paytm.png" style="position:relative;bottom:12px;" width="120px" height="60px" alt="">
-                  </div>
-                  <p class="font-design-p">Enter your details to request withdraw</p>
-                  <hr>
-                   <div align="left">
-                        <p style="color:#d4d4e0;margin:3px;transform:scale(0.85)">* 1.5 credit = 1 rs </p>
-                        <p style="color:#d4d4e0;margin:3px;transform:scale(0.85)">* 0.5 credit for each novel or story or fiction or other book </p>
-                        <p style="color:#d4d4e0;margin:3px;transform:scale(0.85)">* 1 credit for each course book </p>
-                        <p style="color:#d4d4e0;margin:3px;transform:scale(0.85)">* 1 credit for each referral </p>
-                        <p style="color:#d4d4e0;margin:3px;transform:scale(0.85)">* minimum 100 credits can be withdraw</p>
+        <div class="notificationCenter">
+            <h4 align="center"><i class="fas fa-info-circle"></i> Notifications</h4>
+            <% if(user.notifications=="") { %>
+                <div class="notification" style="text-align:center;background:none;">
+                    <p>No new notifications yet!!</p>
+                </div>
+            <% } else { %>
+                <% user.notifications.forEach((message)=>{ %>
+                    <div class="notification <%=message.id%>">
+                      <i onclick="removemsg('<%=message.id%>')" class="fa fa-times " aria-hidden="true"></i>
+                      <% const options = { month: 'long',day: 'numeric', year:'numeric' };
+                         const date=message.createdAt.toLocaleDateString("en-US", options); 
+                       %>
+                      <p><%=message.msg%> <span> • <%=date%></span></p>
                     </div>
-                  <div style="display:flex;justify-content:center;align-items:center;" class="payment-selection">
-                      <input type="radio" id="paytm" name="payment_type" value="paytm" required>
-                      <label style="color:#00b9f1;transform:scale(1.1);" for="paytm">Paytm</label><br>
-                      <input type="radio" id="google-pay" name="payment_type" value="google-pay" required>
-                      <label style="color:#de5246;transform:scale(1.1);" for="google-pay">Google pay</label><br>
-                  </div>
-                  <input style="transform:scale(1.05);padding:5px;padding-left:8px;border-radius:8px;" type="number" style="margin:10px;border-radius: 15px;outline:none;padding:10px;background-color: #fafaff;border:none;" name="number" id="feedtxt"  rows="2" placeholder="Enter  number " required></input><br>
-                  <button style="transform:scale(1.1);" class="font-design-b feed-btn" id="fd" type="submit">&nbsp;Request&nbsp;</button>
-                    <br>
-                  <hr>
-              </form>
-            </div>
+                <% }) %>
+            <% } %>
         </div>
         <% } %>
-    </div>
-    <% if(user.id==current_userid){ %> 
-    <div class="notificationCenter">
-        <h4 align="center"><i class="fas fa-info-circle"></i> Notifications</h4>
-        <% if(user.notifications=="") { %>
-            <div class="notification" style="text-align:center;background:none;">
-                <p>No new notifications yet!!</p>
-            </div>
-        <% } else { %>
-            <% user.notifications.forEach((message)=>{ %>
-                <div class="notification <%=message.id%>">
-                  <i onclick="removemsg('<%=message.id%>')" class="fa fa-times " aria-hidden="true"></i>
-                  <% const options = { month: 'long',day: 'numeric', year:'numeric' };
-                     const date=message.createdAt.toLocaleDateString("en-US", options); 
-                   %>
-                  <p><%=message.msg%> <span> • <%=date%></span></p>
-                </div>
-            <% }) %>
-        <% } %>
-    </div>
-    <% } %>
+    </main_body>
+
     <div id="snackbar">Request sent to our team</div>
     <footer>
 <%- include("../partials/footer") -%>      

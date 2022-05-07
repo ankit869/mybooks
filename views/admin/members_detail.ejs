@@ -40,134 +40,137 @@
         }
     }
 </style> 
+
 <body>
-    
     <a onclick="history.back()" style="position:relative;left:30px;top:6px;" id="arrow" ><i style="color:#6083e4;" class="fas fa-long-arrow-alt-left fa-4x"></i></a>
-    <form align="center" class="search-user" method="get" action="/admin/members">
-        <input type="text" name="searchtag" placeholder="Search user .. " ><button style="background:none;border:none;"><i class="fab fa-searchengin fa-2x"></i></button>
-    </form>
-    <div id="members">
-    <% if(members.length==0){ %>
-        <div id="no_favbooks">
-            <i class="fas fa-frown fa-4x"></i>
-            <h2>No user found !! related to your search</h2>
-        </div>
-        <!--<style>
-            footer{
-              text-align: center;
-              background: none;
-              position: fixed;
-              bottom:0px;
-              width: 100%;
-            }
-            @media(max-height:840px){
-                 footer{
+    <main_body class="main_admin_members">
+        <form align="center" class="search-user" method="get" action="/admin/members">
+            <input type="text" name="searchtag" placeholder="Search user .. " ><button style="background:none;border:none;"><i class="fab fa-searchengin fa-2x"></i></button>
+        </form>
+        <div id="members">
+        <% if(members.length==0){ %>
+            <div id="no_favbooks">
+                <i class="fas fa-frown fa-4x"></i>
+                <h2>No user found !! related to your search</h2>
+            </div>
+            <!--<style>
+                footer{
                   text-align: center;
                   background: none;
-                  position: relative;
-                  bottom:-15px;
+                  position: fixed;
+                  bottom:0px;
                   width: 100%;
                 }
-            }
-        </style>-->
-    <% } else {%>
-
-    <% members.forEach((user)=>{ %> 
-    <div id="user_details" class="<%=user.userDetail.id%>" style="position:relative;">
-    <% if(!user.userDetail.ismember){ %>
-         <button class="member_btn" onclick="addmember('<%=user.userDetail.id%>')" style="position:absolute;margin-top:-20px;margin-left:-10px;border-radius:10px;border:none;font-size:22px;"><i class="fas fa-user-plus"></i></button>
-    <% } else { %>
-         <button class="member_btn" onclick="removemember('<%=user.userDetail.id%>','<%=user.adminDetail.unicode%>')" style="position:absolute;margin-top:-20px;margin-left:-10px;border-radius:10px;border:none;font-size:22px;"><i class="fas fa-user-minus"></i></button>
-    <% } %>
-
-    <% if(user.apiDetail!=""){ %>
-        <div class="user_api_status">
-            <% if(user.apiDetail.api_status=="enabled"){ %>
-                <code>Books API is enabled</code>
-            <% }else{ %>
-                <code>Books API is disabled</code>
-            <% } %>
-            <code><%= user.apiDetail.api_requests %> requests</code>
-        </div>
-        <div class="details" style="margin-top:18px;">
-    <% } else { %>
-        <div class="details">
-    <% } %>
-            <img src="<%=user.userDetail.userimage%>" alt="">
-            <div style="margin-top:10px;" class="usrdetail">
-                <h3 style="color:#6083e4;display:inline-block"><%=user.userDetail.name%></h3>
-                <% if(user.userDetail.membershipType=="admin" && user.adminDetail!="") { %>
-                    <span>&nbsp;&nbsp;( Admin )</span>
-                <% } else if(user.userDetail.ismember) { %>
-                    <span>&nbsp;&nbsp;( Member )</span>
+                @media(max-height:840px){
+                     footer{
+                      text-align: center;
+                      background: none;
+                      position: relative;
+                      bottom:-15px;
+                      width: 100%;
+                    }
+                }
+            </style>-->
+        <% } else {%>
+    
+        <% members.forEach((user)=>{ %> 
+        <div id="user_details" class="<%=user.userDetail.id%>" style="position:relative;">
+        <% if(!user.userDetail.ismember){ %>
+             <button class="member_btn" onclick="addmember('<%=user.userDetail.id%>')" style="position:absolute;margin-top:-20px;margin-left:-10px;border-radius:10px;border:none;font-size:22px;"><i class="fas fa-user-plus"></i></button>
+        <% } else { %>
+             <button class="member_btn" onclick="removemember('<%=user.userDetail.id%>','<%=user.adminDetail.unicode%>')" style="position:absolute;margin-top:-20px;margin-left:-10px;border-radius:10px;border:none;font-size:22px;"><i class="fas fa-user-minus"></i></button>
+        <% } %>
+    
+        <% if(user.apiDetail!=""){ %>
+            <div class="user_api_status">
+                <% if(user.apiDetail.api_status=="enabled"){ %>
+                    <code>Books API is enabled</code>
+                <% }else{ %>
+                    <code>Books API is disabled</code>
                 <% } %>
-                <p class="dont-break-out"><i style="color:#6083e4;" class="fas fa-envelope"></i>&nbsp; <%=user.userDetail.username%></p> 
+                <code><%= user.apiDetail.api_requests %> requests</code>
             </div>
-        </div>
-        <hr>
-        <div class="stats">
-            <div style="display: inline-block"> 
-                <p class="credits"><img src="/images/coin.png" alt=""><%=user.userDetail.account_record.credits%> credits</p> 
+            <div class="details" style="margin-top:18px;">
+        <% } else { %>
+            <div class="details">
+        <% } %>
+                <img src="<%=user.userDetail.userimage%>" alt="">
+                <div style="margin-top:10px;" class="usrdetail">
+                    <h3 style="color:#6083e4;display:inline-block"><%=user.userDetail.name%></h3>
+                    <% if(user.userDetail.membershipType=="admin" && user.adminDetail!="") { %>
+                        <span>&nbsp;&nbsp;( Admin )</span>
+                    <% } else if(user.userDetail.ismember) { %>
+                        <span>&nbsp;&nbsp;( Member )</span>
+                    <% } %>
+                    <p class="dont-break-out"><i style="color:#6083e4;" class="fas fa-envelope"></i>&nbsp; <%=user.userDetail.username%></p> 
+                </div>
             </div>
-            <div style="display: inline-block"> 
-                <p><img src="/images/upload.png" alt=""><%=user.userDetail.account_record.booksUploaded.length%> books</p>
+            <hr>
+            <div class="stats">
+                <div style="display: inline-block"> 
+                    <p class="credits"><img src="/images/coin.png" alt=""><%=user.userDetail.account_record.credits%> credits</p> 
+                </div>
+                <div style="display: inline-block"> 
+                    <p><img src="/images/upload.png" alt=""><%=user.userDetail.account_record.booksUploaded.length%> books</p>
+                </div>
+                <div style="display: inline-block"> 
+                    <p><img src="/images/referrals.png" alt=""><%=user.userDetail.account_record.refferals%> referrals</p>
+                </div>
+                <% if(user.userDetail.membershipType=="admin" && user.userDetail.ismember) { %>
+                <div style="display: inline-block"> 
+                    <p><img src="/images/reply.png" alt=""><%=user.userDetail.account_record.q_resolved%> query</p>
+                </div>
+                <% } %>
             </div>
-            <div style="display: inline-block"> 
-                <p><img src="/images/referrals.png" alt=""><%=user.userDetail.account_record.refferals%> referrals</p>
+            <div align="center" class="user_referral_link">
+                <a  style="font-size:20px;color:#6083e4;cursor:pointer;" onclick="copy_referral('<%=user.userDetail.id%>')"><i class="fas fa-link"></i> Referral link</a>
             </div>
-            <% if(user.userDetail.membershipType=="admin" && user.userDetail.ismember) { %>
-            <div style="display: inline-block"> 
-                <p><img src="/images/reply.png" alt=""><%=user.userDetail.account_record.q_resolved%> query</p>
-            </div>
-            <% } %>
-        </div>
-        <div align="center" class="user_referral_link">
-            <a  style="font-size:20px;color:#6083e4;cursor:pointer;" onclick="copy_referral('<%=user.userDetail.id%>')"><i class="fas fa-link"></i> Referral link</a>
-        </div>
-        <br>
-        <div style="display:flex" >
-            <% if( user.userDetail.ismember && (currentAdmin=="ankitkohli181@gmail.com" || currentAdmin=="ankitkholi2002@gmail.com" || currentAdmin=="mybooks.webmaster@gmail.com")){ %>
-                <div id="help" class="editCredits">
-                    <button class="font-design-b" id="f-btn" onclick="showcredit('<%=user.userDetail.id%>')"><i class="fas fa-edit"></i> Edit user</button>
+            <br>
+            <div style="display:flex" >
+                <% if( user.userDetail.ismember && (currentAdmin=="ankitkohli181@gmail.com" || currentAdmin=="ankitkholi2002@gmail.com" || currentAdmin=="mybooks.webmaster@gmail.com")){ %>
+                    <div id="help" class="editCredits">
+                        <button class="font-design-b" id="f-btn" onclick="showcredit('<%=user.userDetail.id%>')"><i class="fas fa-edit"></i> Edit user</button>
+                        <div class="submitusr">
+                        <form  onsubmit="event.preventDefault(); return submitusr('<%=user.userDetail.id%>');" id="feedback">
+                            
+                            <p class="font-design-p">Edit credits</p>
+                            <hr>
+                            <input name="name" value="<%=user.userDetail.name%>" hidden></input>
+                            <input name="userid" value="<%=user.userDetail.id%>" hidden></input>
+                            <input name="username" value="<%=user.userDetail.username%>" hidden></input>
+                            <input style="transform:scale(1.05);padding:5px;padding-left:8px;border-radius:8px;" type="number"  value="<%=user.userDetail.account_record.credits%>" style="margin:10px;border-radius: 15px;outline:none;padding:10px;background-color: #fafaff;border:none;" name="credits" id="feedtxt"  placeholder="Enter  credits " required></input><br>
+                            <button style="transform:scale(1.1);" class="font-design-b feed-btn" id="fd" type="submit">&nbsp;Update&nbsp;</button>
+                                <br>
+                            <hr>
+                        </form>
+                        </div>
+                    </div>
+                <% } %>
+                <div id="help" class="sendMsg">
+                    <button class="font-design-b" id="f-btn" onclick="shownotify('<%=user.userDetail.id%>')"><i class="far fa-comment-dots"></i> Message  </button>
                     <div class="submitusr">
-                    <form  onsubmit="event.preventDefault(); return submitusr('<%=user.userDetail.id%>');" id="feedback">
-                        
-                        <p class="font-design-p">Edit credits</p>
+                    <form onsubmit="event.preventDefault(); return submitmsg('<%=user.userDetail.id%>');" id="feedback">
+                        <p class="font-design-p">Send a message to <%=user.userDetail.name%></p>
                         <hr>
                         <input name="name" value="<%=user.userDetail.name%>" hidden></input>
                         <input name="userid" value="<%=user.userDetail.id%>" hidden></input>
                         <input name="username" value="<%=user.userDetail.username%>" hidden></input>
-                        <input style="transform:scale(1.05);padding:5px;padding-left:8px;border-radius:8px;" type="number"  value="<%=user.userDetail.account_record.credits%>" style="margin:10px;border-radius: 15px;outline:none;padding:10px;background-color: #fafaff;border:none;" name="credits" id="feedtxt"  placeholder="Enter  credits " required></input><br>
-                        <button style="transform:scale(1.1);" class="font-design-b feed-btn" id="fd" type="submit">&nbsp;Update&nbsp;</button>
+                        <textarea style="transform:scale(1.05);font-size:20px;padding:5px;padding-left:8px;border-radius:8px;"  style="margin:10px;border-radius: 15px;outline:none;padding:10px;background-color: #fafaff;border:none;" name="message" id="feedtxt"  rows="5" placeholder="Write a message " required></textarea><br>
+                        <button style="transform:scale(1.1);" class="font-design-b feed-btn" id="fd" type="submit">&nbsp;Send&nbsp;</button>
                             <br>
                         <hr>
                     </form>
                     </div>
                 </div>
-            <% } %>
-            <div id="help" class="sendMsg">
-                <button class="font-design-b" id="f-btn" onclick="shownotify('<%=user.userDetail.id%>')"><i class="far fa-comment-dots"></i> Message  </button>
-                <div class="submitusr">
-                <form onsubmit="event.preventDefault(); return submitmsg('<%=user.userDetail.id%>');" id="feedback">
-                    <p class="font-design-p">Send a message to <%=user.userDetail.name%></p>
-                    <hr>
-                    <input name="name" value="<%=user.userDetail.name%>" hidden></input>
-                    <input name="userid" value="<%=user.userDetail.id%>" hidden></input>
-                    <input name="username" value="<%=user.userDetail.username%>" hidden></input>
-                    <textarea style="transform:scale(1.05);font-size:20px;padding:5px;padding-left:8px;border-radius:8px;"  style="margin:10px;border-radius: 15px;outline:none;padding:10px;background-color: #fafaff;border:none;" name="message" id="feedtxt"  rows="5" placeholder="Write a message " required></textarea><br>
-                    <button style="transform:scale(1.1);" class="font-design-b feed-btn" id="fd" type="submit">&nbsp;Send&nbsp;</button>
-                        <br>
-                    <hr>
-                </form>
-                </div>
             </div>
+            
         </div>
-        
-    </div>
-    <% }) %>
+        <% }) %>
+    
+        <% } %>
+        </div>
+    </main_body>
 
-    <% } %>
-    </div>
 
     <div class="roll_animation" style="display: none">
         <div class="lds-roller" align="center" style="transform:scale(0.65);"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>

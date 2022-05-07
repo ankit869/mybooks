@@ -23,7 +23,8 @@
         }
     }
 </style>-->
-<body onload='checkAuth("<%=status%>")'>
+
+<body >
     <div class="nanobar my-class" id="my-id" style="position: fixed;">
       <div class="bar"></div>
     </div>
@@ -49,12 +50,13 @@
                 </div>  
                 <ul id="navbar-ul2">
                     <div id="hide-access">
-                      <% if(status=="block"){ %>
-                        <button onclick="location.href='/signup'"><i class="fas fa-sign-in-alt"></i> SignUp</button>
-                        <button onclick="location.href='/login'">Login</button>
-                      <% } else {%>
-                        <button onclick="location.href='/logout'"><i class="fas fa-sign-out-alt"></i> Logout</button>
-                      <% } %>
+                       <notauth>
+                            <button onclick="location.href='/signup'"><i class="fas fa-sign-in-alt"></i> SignUp</button>
+                            <button onclick="location.href='/login'">Login</button>
+                        </notauth>
+                        <auth>
+                            <button onclick="location.href='/logout'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                        </auth>
                     </div>
                     <button onclick="location.href='/upload'"><i class="fas fa-plus"></i> Upload</button>
                 </ul>
@@ -105,63 +107,81 @@
                 <%- include("../drop-links/sidebar_links") -%>
             </div>
             <div class="side-login">
-                <% if(status=="block"){ %>
+                <notauth>
                   <button onclick="location.href='/login'">Login</button>
                   <button onclick="location.href='/signup'"><i class="fas fa-sign-in-alt"></i> SignUp</button>
-                <% } else {%>
-                  <button onclick="location.href='/logout'"><i class="fas fa-sign-out-alt"></i> Logout</button>
-                <% } %>
+                </notauth>
+                <auth>
+                    <button onclick="location.href='/logout'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </auth>
             </div>
         </div>
     </div>
-    <section id="upload-section">
+    <main_body class="main_upload">
+        <section id="upload-section">
    
-        <div id="upload">
-            <div id="upload-img1">
-              <i class="fas fa-cloud-upload-alt fa-10x"></i>
-            </div> 
-            <div id="upload-form">
-                <br>
-                <h1 class="font-design-h"><i class="fas fa-upload"></i> Upload Book</h1>
-                <hr>
-                <p id="upload-msg"></p>
-                <form id="upld-form" action="/upload" method="post" enctype="multipart/form-data" >
-                   <input class="upload-input" name="book_name" maxlength='100' type="text" placeholder="Enter the book name" required>
-                   <div class="auth_div">
-                       <span>Authors</span>
-                       <div class="author_div"></div>
-                   </div>
-                   <div class="authorInput">
-                     <input class="upload-input authorname" type="text" name="author_name" value="" placeholder="Name of the author (optional)">
-                     <button type="button" onclick="addauthor()"><i class="fas fa-solid fa-plus"></i></button>
-                   </div>
-                   <input type="text" name="authors" hidden >
-                   <input class="upload-input" name="publisher" maxlength='100' type="text" placeholder="Enter the publisher (optional)" >
-                   <input type="text" name="authors" hidden>
-                   <input type="text" name="categories" hidden required>
-                   <div class="drag-area">
-                       <div id="hide_IMG">
-                           <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
-                           <header>Drag & Drop to Upload book cover</header>
-                           <p>OR</p>
-                           <button onclick="chooseIMG()" type="button">Browse Image</button>
-                           <input  type="file" name="image_file" accept="image/*" hidden>
+            <div id="upload">
+                <div id="upload-img1">
+                  <i class="fas fa-cloud-upload-alt fa-10x"></i>
+                </div> 
+                <div id="upload-form">
+                    <br>
+                    <h1 class="font-design-h"><i class="fas fa-upload"></i> Upload Book</h1>
+                    <hr>
+                    <p id="upload-msg"></p>
+                    <form id="upld-form" action="/upload" method="post" enctype="multipart/form-data" >
+                       <input class="upload-input" name="book_name" maxlength='100' type="text" placeholder="Enter the book name" required>
+                       <div class="auth_div">
+                           <span>Authors</span>
+                           <div class="author_div"></div>
                        </div>
-                       <div id="show_IMG">
-                           <img id="book-file-img">
-                           <button type="button" onclick="cancleImg()" id="cancle-image" ><i class="fas fa-times"></i></button>
+                       <div class="authorInput">
+                         <input class="upload-input authorname" type="text" name="author_name" value="" placeholder="Name of the author (optional)">
+                         <button type="button" onclick="addauthor()"><i class="fas fa-solid fa-plus"></i></button>
                        </div>
-                   </div>
-                   <div class="cat_div">
-                    <span>Book categories</span>
-                    <div  class="catgry_div">
-                    </div>
-                   </div>
-                   
-                   <script>
-                        function ct_refresher() {
-                            $(".cat_div span").css("display","block")
-                            ctHtml=`<%- include("../book-genres/categories_upt") -%>
+                       <input class="upload-input" name="publisher" maxlength='100' type="text" placeholder="Enter the publisher (optional)" >
+                       <input type="text" name="authors" hidden>
+                       <input type="text" name="categories" hidden required>
+                       <div class="drag-area">
+                           <div id="hide_IMG">
+                               <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                               <header>Drag & Drop to Upload book cover</header>
+                               <p>OR</p>
+                               <button onclick="chooseIMG()" type="button">Browse Image</button>
+                               <input  type="file" name="image_file" accept="image/*" hidden>
+                           </div>
+                           <div id="show_IMG">
+                               <img id="book-file-img">
+                               <button type="button" onclick="cancleImg()" id="cancle-image" ><i class="fas fa-times"></i></button>
+                           </div>
+                       </div>
+                       <div class="cat_div">
+                        <span>Book categories</span>
+                        <div  class="catgry_div">
+                        </div>
+                       </div>
+                       
+                       <script>
+                            function ct_refresher() {
+                                $(".cat_div span").css("display","block")
+                                ctHtml=`<%- include("../book-genres/categories_upt") -%>
+                                <%- include("../book-genres/sub-category_upt/ba") -%>
+                                <%- include("../book-genres/sub-category_upt/bsc") -%>
+                                <%- include("../book-genres/sub-category_upt/btech") -%>
+                                <%- include("../book-genres/sub-category_upt/competetive") -%>
+                                <%- include("../book-genres/sub-category_upt/diploma") -%>
+                                <%- include("../book-genres/sub-category_upt/diploma") -%>
+                                <%- include("../book-genres/sub-category_upt/pre_primary") -%>
+                                <%- include("../book-genres/sub-category_upt/primary") -%>
+                                <%- include("../book-genres/sub-category_upt/secondary") -%>
+                                <%- include("../book-genres/sub-category_upt/post_graduation") -%>
+                                <%- include("../book-genres/sub-category_upt/others") -%>`
+                                $(".category-selection-div").html(ctHtml);
+                            }
+                           
+                       </script>
+                        <div class="category-selection-div">
+                            <%- include("../book-genres/categories_upt") -%>
                             <%- include("../book-genres/sub-category_upt/ba") -%>
                             <%- include("../book-genres/sub-category_upt/bsc") -%>
                             <%- include("../book-genres/sub-category_upt/btech") -%>
@@ -172,68 +192,53 @@
                             <%- include("../book-genres/sub-category_upt/primary") -%>
                             <%- include("../book-genres/sub-category_upt/secondary") -%>
                             <%- include("../book-genres/sub-category_upt/post_graduation") -%>
-                            <%- include("../book-genres/sub-category_upt/others") -%>`
-                            $(".category-selection-div").html(ctHtml);
-                        }
+                            <%- include("../book-genres/sub-category_upt/others") -%>
+                        </div>
                        
-                   </script>
-                    <div class="category-selection-div">
-                        <%- include("../book-genres/categories_upt") -%>
-                        <%- include("../book-genres/sub-category_upt/ba") -%>
-                        <%- include("../book-genres/sub-category_upt/bsc") -%>
-                        <%- include("../book-genres/sub-category_upt/btech") -%>
-                        <%- include("../book-genres/sub-category_upt/competetive") -%>
-                        <%- include("../book-genres/sub-category_upt/diploma") -%>
-                        <%- include("../book-genres/sub-category_upt/diploma") -%>
-                        <%- include("../book-genres/sub-category_upt/pre_primary") -%>
-                        <%- include("../book-genres/sub-category_upt/primary") -%>
-                        <%- include("../book-genres/sub-category_upt/secondary") -%>
-                        <%- include("../book-genres/sub-category_upt/post_graduation") -%>
-                        <%- include("../book-genres/sub-category_upt/others") -%>
+                       <button type="button" class="btn_adding_category" onclick="addcategory()"><i class="fas fa-solid fa-plus"></i> Add this category</button>
+                       
+                       <input class="upload-input" type="file" name="pdf_file" value="" id="file-input" accept=".pdf,.zip,.rar,.7zip" required>
+                       <br>
+                    </form>
+                    <p id="progress-percent" style="display:none;margin-left:8px;margin-right:8px;">0%</p>
+                    <div class="progress" style="display:none;margin-left:8px;margin-right:8px;">
+                       <div class="progress-bar progress-bar-striped progress-bar-animated bar progress-width" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
                     </div>
-                   
-                   <button type="button" class="btn_adding_category" onclick="addcategory()"><i class="fas fa-solid fa-plus"></i> Add this category</button>
-                   
-                   <input class="upload-input" type="file" name="pdf_file" value="" id="file-input" accept=".pdf,.zip,.rar,.7zip" required>
-                   <br>
-                </form>
-                <p id="progress-percent" style="display:none;margin-left:8px;margin-right:8px;">0%</p>
-                <div class="progress" style="display:none;margin-left:8px;margin-right:8px;">
-                   <div class="progress-bar progress-bar-striped progress-bar-animated bar progress-width" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
+                    <div class="alert alert-success status" style="display:none;margin-left:8px;margin-right:8px;" role="alert">
+                        Your files is successfully uploaded !
+                    </div>
+                    <button id="upload-btn" form="upld-form" type="submit">Upload</button>
                 </div>
-                <div class="alert alert-success status" style="display:none;margin-left:8px;margin-right:8px;" role="alert">
-                    Your files is successfully uploaded !
-                </div>
-                <button id="upload-btn" form="upld-form" type="submit">Upload</button>
+                <div id="upload-img2">
+                    <i class="fas fa-cloud-upload-alt fa-10x"></i>
+                </div>   
             </div>
-            <div id="upload-img2">
-                <i class="fas fa-cloud-upload-alt fa-10x"></i>
-            </div>   
-        </div>
-    </section>
-    <br><br>
-    <section id="help">
-        
-        <button class="font-design-b" id="f-btn" onclick="showfeed()"><i class="fas fa-pen"></i> feedback</button>
-        <div>
-          <form class="submitfd" id="feedback">
-              <p class="font-design-p">Help us to imrove our site</p>
-              <hr>
-              <textarea name="text" id="feedtxt" cols="6" rows="6" placeholder="Type here" required></textarea>
-              <button class="font-design-b feed-btn" id="fd" type="submit">Submit</button>
-              <hr>
-          </form>
-        </div>
-      
-    </section>
+        </section>
+        <br><br>
+        <section id="help">
+            
+            <button class="font-design-b" id="f-btn" onclick="showfeed()"><i class="fas fa-pen"></i> feedback</button>
+            <div>
+              <form class="submitfd" id="feedback">
+                  <p class="font-design-p">Help us to imrove our site</p>
+                  <hr>
+                  <textarea name="text" id="feedtxt" cols="6" rows="6" placeholder="Type here" required></textarea>
+                  <button class="font-design-b feed-btn" id="fd" type="submit">Submit</button>
+                  <hr>
+              </form>
+            </div>
+          
+        </section>
+    </main_body>
+    
     <div id="snackbar"></div>
     <script src="/scripts/partials/select-upt.js" charset="utf-8"></script>
     <footer>
         <div>
-            <% if(status=="block"){ %>
+            <notauth>
                 <button onclick="location.href='/login'">Login</button>
                 <button onclick="location.href='/signup'">SignUp</button>
                 <button onclick="location.href='/auth/google'" class="google"><i class="fab fa-google"></i> SignIn</button>
-            <% } %>            
+            </notauth>            
         </div>
   <%- include("../partials/footer") -%>      

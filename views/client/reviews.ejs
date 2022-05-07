@@ -4,10 +4,8 @@
 <title>Reviews -<%=book.book_name%></title>
 <meta name="description" content="Reviews -<%=book.book_name%>">
 </head>     
-<style>
-    
-</style>
-<body onload='checkAuth("<%=status%>")'>
+
+<body >
 
     <div class="nanobar my-class" id="my-id" style="position: fixed;">
       <div class="bar"></div>
@@ -34,12 +32,13 @@
                 </div>  
                 <ul id="navbar-ul2">
                     <div id="hide-access">
-                      <% if(status=="block"){ %>
-                        <button onclick="location.href='/signup'"><i class="fas fa-sign-in-alt"></i> SignUp</button>
-                        <button onclick="location.href='/login'">Login</button>
-                      <% } else {%>
-                        <button onclick="location.href='/logout'"><i class="fas fa-sign-out-alt"></i> Logout</button>
-                      <% } %>
+                       <notauth>
+                            <button onclick="location.href='/signup'"><i class="fas fa-sign-in-alt"></i> SignUp</button>
+                            <button onclick="location.href='/login'">Login</button>
+                        </notauth>
+                        <auth>
+                            <button onclick="location.href='/logout'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                        </auth>
                     </div>
                     <button onclick="location.href='/upload'"><i class="fas fa-plus"></i> Upload</button>
                 </ul>
@@ -91,98 +90,102 @@
                 <%- include("../drop-links/sidebar_links") -%>
             </div>
             <div class="side-login">
-                <% if(status=="block"){ %>
+                <notauth>
                   <button onclick="location.href='/login'">Login</button>
                   <button onclick="location.href='/signup'"><i class="fas fa-sign-in-alt"></i> SignUp</button>
-                <% } else {%>
-                  <button onclick="location.href='/logout'"><i class="fas fa-sign-out-alt"></i> Logout</button>
-                <% } %>
+                </notauth>
+                <auth>
+                    <button onclick="location.href='/logout'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </auth>
             </div>
         </div>
     </div>
     
     <a onclick="history.back()" style="position:relative;left:30px;top:15px;" id="arrow" ><i style="color:#6083e4;" class="fas fa-long-arrow-alt-left fa-4x"></i></a>
-
-    <section id="review-section">
-        <br>
-        <div id="review">
-            <div id="review-img1">
-                <i class="fas fa-comments"></i>
-            </div>
-            <div id=review-form>
-                <form id="post-review" action="/reviews" method="post">
-                    <input id="review-msg-input" type="text" name="" placeholder="type your review .." required>
-                    <input id="book_id_reviewed" value="<%=book.id%>" hidden>
-                    <button type="submit">Post</button>
-                </form>
-                <hr>
-                <div id="comments">
-                   <% if(book.reviews!=""){ %>
-                      <% book.reviews.forEach(function(review){ %>
-                        <div class="comment-post">
-                            <% const options = { month: 'long',day: 'numeric', year:'numeric' };
-                                const date=review.createdAt.toLocaleDateString("en-US", options); 
-                            %>
-                         <p><%=review.message%><span>-by <%=review.user_commented%> •  <%=date%></span></p>
-                        </div>
-                        <script>
-                        
-                        </script>
-                      <% }) %>
-                   <% }else{ %>
-                        <div class="comment-post">
-                         <p id="no_review_yet">No reviews yet !!</p>
-                        </div>
-                        <!--<style>
-                            footer{
-                              text-align: center;
-                              background: none;
-                              position: fixed;
-                              bottom:0px;
-                              width: 100%;
-                            }
-                            @media(max-height:735px){
-                                 footer{
+    <main_body class="main_reviews">
+        <section id="review-section">
+            <br>
+            <div id="review">
+                <div id="review-img1">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <div id=review-form>
+                    <form id="post-review" method="post">
+                        <input id="review-msg-input" type="text" name="" placeholder="type your review .." required>
+                        <input id="book_id_reviewed" value="<%=book.id%>" hidden>
+                        <button type="submit">Post</button>
+                    </form>
+                    <hr>
+                    <div id="comments">
+                       <% if(book.reviews.length>0){ %>
+                          <% book.reviews.forEach(function(review){ %>
+                            <div class="comment-post">
+                                <% const options = { month: 'long',day: 'numeric', year:'numeric' };
+                                    const date=review.createdAt.toLocaleDateString("en-US", options); 
+                                %>
+                             <p><%=review.message%><span>-by <%=review.user_commented%> •  <%=date%></span></p>
+                            </div>
+                            <script>
+                            
+                            </script>
+                          <% }) %>
+                       <% }else{ %>
+                            <div class="comment-post">
+                             <p id="no_review_yet">No reviews yet !!</p>
+                            </div>
+                            <!--<style>
+                                footer{
                                   text-align: center;
                                   background: none;
-                                  position: relative;
-                                  bottom:-15px;
+                                  position: fixed;
+                                  bottom:0px;
                                   width: 100%;
                                 }
-                            }
-                        </style>-->
-                   <% } %>
-                   
-                      
+                                @media(max-height:735px){
+                                     footer{
+                                      text-align: center;
+                                      background: none;
+                                      position: relative;
+                                      bottom:-15px;
+                                      width: 100%;
+                                    }
+                                }
+                            </style>-->
+                       <% } %>
+                       
+                          
+                    </div>
+                    
                 </div>
-                
+                <div id="review-img2">
+                    <i class="fas fa-comments"></i>
+                </div>
             </div>
-            <div id="review-img2">
-                <i class="fas fa-comments"></i>
+            <br>
+        <div id="help">
+            <button class="font-design-b" id="f-btn" onclick="showfeed()"><i class="fas fa-pen"></i> feedback</button>
+            <div>
+              <form class="submitfd" id="feedback">
+                  <p class="font-design-p">Help us to imrove our site</p>
+                  <hr>
+                  <textarea name="text" id="feedtxt" cols="6" rows="6" placeholder="Type here" required></textarea>
+                  <button class="font-design-b feed-btn" id="fd" type="submit">submit</button>
+                  <hr>
+                  <br>
+              </form>
             </div>
         </div>
-    </section>
-    <br>
-    <section id="help">
-        <button class="font-design-b" id="f-btn" onclick="showfeed()"><i class="fas fa-pen"></i> feedback</button>
-        <div>
-          <form class="submitfd" id="feedback">
-              <p class="font-design-p">Help us to imrove our site</p>
-              <hr>
-              <textarea name="text" id="feedtxt" cols="6" rows="6" placeholder="Type here" required></textarea>
-              <button class="font-design-b feed-btn" id="fd" type="submit">submit</button>
-              <hr>
-              <br>
-          </form>
-        </div>
-    </section>
+        </section>
+        
+    </main_body>
+    
     <footer>
         <div>
-            <% if(status=="block"){ %>
+            <notauth>
                 <button onclick="location.href='/login'">Login</button>
                 <button onclick="location.href='/signup'">SignUp</button>
                 <button onclick="location.href='/auth/google'" class="google"><i class="fab fa-google"></i> SignIn</button>
-            <% } %>            
+             </notauth>        
         </div>
   <%- include("../partials/footer") -%>      
     

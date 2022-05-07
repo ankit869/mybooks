@@ -1,3 +1,13 @@
+@media(min-height:900px){
+    #pdfCreator{
+        height:100vh;
+    }
+}
+@media(min-height:680px){
+    #finalReadyPdf{
+        height:100vh;
+    }
+}
 #scanner_section{
     width:80%;
     margin:auto;
@@ -238,8 +248,8 @@ figure{
 }
 .preview {
     overflow: hidden;
-    width: 220px; 
-    height: 220px;
+    width: 150px !important; 
+    height: 220px !important;
     margin: 15px;
     margin-top:22px;
     margin-bottom:8px;
