@@ -292,3 +292,13 @@ font-size: 20px;
 .btn_adding_category:hover{
   transform: scale(1.05)
 }
+
+@media(max-width:550px){
+   .tag_input{
+     display:flex;
+     flex-direction: column;
+   }
+   .tagsinput{
+     width:95%;
+   }
+}

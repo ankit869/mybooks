@@ -55,7 +55,7 @@ const userSchema = new mongoose.Schema({
             return this.ismember;
         }
     },
-    searchtag: { type: String,required: true},
+    searchtag: { type: String},
     SW_subscription: JSON,
     account_record:{ 
         createdAt: { type: Date, default: Date.now, required: true },

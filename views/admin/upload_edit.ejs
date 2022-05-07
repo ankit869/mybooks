@@ -149,40 +149,46 @@
                                 padding:5px;
                             }
                         </style>
+                        <div>
+                            
+                        </div>
                         <div class="tagsinput">
                             <div>
-                                <div class="tgtype">
-                                    <label for="tgtype">Select tag type</label>
-                                    <select id="tgtype" onchange="tagSelection(this)">
-                                    <option value="featuredBook">featuredBook</option>
-                                    <option value="topBook">topBook</option>
-                                    <option value="mostCommented">mostCommented</option>
-                                    <option value="mostLiked">mostLiked</option>
-                                    <option value="recentUpload" >recentUpload</option>
-                                    <option value="mostPurchased" >mostPurchased</option>
-                                    <option value="mostFamous">mostFamous</option>
-                                    <option value="restrictedContent">restrictedContent</option>
-                                    <option value="speciallyForChildrens">speciallyForChildrens</option>
-                                    <option value="speciallyForStudents">speciallyForStudents</option>
-                                    <option value="outDated">outDated</option>
-                                    <option value="custom">custom</option>
-                                    </select>
+                                <div class="tag_input">
+                                    <div class="tgtype">
+                                        <label for="tgtype">Select tag type</label>
+                                        <select id="tgtype" onchange="tagSelection(this)">
+                                        <option value="featuredBook">featuredBook</option>
+                                        <option value="topBook">topBook</option>
+                                        <option value="mostCommented">mostCommented</option>
+                                        <option value="mostLiked">mostLiked</option>
+                                        <option value="recentUpload" >recentUpload</option>
+                                        <option value="mostPurchased" >mostPurchased</option>
+                                        <option value="mostFamous">mostFamous</option>
+                                        <option value="restrictedContent">restrictedContent</option>
+                                        <option value="speciallyForChildrens">speciallyForChildrens</option>
+                                        <option value="speciallyForStudents">speciallyForStudents</option>
+                                        <option value="outDated">outDated</option>
+                                        <option value="custom">custom</option>
+                                        </select>
+                                    </div>
+                                    <div class="tgpriority">
+                                        <label for="tgpriority">Select tag priority</label>
+                                        <select id="tgpriority">
+                                        <option value="1" selected>1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                        </select>
+                                    </div>  
                                 </div>
-                                <div class="tgpriority">
-                                    <label for="tgpriority">Select tag priority</label>
-                                    <select id="tgpriority">
-                                    <option value="1" selected>1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10</option>
-                                    </select>
-                                </div>  
+                                
     
                                 <button type="button" onclick="addtag()"><i class="fas fa-solid fa-plus"></i> Add</button>
                             </div>
