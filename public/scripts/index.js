@@ -429,7 +429,7 @@ window.addEventListener('load', () => {
         success: function(response) {
             if(response!="unauthorized"){
                 $("#icon").html(`<img src="${response.userimage}" width="42px" title="account details" style="border:3px solid #6083e4;border-radius:50%;position:relative;bottom:9px;" onclick="location.href='/user/${response._id}'" onerror="/images/user-icon.png">`)
-                $(".nav-icon").html(`<img src="${response.userimage}" title="account details" width="38px" style="border:3px solid #6083e4;border-radius:50%;position:relative;top:10px;left:12px;" onclick="location.href='/user/${response._id}'" onerror="/images/user-icon.png"`)
+                $(".nav-icon").html(`<img src="${response.userimage}" width="42px" title="account details" style="position:relative;top:7px;left:10px;border:3px solid #6083e4;border-radius:50%;position:relative;bottom:9px;" onclick="location.href='/user/${response._id}'" onerror="/images/user-icon.png">`)
                 response.fav_books.forEach(function(favBook){
                     $("."+favBook.book_id).css("color","rgb(204,0, 85)")   
                     $("."+favBook.book_id+"-fav").css("color","rgb(204,0, 85)")
