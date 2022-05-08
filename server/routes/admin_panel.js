@@ -1516,10 +1516,10 @@ router.get('/admin-signup',async (req, res) => {
             }
         } 
            
-        // if (isAdmin && isUnicode) {
+        if (isAdmin && isUnicode) {
             res.render("admin/admin_signup", { message: "Register the user as admin", mail: "", unicode: "", key: "", otp: "", isvalid: "" })
             
-        // }else{res.render("admin/admin_login", { message: "You are not authorized to access premium database!! ", mail: req.user.username})}
+        }else{res.render("admin/admin_login", { message: "You are not authorized to access premium database!! ", mail: req.user.username})}
     } else {
         res.render("client/login", { message: "You will need to authenticate before proceeding to admin's panel " })
     }
@@ -1573,7 +1573,7 @@ router.post('/admin-signup',async (req, res) => {
                     isAdmin = true
                 }
             } 
-            // if (isAdmin && isUnicode) {
+            if (isAdmin && isUnicode) {
                 var OTP = Number(req.body.otp)
                 
                 await ADMINUSER.findOne({ username: req.body.username }, (err, admin) => {
@@ -1619,9 +1619,9 @@ router.post('/admin-signup',async (req, res) => {
                 res.send({ message: "Error !! unauthorized access", status: "401" })
             }
                 
-        // }else{
-            // res.send({ message: "Error !! unauthorized access", status: "401" })
-        // }
+        }else{
+            res.send({ message: "Error !! unauthorized access", status: "401" })
+        }
     } catch (err) {
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
