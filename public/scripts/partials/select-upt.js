@@ -66,7 +66,7 @@ function initialize_selection(){
         if(o.firstElementChild.name=="category"){
           category=selected.innerHTML;
           subcategory=""
-          if(getCookie("temp_category").indexOf('temp_category=')){
+          if(getCookie("temp_category")){
             temp_category=getCookie("temp_category")
             if($("input[name='category']:checked").val()!=temp_category){
                $("input[name='sub_category']:checked").prop('checked', false)
