@@ -45,7 +45,7 @@ const userSchema = new mongoose.Schema({
             return this.isGoogleUser==true;
         }
     },
-    username: { type: String,required: true,index:{unique:true}},
+    username: { type: String,required: true},
     isPremiumUser: { type: Boolean,required: true,default:false },
     fav_books: [favbooksSchema],
     notifications: [notificationSchema],
