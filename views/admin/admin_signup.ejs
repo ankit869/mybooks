@@ -53,7 +53,7 @@
                     <h1 class="font-design-h"><i class="fas fa-sign-in-alt"></i> Admin-Register</h1>
                     <hr>
                     <p id="login-msg"><%=message%></p>
-                    <form id="log-form" action="/admin-signup" class="admin-signup" method="post">
+                    <form id="log-form" action="/admin-signup" class="admin-signup-form" method="post">
                        
                        <input name="username" id="admin_emailInput"  value="<%=mail%>" type="text" placeholder="Enter  email" required>
                        <button type="button"  onclick="sendotp_tome()" id="otp-btn">Send OTP</button>
@@ -71,24 +71,13 @@
                 <div id="log-img2">
                     <i class="fas fa-unlock-alt fa-10x"></i>
                 </div>
+                
             </div>
             
         </section>
-        <br><br>
-        <section id="help">
-            <button class="font-design-b" id="f-btn" onclick="showfeed()"><i class="fas fa-pen"></i> feedback</button>
-            <div>
-              <form class="submitfd" id="feedback">
-                  <p class="font-design-p">Help us to imrove our site</p>
-                  <hr>
-                  <textarea name="text" id="feedtxt" cols="6" rows="6" placeholder="Type here" required></textarea>
-                  <button class="font-design-b feed-btn" id="fd" type="submit">submit</button>
-                  <hr>
-              </form>
-            </div>
-        </section>
+       
     </main_body>
-    
+    <br>
     <div style="transform:scale(0.9);" id="container-51fe2e96c8f38b505accab9b34487033"></div>
 
     <footer>
@@ -102,6 +91,7 @@
 </body>
 <script data-ad-client="ca-pub-8089999240146269" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <script src="https://images.dmca.com/Badges/DMCABadgeHelper.min.js"> </script>
+<script src="/scripts/index.js" charset="utf-8"></script>
 
 <script src="https://www.google.com/recaptcha/api.js"></script>
 

@@ -80,7 +80,8 @@ router.get("/auth/google/mybooks",passport.authenticate("google", { failureRedir
         }
        
         if (NewUser) {
-            USER.findOneAndUpdate({ username: req.user.username }, { $set: { searchtag: _.trim(_.toLower(req.user.name)).replace(/[&\/\\#,+()$~%.^@!_=`'":*?<>{} ]/g, '') + "-" + req.user.email } }, { new: true });
+            user.searchtag= _.trim(_.toLower(req.user.name)).replace(/[&\/\\#,+()$~%.^@!_=`'":*?<>{} ]/g, '') + "-" + req.user.username;
+            user.save();
             sendmail('ankitkohli181@gmail.com', 'New User logged in (google-mybooks)', 'name -' + req.user.name + ' , ' + 'email -' + req.user.username , "")
         }
         
@@ -963,12 +964,13 @@ router.post('/addTofav/:book_id',async (req, res) => {
 router.post('/review/:book_id/:message',async (req, res) => {
     try {
 
-        day = date();
         if (req.isAuthenticated()) {
             const review = new REVIEW({
+                user_id:req.user.id,
                 user_commented: req.user.name,
                 message: req.params.message,
             })
+            
             let book=await BOOK.findOne({ _id: req.params.book_id });
                 
             if(book){
@@ -1254,11 +1256,12 @@ router.get("/error.log",(req, res)=>{
 //                 obj=new BOOK_UPLOAD({
 //                     bookId:book.id
 //                 })
-//                 USER.updateOne({_id:"61a4e65fe965ec63c43a6eae"},{$push:{"account_record.booksUploaded":obj}},(err)=>{
+//                 USER.updateOne({_id:"6277b97f9060228dd4e29abd"},{$push:{"account_record.booksUploaded":obj}},(err)=>{
 //                     console.log(err)
 //                 })
 //             })
 //         })
     
 // })
+
 module.exports=router

@@ -7,7 +7,7 @@ mongoose.connect("mongodb+srv://admin-ankit:root@cluster0.rxzj6.mongodb.net/mybo
 mongoose.set("useCreateIndex", true)
 
 const favbooksSchema = new mongoose.Schema({
-    book_id: { type: mongoose.Schema.Types.ObjectId, ref: 'book', required: true, index:{unique:true}},
+    book_id: { type: mongoose.Schema.Types.ObjectId, ref: 'book', required: true},
     dateAdded:{ type: Date, default: Date.now, required: true }
 })
 const notificationSchema = new mongoose.Schema({
@@ -22,14 +22,14 @@ const notificationSchema = new mongoose.Schema({
 })
 
 const bookUploaded= new mongoose.Schema({
-    bookId:{ type: mongoose.Schema.Types.ObjectId, ref: 'book', required: true, index:{unique:true}},
+    bookId:{ type: mongoose.Schema.Types.ObjectId, ref: 'book', required: true},
     uploadDate:{ type: Date, default: Date.now, required: true }
 })
 const userSchema = new mongoose.Schema({
     name: { type: String,required: true} ,
     isGoogleUser:{type: Boolean,required: true,default: false},
     googleId: { 
-        type:String,index:{unique:true},
+        type:String,
         required:function() {
             return this.isGoogleUser==true;
         }
@@ -93,7 +93,7 @@ userSchema.plugin(passportLocalMongoose);
 userSchema.plugin(findOrCreate)
 
 const apiSchema = new mongoose.Schema({
-    userId:{ type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true, index:{unique:true}},
+    userId:{ type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true},
     api_key: { type:String,required:true,index:{unique:true} },
     api_status: {
         type:String,
@@ -123,7 +123,7 @@ const docSchema = new mongoose.Schema({
 
 const adminSchema = new mongoose.Schema({
     username: { type: String,required: true, index:{unique:true}},
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true, index:{unique:true}},
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true},
     unicode: { type: String,required: true},
     createdAt: { type: Date, default: Date.now, required: true },
     lastLogin: { type: Date, default: Date.now, required: true },
@@ -138,6 +138,7 @@ const adminSchema = new mongoose.Schema({
 
 const reviewSchema = new mongoose.Schema({
     user_commented: { type: String,required: true },
+    user_id:{ type: mongoose.Schema.Types.ObjectId, ref: 'user',required: true},
     createdAt: { type: Date, default: Date.now, required: true },
     message: { type: String,required: true }
 })

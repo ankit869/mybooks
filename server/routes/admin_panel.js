@@ -1499,44 +1499,30 @@ router.get('/admin-login',async (req, res) => {
 })
 
 
-router.get('/admin-signup', (req, res) => {
-    // redis_setkey(req.ip+'-currloc', '/admin-signup')
-    // if (req.isAuthenticated()) {
-    //     unicode = req.cookies['mybooks_unicode']
-    //     adminkey = req.cookies['mybooks_adminkey']
-    //     var isUnicode = false
-    //     var isAdmin = false
-    //     const admin_promise = new Promise((resolve, reject) => {
-    //         ADMINUSER.findOne({ userId: req.user.id }, (err, user) => {
-    //             if(err){
-    //                 log(error, path.join(__dirname,'../error.log'))
-    //                 res.redirect("/error")
-    //             }else{
-    //                 if (user) {
-    //                     bcrypt.compare(user.unicode, unicode, (err, result) => {
-    //                         if (result) {
-    //                             isUnicode = true
-    //                         }
-    //                         bcrypt.compare(process.env.ADMIN_KEY, adminkey, (err, result) => {
-                                
-    //                             if (result) {
-    //                                 isAdmin = true
-    //                             }
-    //                             resolve(true)
-    //                         })
-    //                     })
-    //                 } 
-    //             }
-    //         })
-    //     })
-    //     admin_promise.then((result) => {
-    //         // if (isAdmin && isUnicode) {
-                res.render("admin/admin_signup", { message: "Register the user as admin", mail: "", unicode: "", key: "", otp: "", isvalid: "" })
-            // }
-    //     })
-    // } else {
-    //     res.render("client/login", { message: "You will need to authenticate before proceeding to admin's panel " })
-    // }
+router.get('/admin-signup',async (req, res) => {
+    redis_setkey(req.ip+'-currloc', '/admin-signup')
+    if (req.isAuthenticated()) {
+        unicode = req.cookies['mybooks_unicode']
+        adminkey = req.cookies['mybooks_adminkey']
+        var isUnicode = false
+        var isAdmin = false
+        let adminuser=await ADMINUSER.findOne({ userId: req.user.id });  
+        if (adminuser) {
+            if (await bcrypt.compare(adminuser.unicode, unicode)) {
+                isUnicode = true
+            }
+            if (await bcrypt.compare(process.env.ADMIN_KEY, adminkey)) {
+                isAdmin = true
+            }
+        } 
+           
+        // if (isAdmin && isUnicode) {
+            res.render("admin/admin_signup", { message: "Register the user as admin", mail: "", unicode: "", key: "", otp: "", isvalid: "" })
+            
+        // }else{res.render("admin/admin_login", { message: "You are not authorized to access premium database!! ", mail: req.user.username})}
+    } else {
+        res.render("client/login", { message: "You will need to authenticate before proceeding to admin's panel " })
+    }
 
 })
 
@@ -1571,47 +1557,71 @@ router.post("/admin_register", async (req, res) => {
 })
 
 router.post('/admin-signup',async (req, res) => {
+
     try {
         if (req.isAuthenticated()) {
-            var OTP = Number(req.body.otp)
-            
-            await ADMINUSER.findOne({ username: req.body.username }, (err, admin) => {
-                if (admin) {
-                    res.send({ message: "Error: This user is already being registered" });return;
+            unicode = req.cookies['mybooks_unicode']
+            adminkey = req.cookies['mybooks_adminkey']
+            var isUnicode = false
+            var isAdmin = false
+            let adminuser=await ADMINUSER.findOne({ userId: req.user.id });  
+            if (adminuser) {
+                if (await bcrypt.compare(adminuser.unicode, unicode)) {
+                    isUnicode = true
                 }
-            })
-            
-            
-            if (await validateOTP('ankitkohli181@gmail.com', req.body.otp) || otp.validateOTP('ankitkohli181@gmail.com', OTP)) {
-                if (req.body.adminkey == process.env.ADMIN_KEY) {
-                    USER.findOne({ username: req.body.username }, (err, user) => {
-                        if (user) {
-                            admin=new ADMINUSER({
-                                username:req.body.username,
-                                userId:user.id,
-                                unicode:req.body.unicode,
-                            })
-                            user.ismember=true
-                            user.membershipType="admin"
-                            user.searchTag+="-member-admin"
-                            admin.save();
-                            res.send({ message: "Successfully registered the user as admin" })
-                        }else {
-                            res.send({ message: "USER NOT FOUND IN THE DATABASE", status: "401" })
-                        }
-                        
-                    })
-                        
+                if (await bcrypt.compare(process.env.ADMIN_KEY, adminkey)) {
+                    isAdmin = true
+                }
+            } 
+            // if (isAdmin && isUnicode) {
+                var OTP = Number(req.body.otp)
+                
+                await ADMINUSER.findOne({ username: req.body.username }, (err, admin) => {
+                    if (admin) {
+                        res.send({ message: "Error: This user is already being registered" });return;
+                    }
+                })
+                
+                
+                if (await validateOTP('ankitkohli181@gmail.com', req.body.otp) || otp.validateOTP('ankitkohli181@gmail.com', OTP)) {
+                    if (req.body.adminkey == process.env.ADMIN_KEY) {
+                        USER.findOne({ username: req.body.username }, (err, user) => {
+                            
+                            if (user) {
+                                admin=new ADMINUSER({
+                                    username:req.body.username,
+                                    userId:user.id,
+                                    unicode:req.body.unicode,
+                                })
+                                user.ismember=true
+                                user.membershipType="admin"
+                                user.searchtag=user.searchtag.replace("-member-naive_user","")
+                                user.searchtag+="-member-admin"
+                                user.save().then(() => {
+                                    admin.save().then(()=>{
+                                        res.send({ message: "Successfully registered the user as admin" })
+                                    });
+                                });
+                                
+                            }else {
+                                res.send({ message: "USER NOT FOUND IN THE DATABASE", status: "401" })
+                            }
+                            
+                        })
+                            
+                    } else {
+                        res.send({ message: "Unauthorized access !! enter correct key", status: "401" })
+                    }
                 } else {
-                    res.send({ message: "Unauthorized access !! enter correct key", status: "401" })
+                    res.send({ message: "Error !! please enter correct OTP", status: "401" })
                 }
-            } else {
-                res.send({ message: "Error !! please enter correct OTP", status: "401" })
+            }else{
+                res.send({ message: "Error !! unauthorized access", status: "401" })
             }
                 
-        }else{
-            res.send({ message: "Error !! unauthorized access", status: "401" })
-        }
+        // }else{
+            // res.send({ message: "Error !! unauthorized access", status: "401" })
+        // }
     } catch (err) {
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
@@ -1676,7 +1686,7 @@ router.post('/admin-login', async (req, res) => {
                             }
                                  
                         } else {
-                            res.send({ message: "Wrong credentials try to enter correct username", status: "401" })
+                            res.send({ message: "Wrong credentials !! you are not registred as admin", status: "401" })
                         }
                             
             

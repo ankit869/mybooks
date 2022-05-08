@@ -200,7 +200,10 @@ $(".admin-login-form").on("submit",(event)=>{
                 $("#login-msg").text((response.message))
                 window.location.href=response.authUrl
             }
-        }
+        },
+        error: function(response){
+            $("#login-msg").text("An Error Occurred !! tryagain later")
+          }
         
     });
 })
@@ -213,7 +216,10 @@ $(".admin-signup-form").on("submit",(event)=>{
         success: function(response) {
             
             $("#login-msg").text((response.message)) 
-        }
+        },
+        error: function(response){
+            $("#login-msg").text("An Error Occurred !! tryagain later")
+          }
         
     });
 })
@@ -253,7 +259,11 @@ $(".reset-form").on("submit",(event)=>{
                 $("#login-msg").text((response.message))
                 window.location.href="/login"
             }
+        },
+        error: function(response){
+            $("#login-msg").text("An Error Occurred !! tryagain later")
         }
+
     });
 })
 
@@ -418,8 +428,8 @@ window.addEventListener('load', () => {
         method: 'GET',
         success: function(response) {
             if(response!="unauthorized"){
-                $("#icon").html(`<img src="${response.userimage}" width="42px" title="account details" style="border-radius:50%;position:relative;bottom:9px;" onclick="location.href='/user/${response._id}'" alt="user-image">`)
-                $(".nav-icon").html(`<img src="${response.userimage}" title="account details" width="38px" style="border-radius:50%;position:relative;top:10px;left:12px;" onclick="location.href='/user/${response._id}'" alt="user-image">`)
+                $("#icon").html(`<img src="${response.userimage}" width="42px" title="account details" style="border:3px solid #6083e4;border-radius:50%;position:relative;bottom:9px;" onclick="location.href='/user/${response._id}'" onerror="/images/user-icon.png">`)
+                $(".nav-icon").html(`<img src="${response.userimage}" title="account details" width="38px" style="border:3px solid #6083e4;border-radius:50%;position:relative;top:10px;left:12px;" onclick="location.href='/user/${response._id}'" onerror="/images/user-icon.png"`)
                 response.fav_books.forEach(function(favBook){
                     $("."+favBook.book_id).css("color","rgb(204,0, 85)")   
                     $("."+favBook.book_id+"-fav").css("color","rgb(204,0, 85)")

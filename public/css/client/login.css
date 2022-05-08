@@ -1,6 +1,11 @@
 
 @media(min-height:500px){
-    main_body #login-section{
+    .main_login #login-section{
+        height:100vh;
+    }
+}
+@media(min-height:600px){
+    .main_admin_login #login-section{
         height:100vh;
     }
 }
