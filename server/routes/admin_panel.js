@@ -1074,7 +1074,7 @@ router.delete('/delete_under_review/:book_id',async (req, res) => {
                                 }
                                 sendNotification("Message from team", "Your book named '" + book.book_name + "' has been reviewed successfully and credits also got added to your account.", book.user_id)
                             }
-                            book.remove();
+                            rbook.remove();
                             indexUrl_overGoogle("https://mybooks-free.com/book/" + book.book_name)
                         }
                 })
