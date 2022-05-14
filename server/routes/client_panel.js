@@ -460,18 +460,23 @@ router.get('/book/:book', async(req, res) => {
     try {
         redis_setkey(req.ip+'-currloc', "/book/" + req.params.book)
         var isBook = false;
-        let book=await BOOK.findOne({ _id: req.params.book });;
-        if(book){
-            res.render("client/book_detail", {  book: book })
-            isBook = true;
-        }else{
+        BOOK.findOne({ _id: req.params.book }).then((book)=>{
+            if(book){
+                res.render("client/book_detail", {  book: book })
+                isBook = true;
+            }else{
+                res.redirect("/error")
+            }
+        
+        }).catch(async err=>{
             book=await BOOK.findOne({ book_name: req.params.book });
             if(book){ 
                 res.render("client/book_detail", {  book: book })  
             }else{
                 res.redirect("/error")
             }
-        }
+        });
+       
         
     } catch (err) {
         res.redirect("/error")
@@ -857,23 +862,30 @@ router.post("/upload", upload, async(req, res) => {
             searchTag = req.body.book_name
 
             let authors=[]
-            authorsArr=JSON.parse(req.body.authors)
-            authorsArr.forEach((author)=>{
-                searchTag+=("-"+author.name)
-                authors.push(author.name)
-            })
+            if(req.body.authors!=""){
+                authorsArr=JSON.parse(req.body.authors)
+                authorsArr.forEach((author)=>{
+                    searchTag+=("-"+author.name)
+                    authors.push(author.name)
+                })
+            }
+            
 
             let categories=[];
-            categoriesArr=JSON.parse(req.body.categories)
-            categoriesArr.forEach((ctgry)=>{
-                searchTag+=("-"+ctgry.category+"-"+ctgry.subcategory)
-                categories.push(
-                    new BOOK_CATEGORY({
-                        book_category:ctgry.category,
-                        book_subcategory:ctgry.subcategory
-                    })
-                )
-            })
+
+            if(req.body.categories!=""){
+                categoriesArr=JSON.parse(req.body.categories)
+                categoriesArr.forEach((ctgry)=>{
+                    searchTag+=("-"+ctgry.category+"-"+ctgry.subcategory)
+                    categories.push(
+                        new BOOK_CATEGORY({
+                            book_category:ctgry.category,
+                            book_subcategory:ctgry.subcategory
+                        })
+                    )
+                })
+            }
+            
             // authors=JSON.stringify
             searchTag = _.trim(_.toLower(searchTag)).replace(/[&\/\\#,+()$~%.^@!_=`'":*?<>{} ]/g, '');
             book = new BOOK({

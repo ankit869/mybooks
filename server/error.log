@@ -155,3 +155,9 @@
 2022.05.08, 12:37:35.0642 UTC -> NodeMailer ERROR
 2022.05.08, 12:38:04.0122 UTC -> NodeMailer ERROR
 2022.05.08, 12:38:04.0757 UTC -> NodeMailer ERROR
+2022.05.14, 13:04:43.0445 UTC -> CastError: Cast to ObjectId failed for value "Contemporary World Politics Class XII" (type string) at path "_id" for model "book"
+    at model.Query.exec (C:\Users\Dell\MY-CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\mongoose\lib\query.js:4498:21)
+    at model.Query.Query.then (C:\Users\Dell\MY-CODES\WEB_DEVELOPMENT\PROJECTS\PROJECT_13_MYBOOKS\node_modules\mongoose\lib\query.js:4592:15)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+2022.05.14, 13:04:44.0060 UTC -> NodeMailer ERROR
+2022.05.14, 13:04:44.0869 UTC -> NodeMailer ERROR
