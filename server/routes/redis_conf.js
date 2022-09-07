@@ -12,7 +12,7 @@ https://app.redislabs.com/ for cloud redis-data
 client = redis.createClient({
      host: 'containers-us-west-28.railway.app'
     ,port: 8051
-    ,auth_pass:'HzY7yNiLhpKWdHJUFZxi'
+    ,auth_pass:'f2oOm4ded25siaAZLR3x'
 });
 
 // schedule.scheduleJob("*/60 * * * *",async function() {
