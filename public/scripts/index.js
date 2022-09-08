@@ -5,6 +5,7 @@ window.getCookie = function(name) {
     if (match) return match[2];
 }
 
+document.body.style.zoom = "90%";
 
 $("auth").css("display", "none");
 $("notauth").css("display", "none");
