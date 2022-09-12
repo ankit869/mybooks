@@ -59,7 +59,7 @@ router.get('/img-api/images/:key', (req, res) => {
                             Id:img.id,
                             name:img.ImgOriginalName,
                             type:img.ImgOriginalType,
-                            url:`https:///mybooks-free.com/img-api/img/${user.api_key}/${img.id+(img.ImgOriginalType).replace("image/",".")}`
+                            url:`https://mybooks-free.com/img-api/img/${user.api_key}/${img.id+(img.ImgOriginalType).replace("image/",".")}`
 
                         }
                         imgs.push(image)
@@ -190,7 +190,7 @@ router.post('/img-api/upload', upld.array('images', 1000), (req, res) => {
                                                     Id:img.id,
                                                     OriginalName:filename,
                                                     OriginalType:filetype,
-                                                    ImgUrl:path.join("https://mybooks-free.com",`/img-api/img/${user.api_key}/${newName}`),
+                                                    ImgUrl:`https://mybooks-free.com/img-api/img/${user.api_key}/${newName}`,
                                                     uploadedAt:img.uploadedAt
                                                 })
                                                 
