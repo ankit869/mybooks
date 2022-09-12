@@ -190,7 +190,7 @@ router.post('/img-api/upload', upld.array('images', 1000), (req, res) => {
                                                     Id:img.id,
                                                     OriginalName:filename,
                                                     OriginalType:filetype,
-                                                    ImgUrl:path.join(__dirname,`/ApiImgs/${newName}`),
+                                                    ImgUrl:path.join("https://mybooks-free.com",`/img-api/img/${user.api_key}/${newName}`),
                                                     uploadedAt:img.uploadedAt
                                                 })
                                                 
