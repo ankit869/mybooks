@@ -1,0 +1,359 @@
+<%- include("../partials/header") -%>   
+ <link rel="stylesheet" href="/css/webapps/api.css">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+ <title>IMAGE HOSTING API | myBooks</title>
+ <meta name="description" content="Books API from mybooks">
+ <meta name="keywords" content="api books-api">
+
+<style>
+   
+    .DemoBtn{
+        position: fixed;
+        bottom:20px;
+        left:20px;
+        border:none;
+        border-radius: 20px;
+        font-size: 110%;
+        font-weight:bold;
+        background-color: #025bee;
+        color: #ffffff;
+        padding:8px;
+        z-index:10;
+    }
+    .documentation .api_usage{
+        width:60% !important;
+    }
+    .documentation .api_usage .doc_exp{
+        width:90% !important;
+    }
+    .demoVideo iframe{
+        width: 450px;
+        height:310px;
+    }
+
+    .upld_img{
+        display:none
+    }
+
+    .img_upload_viewer button:hover{
+        transform:scale(1.05);
+        position:relative;
+    }
+    .img_upload_viewer{
+        margin-bottom:12px;
+    }
+    .img_upload_viewer button{
+        padding:8px;
+        margin:6px;
+        border:none;
+        border-radius: 15px;
+        font-size:105%;
+        background-color: #4072ff;
+        color: #ffffff;
+        font-weight:bold;
+        transition:all 0.2s ease-in-out;
+    }
+
+
+    .img_upload_viewer .uv_container{
+        width:100%;
+        height:100%;
+        position: fixed;
+        z-index:10;
+        top:0;
+        display:none;
+        backdrop-filter: blur(2px);
+    }
+
+    .img_upload_viewer .uv_container .upld_img h4{
+        color:white;
+        text-align:left;
+        margin:15px;
+        width:90%;
+    }
+    .img_upload_viewer .uv_container .upld_img .closeBtn:hover{
+        transform: scale(1.1);
+        cursor:pointer;
+    }
+    .img_upload_viewer .uv_container .upld_img .closeBtn{
+        color: #DC3545;
+        position: absolute;
+        right:20px;
+        top:15px;
+        font-size:200%;
+    }
+
+    .img_upload_viewer .uv_container .upld_img{
+        width:1030px;
+        max-height:90vh;
+        position: fixed;
+        background-color: rgb(44, 44, 48);
+        border-radius:15px;
+        left: 50%;
+        top:10%;
+        transform: translate(-50%, 0);
+        z-index:10;
+
+    }
+
+    .img_upld_container .upld_input .upldImgBtn{
+        font-size:100%;
+        padding:5px;
+    }
+    .img_upld_container .upld_input p{
+        line-height:8px;
+    }
+    .img_upld_container .upld_input{
+        display:flex;
+        flex-direction: column;
+        color:white;
+    }
+    .UpldImgView .img_data img{
+        width:95px;
+        height:95px;
+        margin:5px;
+        border-radius: 5px;
+    }
+    .UpldImgView .img_data a:hover{
+        text-decoration:underline;
+    }
+    .UpldImgView .img_data i:hover{
+        transform: scale(1.1);
+        cursor:pointer;
+        
+    }
+    .UpldImgView .img_data i{
+        color:#703cff;
+        font-size:150%;
+        position: absolute;
+        right:-3px;
+        top:-3px;
+    }
+    .UpldImgView .img_data a{
+        font-size:120%;
+        text-decoration:none;
+        color:#3c87ff;
+        word-wrap: break;
+        padding:12px;
+    }
+    .UpldImgView{
+        max-height:calc(90vh - 260px);
+        overflow: auto;
+        margin:20px;
+    }
+    .UpldImgView .img_data{
+        width:90%;
+        margin:15px;
+        padding:5px;
+        text-align:left;
+        display:flex;
+        align-items:center;
+        position: relative;
+        border-radius: 10px;
+        background-color:rgb(56, 56, 66)
+
+    }
+    .img_upld_container{
+        width:90%;
+        height:160px;
+        border-radius: 10px;
+        border:2px dashed white;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+
+    }
+
+    .stop_body_scroll{
+        height: 100%;
+        overflow: hidden;
+    }
+
+
+    .dont-break-out {
+
+        /* These are technically the same, but use both */
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+
+        -ms-word-break: break-all;
+        /* This is the dangerous one in WebKit, as it breaks things wherever */
+        word-break: break-all;
+        /* Instead use this non-standard one: */
+        word-break: break-word;
+
+        /* Adds a hyphen where the word breaks, if supported (No Blink) */
+        -ms-hyphens: auto;
+        -moz-hyphens: auto;
+        -webkit-hyphens: auto;
+        hyphens: auto;
+
+    }
+
+
+    @media(max-width:990px){
+        .img_upload_viewer .uv_container .upld_img{
+           width:90%;
+        }
+    }
+    @media(max-width:1290px){
+        .multi_code{
+            display:flex;
+            flex-direction:column;
+            width:90%;
+        }
+        .doc_exp{
+            width:87%;
+        }
+        .documentation .api_usage{
+            width:90% !important;
+        }
+        .demoVideo{
+            display:none;
+        }
+    }
+</style>
+
+<body>
+    <button class="DemoBtn" onclick="window.location='/ImageApiDemo'"><i class="fa-solid fa-code"></i> View Demo</button>
+    <section id="api-section" align="center">
+        <div class="img_api_container">
+                <div class="apiHeading">
+                    <h1 class="apiHeading">Free Image Hosting API from <a href="http://mybooks-free.com" target="_blank">MyBooks</a></h1>
+                    <h5>Easily host and use your image files anywhere for free</h5>
+                </div>
+                <div class="apiToggler" align="center">
+                    <h2><i class="fas fa-key"></i> API</h2>
+                    <div id="wrapper" align="center">		
+                        <div class="switch">
+                            <input id="toggle-2" class="toggle toggle-round-flat" type="checkbox" onchange="toggle_img_api()"/>
+                            <label for="toggle-2" style="font-weight:bold"></label>
+                        </div> 
+                    </div>
+                </div>
+                <div class="apikey">
+                        <% if(api_user!="not_a_user") {%>
+                            <% if(api_user.api_status=="enabled"){ %>
+                                <code class="api_key_status"><%=api_user.api_key%><span><i onclick="copy_apikey('<%=api_user.api_key%>')" class="fas fa-link"></i></span></code>            
+                            <% } else { %>
+                                <code class="api_key_status">enable the api to get its access</code>
+                            <% } %>
+                        <% } else {%>
+                            <code class="api_key_status">please login to our site to get your api key</code>
+                        <% } %>
+                </div>
+                <div class="img_upload_viewer" align="center">
+                    <div class="upld_view_btn">
+                        <button class="viewUploadedImg" onclick="open_upload_dialog()">Upload file</button>
+                    </div>
+                    
+                    <div class="uv_container">
+                        <div class="upld_img">
+                            <i class="fa-regular fa-rectangle-xmark closeBtn" onclick="close_upload_dialog()"></i>
+                            <h4>Upload Images</h4>
+                            <div class="img_upld_container">
+                                <div class="upld_input">
+                                    <p class="DragStatus">Drag and Drop your Images Here</p>
+                                    <p>Or</p>
+                                    <form id="ApiUpldForm" enctype="multipart/form-data"></form>
+                                    <button class="upldImgBtn" onclick="choose_photos()">Choose File to upload</button>
+                                    <input type="file" id="api_imgs_input" name="images" onchange="upload(this.files)" accept="image/*" hidden multiple>
+                                </div>
+                               
+                            </div>
+                            <div class="UpldImgView">
+                               
+                                <!-- <div class="img_data">
+                                    <img src="https://picsum.photos/id/237/200/300" target="_blank" alt="">
+                                    <a href="#" class="upldImgLink dont-break-out">https://drive.google.com/drive/u/0/folders/1Q3t7nos4MbCnSzyZbzN8k9qr4uEdLbiS?lfhs=2/sdfskjfsdfsdf.jpeg</a>
+                                    <i class="fa-regular fa-copy"></i>
+                                </div> -->
+
+                            </div>
+                            
+                        </div>
+                    </div>   
+                </div>
+        </div>
+    </section>
+
+    <section>
+        <br>
+           <h4 align="center" style="color:#d4d4e0;margin-bottom:0px">&nbsp;&nbsp;<i class="fas fa-book"></i>&nbsp; API Documentation</h4>
+           <div class="documentation">
+            <div class="api_usage">
+                <p class="doc_exp">   
+<span>Authorizing requests and identifying your application</span>
+    
+Every request your application sends to the Image API needs to identify your application to our platform. 
+
+To identify your application, using the API key.
+STEP 1 . Login into the site
+STEP 2 . Now after getting login, click over enable button
+STEP 3 . Copy your API KEY from here and embed it into the given code.
+        
+<span>How to upload Images ?</span>
+
+You can Use AJAX request in javascript of your application to upload Image files and in response you will get url of those images.
+   
+<button type="button" class="btn btn-success" onclick="location.href='https://drive.google.com/drive/folders/1Q3t7nos4MbCnSzyZbzN8k9qr4uEdLbiS'">Download Demo Code</button>
+                </p>
+                <div class="demoVideo">
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item" src="/videos/imgApiDemo.mp4" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+               
+
+            <div class="multi_code">
+               <br>
+                   <div class="code_block">
+                        <i class="fas fa-copy copy_code"></i>
+                        <p class="code_outerp">HTTP GET IMAGES REQUEST<code class="code_txt">
+https://mybooks-free.com/img-api/images/{API_KEY}</code></p>
+                </div>
+
+                <br>
+
+                <div class="code_block">
+                <i class="fas fa-copy copy_code"></i>
+                <p class="code_outerp">AJAX UPLOAD REQUEST <code class="code_txt">
+function upload(files){   
+    var formData=new FormData();
+    for(i=0;ifiles.length;i++){
+        formData.append('images',files[i])
+    }
+    $.ajax({
+        type:"POST",
+        url:"https://mybooks-free.com/img-api/upload",
+        "headers": {
+            "api-key":"demo" ,// use your own api-key here.
+        },
+        data:formData,
+        cache:false,
+        processData: false,
+        contentType:false,
+        success:function(response){
+            console.log(response)
+            $(".apimsg").remove()
+            $("code pre").append(JSON.stringify(response,null,2))
+        },
+        onerror:function(err){
+            console.log('ERROR!!: '+err)
+        }
+    })
+}</code></p>
+                 </div>
+               </div>
+               
+           </div>
+           
+        </section>
+        <div id="snackbar" style="z-index:20"></div>
+    <footer>
+<script src="/scripts/webapps/img_api.js"></script>
+<%- include("../partials/footer") -%>
+    
+        

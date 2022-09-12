@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiple Image Upload Preview</title>
+    <!--Font Awesome Icons-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+</head>
+<body>
+    <button class="DownloadBtn" onclick="window.location='https://drive.google.com/drive/folders/1Q3t7nos4MbCnSzyZbzN8k9qr4uEdLbiS?usp=sharing'"><i class="fa-solid fa-download"></i> Download Demo Code</button>
+    <div class="container">
+        <input type="file" id="file-input" accept="image/png, image/jpeg" onchange="preview()" multiple>
+        <label for="file-input">
+            <i class="fas fa-upload"></i> &nbsp; Upload Image Files
+        </label>
+        <p id="num-of-files">No Files Chosen</p>
+        <div id="images"></div>
+    </div>
+    <div class="container">
+        <h4>API Response</h4>
+        <div class="apiresponse">
+            <p class="apimsg">*Upload your Images and their API response will be shown Here.</p>
+            <code><pre></pre></code>
+        </div>
+    </div>
+    <!--Script-->
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Rubik",sans-serif;
+}
+body{
+    background-color: #111112;
+    color:white;
+    position: relative;
+}
+.container{
+    background-color: #242426;
+    width: 60%;
+    min-width: 450px;
+    position: relative;
+    margin:  50px auto;
+    padding: 20px 20px;
+    border-radius: 7px;
+    box-shadow: 0 20px 35px rgba(166, 166, 167, 0.05);
+}
+input[type="file"]{
+    display: none;
+}
+label{
+    display: block;
+    position: relative;
+    background-color: #025bee;
+    color: #ffffff;
+    font-size: 18px;
+    text-align: center;
+    width: 300px;
+    padding: 18px 0;
+    margin: auto;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.container p{
+    text-align: center;
+    margin: 20px 0 30px 0;
+}
+#images{
+    width: 90%;
+    position: relative;
+    margin: auto;
+    display: flex;
+    justify-content: space-evenly;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+figure{
+    width: 40%;
+}
+img{
+    width: 100%;
+}
+figcaption{
+    text-align: center;
+    font-size: 2.4vmin;
+    margin-top: 0.5vmin;
+}
+
+code pre{
+    margin:0;
+    padding:0;
+}
+code {
+    font-family: Consolas,"courier new";
+    color: #d63384;
+    padding: 2px;
+    margin:5px;
+    font-size: 105%;
+   
+}
+.apimsg{
+    font-family: Consolas,"courier new";
+    color: #d63384;
+    padding: 2px;
+    margin:5px;
+    font-size: 105%;
+}
+.apiresponse code pre,#images{
+    max-height: 500px;
+    text-align: left;
+    overflow: auto;
+}
+
+.DownloadBtn{
+    position: fixed;
+    bottom:20px;
+    left:20px;
+    border:none;
+    border-radius: 20px;
+    font-size: 110%;
+    font-weight:bold;
+    background-color: #025bee;
+    color: #ffffff;
+    padding:8px;
+    z-index:10;
+}
+@media (max-width: 530px){
+    .container{
+        width: 90%;
+        min-width: 90%;
+    }
+}
