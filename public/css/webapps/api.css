@@ -112,10 +112,10 @@
     .multi_code{
         display:flex;
         flex-direction:column;
-        width:90%;
+        width:95%;
     }
     .doc_exp{
-        width:87%;
+        width:90%;
     }
     .documentation{
         display:flex;

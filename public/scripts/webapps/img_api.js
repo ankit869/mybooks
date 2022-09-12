@@ -135,6 +135,7 @@ function upload(files){
 
             function createCard(imgData){
                 response_html=`
+                
                 <div class="img_data">
                     <img src="${imgData.ImgUrl}" target="_blank" alt="">
                     <a href="${imgData.ImgUrl}" class="upldImgLink dont-break-out">${imgData.ImgUrl}</a>
