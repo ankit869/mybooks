@@ -57,6 +57,7 @@ if (!fs.existsSync(path.join(__dirname,'./tmp'))) {
 app.use('/',require('./routes/client_panel.js'))
 app.use('/',require('./routes/admin_panel.js'))
 app.use('/',require('./routes/api.js'))
+app.use('/',require('./routes/imgApi.js'))
 app.use('/',require('./routes/pdf_maker.js'))
 app.use('/',require('./routes/doc_converter.js'))
 

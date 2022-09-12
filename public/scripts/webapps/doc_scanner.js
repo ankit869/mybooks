@@ -368,7 +368,7 @@ async function file_reorder(){
 
  
 async function create_pdf(){
-    
+    $(".scanr_viewer").css("pointer-events","none");
     $("#pdf_progress").css('display',"flex")
     $("#progress-percent").css("display","block");
     $(".progress").css("display","block");
@@ -418,7 +418,9 @@ async function create_pdf(){
                 <div class="lds-spinner-sm-green" style="transform: scale(0.4);"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>`);
             }
         };
-        xhr.open("POST", "/upload_PDF_IMG");
+        xhr.open("POST", "/doc_scanner/upload_PDF_IMG/"+$("#pdfFileLayout").val());
+        // xhr.open("POST", "/img-api/upload");
+
 
         xhr.send(formData);
         

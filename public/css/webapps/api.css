@@ -1,5 +1,5 @@
 #wrapper {
-    transform:scale(0.8);
+    transform:scale(0.7);
 }
 .documentation p,code{
     font-size:18px;
@@ -28,15 +28,40 @@
 .documentation li{
     color:#d4d4e0;
 }
+.apiToggler{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+.apiHeading{
+    margin:25px;
+    margin-bottom:35px;
+}
+.apiHeading a{
+    color:#6083e4;
+    text-decoration:none;
+}
+.apiHeading h1{
+    color:#d4d4e0;
+    font-size:calc(1.375rem + 1.4vw);
+    font-family: 'Nunito' !important;
+
+}
+.apiHeading h5{
+    color:#6083e4;
+    font-size:calc(1rem + 0.4vw);
+}
+
 #api-section h1{
-    font-family: 'Sacramento', cursive;
-    font-size:3.5rem;
+    font-family: 'Nunito' !important;
+    font-size:2.5rem;
     color:#d4d4e0;
     margin-top:20px;
     margin:10px;
 }
 #api-section h2{
     color:#6083e4;
+    font-size:160%;
 }
 
 #api-section .apikey code{
@@ -45,7 +70,8 @@
     padding:10px;
     padding-left:18px;
     padding-right:18px;
-    margin:20px;
+    margin:5px;
+    margin-top:-5px;
     border-radius:50px;
     font-size:17px;
     overflow-x:auto;
@@ -100,7 +126,7 @@
         justify-content:center;
     }
     #api-section h1{
-        font-size:2.6rem;
+        font-size:2.2rem;
     }
 }
 

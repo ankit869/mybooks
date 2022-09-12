@@ -42,7 +42,7 @@
 }
 .toggle + label:after {
 	content: "Disabled";
-	text-indent: 40px;
+	text-indent: 32px;
 	width: 20px;
 	background-color: #fff;
 	margin: 1px;
@@ -51,7 +51,7 @@
 }
 .toggle:checked + label:before {
 	background-color: #0088cc;
-	text-indent: 0;
+	text-indent: 15px;
 }
 .toggle:checked + label:after {
 	margin-left: 101px;
@@ -71,6 +71,7 @@ input.toggle-round-flat + label:before, input.toggle-round-flat + label:after {
 }
 input.toggle-round-flat + label:before {
 	right: 3px;
+	padding-left:0px;
 	background-color: #0c0d0e;
 }
 input.toggle-round-flat + label:after {

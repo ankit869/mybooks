@@ -5,13 +5,20 @@
  <meta name="keywords" content="api books-api">
 
 <body>
-    <br>
     
     <section id="api-section" align="center">
-        <h1>Get access to our collection from your applications</h1>
-        <br>
-        <h2><i class="fas fa-key"></i> API</h2>
-        
+        <div class="apiHeading">
+            <h1 class="apiHeading">Free Books API from <a href="http://mybooks-free.com" target="_blank">MyBooks</a></h1>
+            <h5>Easily get and use book files anywhere for free</h5>
+        </div>
+        <div class="apiToggler" align="center">
+            <h2><i class="fas fa-key"></i> API</h2>
+            <div id="wrapper" align="center">		
+                <div class="switch">
+                    <input id="toggle-2" class="toggle toggle-round-flat" type="checkbox" onchange="toggle_img_api()"/>
+                    <label for="toggle-2" style="font-weight:bold"></label>
+                </div> 
+            </div>
         </div>
         <div class="apikey">
                 <% if(api_user!="not_a_user") {%>
@@ -23,32 +30,27 @@
                 <% } else {%>
                     <code class="api_key_status">please login to our site to get your api key</code>
                 <% } %>
-                <div id="wrapper" align="center">		
-                    <div class="switch">
-                        <input id="toggle-2" class="toggle toggle-round-flat" type="checkbox" onchange="toggle_api()"/>
-                        <label for="toggle-2" style="font-weight:bold"></label>
-                    </div> 
-                </div>
+               
         </div>
     
     </section>
     <section>
     <br>
-       <h2 align="center" style="color:#d4d4e0">&nbsp;&nbsp;<i class="fas fa-book"></i>&nbsp; API Documentation</h2>
+       <h4 align="center" style="color:#d4d4e0;margin-bottom:0px">&nbsp;&nbsp;<i class="fas fa-book"></i>&nbsp; API Documentation</h4>
        <div class="documentation">
            <p class="doc_exp">
 <span>Authorizing requests and identifying your application</span>
 
 Every request your application sends to the Books API needs to identify your application to our platform. 
 
-There are two steps to identify your application, using the API key.
+To identify your application, using the API key.
 STEP 1 . Login into the site
 STEP 2 . Now after getting login, click over enable button
 STEP 3 . Copy your API KEY from here and embed it into the given code.
 
 <span>How to use parameters ?</span>
 
-Well, currently we are offering books for about more than 100 courses and growing day by day. Here are the following parameters list you can use with your get requests.
+ell, currently we are offering books for about more than 100 courses and growing day by day. Here are the following parameters list you can use with your get requests.
 
 <button type="button" class="btn btn-success" onclick="location.href='https://drive.google.com/file/d/1Kchz_QRHATF1z5la1txmR6o2QLVjc8L3/view?usp=sharing'">Download list of parameters</button> </p>
 
@@ -84,7 +86,6 @@ $.ajax(getbooks).done(function (response) {
     </section>
     <div id="snackbar"></div>
     <footer>
-       
+<script src="/scripts/webapps/api.js"></script>       
 <%- include("../partials/footer") -%>      
     
-        

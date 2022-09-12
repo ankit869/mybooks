@@ -110,6 +110,33 @@ const apiSchema = new mongoose.Schema({
     createdAt:{ type: Date, default: Date.now, required: true }
 })
 
+const upldImgSchema = new mongoose.Schema({
+    ImgOriginalName:{ type:String, required:true},
+    ImgOriginalType:{
+        type:String,
+        enum:['image/png','image/jpg','image/jpeg','image/webp','image/gif','image/cr2','image/crw','image/nef','image/pef','image/tiff']
+    },
+    uploadedAt:{ type:Date, default:Date.now, required:true},
+})
+const ImgApiSchema = new mongoose.Schema({
+    userId:{ type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true},
+    api_key: { type:String,required:true,index:{unique:true} },
+    api_status: {
+        type:String,
+        enum:['enabled','disabled','blocked'],
+        default:'enabled'
+    },
+    api_status_info:{
+        type:String,
+        required:function(){
+            return this.api_status=="blocked"
+        }
+    },
+    api_requests: {type:Number,default:0,required:true},   
+    images: [upldImgSchema],
+    createdAt:{ type: Date, default: Date.now, required: true }
+})
+
 const docSchema = new mongoose.Schema({
     user_id:{ type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true },
     appType:{ 
@@ -259,6 +286,8 @@ const FEED = mongoose.model("feedback", feedbackSchema);
 const USER = new mongoose.model('user', userSchema)
 const ADMINUSER = new mongoose.model('admin_user', adminSchema)
 const APIUSER = new mongoose.model('api_user', apiSchema)
+const IMGAPIUSER = new mongoose.model('img_api_user', ImgApiSchema)
+const UPLD_API_IMG = new mongoose.model('upld_img_api', upldImgSchema)
 const DOCUSER = new mongoose.model('document_user', docSchema)
 const BOOK = new mongoose.model('book', bookSchema)
 const BOOK_CATEGORY = new mongoose.model('book_category', categorySchema)
@@ -273,5 +302,5 @@ const MESSAGE = new mongoose.model('notification', notificationSchema)
 module.exports={
     CONTACT,TOKEN,RESOLVED_CONTACT,FEED,USER,ADMINUSER,BOOK,TAG,
     BOOK_CATEGORY,BOOK_UNDER_REVIEW,DELETED_BOOK,REVIEW,FAVBOOK,
-    MESSAGE,APIUSER,DOCUSER,BOOK_UPLOAD
+    MESSAGE,APIUSER,DOCUSER,BOOK_UPLOAD,IMGAPIUSER,UPLD_API_IMG
 }

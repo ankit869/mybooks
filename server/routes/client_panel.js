@@ -31,7 +31,7 @@ const {sendOTP,validateOTP}=require('./otp.js')
 const {client,redis_setkey,redis_setotp}=require('./redis_conf.js')
 const sendNotification=require('./notification.js')
 const drive = require('./gdrive_setup.js')
-const {CONTACT,TOKEN,FEED,USER,BOOK,BOOK_UNDER_REVIEW,REVIEW,TAG,BOOK_CATEGORY,FAVBOOK,MESSAGE,APIUSER,BOOK_UPLOAD}=require('./models.js');
+const {CONTACT,TOKEN,FEED,USER,BOOK,BOOK_UNDER_REVIEW,REVIEW,TAG,BOOK_CATEGORY,FAVBOOK,MESSAGE,APIUSER,IMGAPIUSER,BOOK_UPLOAD}=require('./models.js');
 
 // Subscribe Route
 router.get("/subscribe", (req, res) => {
@@ -121,25 +121,6 @@ router.get('/privacy',async (req, res) => {
     res.render("policies/privacy");
 })
 
-router.get('/api',async (req, res) => {
-    try {
-        redis_setkey(req.ip+'-currloc', '/api')
-        if (req.isAuthenticated()) {
-            let apiuser=await APIUSER.findOne({userId:req.user.id});
-            if(apiuser){
-                res.render("webapps/api", { api_user: apiuser})
-            }else{
-                res.render("webapps/api", { api_user: "" });
-            } 
-        } else {
-            res.render("webapps/api", { api_user: "not_a_user" });
-        } 
-    } catch (err) {
-        res.redirect("/error")
-        log(err.stack, path.join(__dirname,'../error.log'))
-        sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
-    }
-})
 
 router.get('/t&c',async (req, res) => {
     res.render("policies/t&c");
@@ -731,20 +712,6 @@ router.get('/private/user_detail',async (req, res) => {
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
     }
 })
-router.get('/private/api_detail',async (req, res) => {
-    try {
-        if (req.isAuthenticated()) {
-            let apiuser=await APIUSER.findOne({ userId: req.user.id }); 
-            if(apiuser){ res.send(apiuser) }
-            else{ res.send("user not found")}
-        } else {
-            res.send("unauthorized")
-        }
-    } catch (err) {
-        log(err.stack, path.join(__dirname,'../error.log'))
-        sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
-    }
-})
 
 
 const storage = multer.diskStorage({
@@ -1219,43 +1186,6 @@ router.post("/reset", async(req, res) => {
 
 })
 
-router.patch('/api/toggle',async (req, res) => {
-    if (req.isAuthenticated()) {
-        let apiuser=await APIUSER.findOne({userId:req.user.id});
-            
-        if(apiuser){
-            if(apiuser.api_status=="enabled") {
-                apiuser.api_status="disabled";
-                apiuser.save()
-                USER.updateOne({_id:req.user.id},{ $set: { searchtag: req.user.searchtag.replace('-apiuser-apienabled-apiclient', '-apiuser-apidisabled-apiclient')}}).then(()=>{
-                    res.send("disabled")
-                })
-            }else{
-                apiuser.api_status="enabled";
-                apiuser.save()
-                USER.updateOne({_id:req.user.id},{ $set: { searchtag: req.user.searchtag.replace('-apiuser-apienabled-apiclient', '-apiuser-apidisabled-apiclient')}}).then(()=>{
-                    res.send(apiuser.api_key)
-                })
-            }
-        }else{
-            
-            API_KEY = rand.generate(30)
-            newApiUser=new APIUSER({
-                userId:req.user.id,
-                api_key:API_KEY
-            })
-
-            USER.updateOne({_id:req.user.id},{ $set: { searchtag: req.user.searchtag+'-apiuser-apienabled-apiclient'}}).then(()=>{
-                newApiUser.save().then(()=>{
-                    res.send(API_KEY)
-                });
-            })
-        }
-            
-    } else {
-        res.send("unauthorized")
-    }
-})
 
 router.get("/error.log",(req, res)=>{
     res.sendFile(path.join(__dirname,"../error.log"))

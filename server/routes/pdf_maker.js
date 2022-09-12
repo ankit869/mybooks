@@ -35,12 +35,11 @@ const pdf_store = multer.diskStorage({
 const upld = multer({
     storage: pdf_store
 })
-router.post('/upload_PDF_IMG', upld.array('images', 1000), (req, res) => {
+router.post('/doc_scanner/upload_PDF_IMG/:layout', upld.array('images', 1000), (req, res) => {
     try {
         if (!req.files) {
             res.send("No-files-received")
         } else {
-
             const directory = path.join(__dirname,'../tmp/PDFfolder_') + (req.ip).replace(/[.: ]/g, '');
             // const pdfDoc = new HummusRecipe('new', directory+'/NewDocument.pdf',{
             //     version: 1.6,
@@ -70,16 +69,24 @@ router.post('/upload_PDF_IMG', upld.array('images', 1000), (req, res) => {
             //         });
             //     })
             // })
-
+            var pageW;
+            var pageH;
+            if(req.params.layout=="portriat"){
+                pageW=595;
+                pageH=842;
+            }else{
+                pageH=334;
+                pageW=595;
+            }
 
             const doc = new PDFDocument({
-                size: [595, 842],
+                size: [pageW, pageH],
                 margins: { // by default, all are 72
                     top: 10,
                     bottom: 10,
                     left: 10,
                     right: 10
-                }
+                },
             })
 
             if (!fs.existsSync(path.join(directory,'/output'))) {
@@ -89,19 +96,21 @@ router.post('/upload_PDF_IMG', upld.array('images', 1000), (req, res) => {
             writeStream = fs.createWriteStream(path.join(directory,'/output/NewDocument.pdf'))
             doc.pipe(writeStream);
 
-            for (i = 0; i < parseInt(req.body.total_images); i++) {
+            for (i = 0; i < parseInt(req.files.length); i++) {
                 const file = 'image_' + i + '.jpeg'
                 if (fs.existsSync(path.join(directory, file))) {
                     if (i == 0) {
-                        doc.image(path.join(directory, file), 10, 10, { fit: [574.5, 822], align: 'center', valign: 'center' })
+                        doc.image(path.join(directory, file), 10, 10, { fit: [pageW-20, pageH-20], align: 'center', valign: 'center' })
 
                     } else {
                         doc.addPage()
-                            .image(path.join(directory, file), 10, 10, { fit: [574.5, 822], align: 'center', valign: 'center' })
+                            .image(path.join(directory, file), 10, 10, { fit: [pageW-20, pageH-20], align: 'center', valign: 'center' })
                     }
 
                     fs.unlink(path.join(directory, file), err => {
-                        if (err) throw err;
+                        if (err) {
+                            log(err, path.join(__dirname,'../error.log'))
+                        };
                     });
                 } else {
                     console.log("DOES NOT EXISTS :" + file)
@@ -115,7 +124,6 @@ router.post('/upload_PDF_IMG', upld.array('images', 1000), (req, res) => {
             function sendFile() {
                 res.sendFile(path.join(directory,'/output/NewDocument.pdf'))
                 rimraf(directory, function () { });
-
             }
         }
     } catch (err) {

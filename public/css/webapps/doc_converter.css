@@ -15,6 +15,10 @@
   border-radius: 0 5px 5px 0;
 }
 
+.stop_scrolling {
+  height: 100%;
+  overflow: hidden;
+}
 .doc_files::-webkit-scrollbar-thumb {
   background: rgba(86,117,248,.5);
   border-radius: 0 5px 5px 0;

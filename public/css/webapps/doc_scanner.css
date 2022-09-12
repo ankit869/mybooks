@@ -17,6 +17,10 @@
     margin-bottom:40px;
     margin-left:0px;
 }
+.top_scanr_heading a{
+    color:#6083e4;
+    text-decoration:none;
+}
 .top_scanr_heading h1{
     color:#d4d4e0;
     font-size:calc(1.375rem + 1.4vw)
@@ -323,6 +327,11 @@ figure{
     background-color: rgba(14,14,15,0.8); /* Black w/ opacity */
 }
 
+.stop_scrolling {
+    height: 100%;
+    overflow: hidden;
+}
+
 .hide_editor{
     display: none;
     opacity: 0;
@@ -399,11 +408,13 @@ figure{
 .filter_crtls .filter_grp {
     display:flex;
 }
-.file_name_input_div{
+.file_name_input_div,.file_layout_input_div{
     display:flex;
     justify-content: center;
     align-items: center;
+    margin-left:6px;
 }
+
 .scanr_input_btn:hover{
     transform: scale(0.95) !important;
 }
@@ -548,6 +559,12 @@ figure{
    
 
 }
+@media(max-width:900px){
+    .scanr_viewer .fileSetting{
+        flex-direction:column !important;
+        align-items:start !important;
+    }
+}
 @media(max-width:425px){
     .file_name_input_div{
         flex-direction:column;
@@ -564,6 +581,23 @@ figure{
         margin:5px !important;
         position: relative;
     }
+    .file_layout_input_div{
+        flex-direction:column;
+        align-items:flex-start;
+        justify-content:flex-start;
+        text-align: left;
+
+    }
+    .file_layout_input_div input{ 
+        margin-left:3px !important;   
+        margin-top:3px;
+    }
+    .file_layout_input_div label{
+        margin:5px !important;
+        position: relative;
+    }
+
+    
 }
 @media(max-width:600px){
     #scanner_section{
@@ -581,8 +615,17 @@ figure{
     margin-left:10px;
     outline:none;
 }
-.file_name_input_div{
-    padding: 12px;
+.file_layout_input_div select{
+    padding:6px;
+    border-radius:10px;
+    background-color:#242427;
+    border:none;
+    color:#d4d4e0;
+    margin-left:10px;
+    outline:none;
+}
+.file_name_input_div,.file_layout_input_div{
+    padding: 8px;
     color:white;
     font-size: 18px;
     color:#d4d4e0;

@@ -245,11 +245,20 @@
         </div>
         
         <div class="scanr_viewer" >
-            <div style="display:flex;flex-wrap:wrap;" class="pdf_naming" >
+            <div class="fileSetting" style="display:flex;" class="pdf_naming" >
                <p class="total_imgs" id="num-of-files"> </p>
                <div class="file_name_input_div">
                    <label for="pdfFileName">File Name</label>
                    <input type="text" name="filename" value="" id="pdfFileName" placeholder="Enter pdf file name ..">
+                   
+               </div>
+               <div class="file_layout_input_div">
+                    <label for="pdfFileLayout">File Layout</label>
+                    <select id="pdfFileLayout" name="pdfFileLayout" class="pdf_layout_select">
+                    <option value="portriat" selected>Portriat</option>
+                    <option value="landscape">Landscape</option>
+                    </select>
+                   
                </div>
             </div>
 
