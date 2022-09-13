@@ -182,10 +182,10 @@ router.post('/img-api/upload', upld.array('images', 1000), (req, res) => {
                                 }
 
                                 async function pushImage(img){
-                                    const tempfile = path.join(__dirname,"../tmp/"+(req.ip).replace(/[.: ]/g, '')+filename)                    
+                                    const tempfile = path.join(__dirname,"../tmp/"+(req.ip).replace(/[.: ]/g, '')+img.ImgOriginalName)                    
                                     const file = path.join(__dirname,"../ApiImgs/"+img.id+".webp")
 
-                                    sharp(req.files[0].path).toFile(path.join(__dirname,"../ApiImgs/"+img.id+".webp"), (err, info) => {
+                                    sharp(tempfile).toFile(path.join(__dirname,"../ApiImgs/"+img.id+".webp"), (err, info) => {
                                         if (err) {
                                             log(err, path.join(__dirname,'../error.log'))
                                         }else{

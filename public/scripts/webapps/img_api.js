@@ -127,6 +127,7 @@ function upload(files){
     $.ajax({
         type:"POST",
         url:"https://mybooks-free.com/img-api/upload",
+        // url:"http://localhost:8080/img-api/upload",
         "headers": {
             "api-key":user_key ,// use your own api-key here.
         },
@@ -135,7 +136,7 @@ function upload(files){
         processData: false,
         contentType:false,
         success:function(response){
-            console.log(response)
+            // console.log(response)
             response.forEach((res)=>{
                 createCard(res)
             })
