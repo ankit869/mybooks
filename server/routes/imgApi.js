@@ -157,7 +157,7 @@ router.post('/img-api/upload', upld.array('images', 1000), (req, res) => {
                 res.send(images)
                 
             }else{
-                IMGAPIUSER.findOne({ "api_key": req.header("api-key") }, (err, user) => {
+                IMGAPIUSER.findOne({ "api_key": req.header("api-key") },async (err, user) => {
                     if(err){
                         log(err, path.join(__dirname,'../error.log'))
                     }else{
@@ -171,14 +171,18 @@ router.post('/img-api/upload', upld.array('images', 1000), (req, res) => {
                                 for (i = 0; i < parseInt(req.files.length);i++) {
                                     filename=req.files[i].originalname
                                     filetype=req.files[i].mimetype
-                                    var img=new UPLD_API_IMG({
+
+
+                                    var img= new UPLD_API_IMG({
                                         ImgOriginalName:filename,
                                         ImgOriginalType:filetype
-                                    })
-                                    const tempfile = path.join(__dirname,"../tmp/"+(req.ip).replace(/[.: ]/g, '')+filename)
-                    
-                                    
-                                
+                                    })         
+                                    pushImage(img)
+                                        
+                                }
+
+                                async function pushImage(img){
+                                    const tempfile = path.join(__dirname,"../tmp/"+(req.ip).replace(/[.: ]/g, '')+filename)                    
                                     const file = path.join(__dirname,"../ApiImgs/"+img.id+".webp")
 
                                     sharp(req.files[0].path).toFile(path.join(__dirname,"../ApiImgs/"+img.id+".webp"), (err, info) => {
@@ -187,15 +191,15 @@ router.post('/img-api/upload', upld.array('images', 1000), (req, res) => {
                                         }else{
                                             if (fs.existsSync(file)) {
                                                 user.images.push(img)
-                                                images.push({
+                                                var usrImgObj= {
                                                     Id:img.id,
-                                                    OriginalName:filename,
-                                                    OriginalType:filetype,
+                                                    OriginalName:img.ImgOriginalName,
+                                                    OriginalType:img.ImgOriginalType,
                                                     ImgUrl:`https://mybooks-free.com/img-api/img/${user.api_key}/${img.id}.webp`,
                                                     uploadedAt:img.uploadedAt
-                                                })
-                                                img={}
-                                                
+                                                }
+            
+                                                images.push(usrImgObj)
                                                 fs.unlink(tempfile, err => {
                                                     if (err) {
                                                         log(err, path.join(__dirname,'../error.log'))
@@ -216,7 +220,7 @@ router.post('/img-api/upload', upld.array('images', 1000), (req, res) => {
                                             
                                         }
                                     })
-                                        
+
                                 }
                                 function saveUser(){
                                     user.save()
