@@ -162,10 +162,13 @@ router.post('/img-api/upload', upld.array('images', 1000), (req, res) => {
                         log(err, path.join(__dirname,'../error.log'))
                     }else{
                         if (user) {
+                            if (!fs.existsSync(path.join(__dirname,'../ApiImgs'))) {
+                                fs.mkdirSync(path.join(__dirname,'../ApiImgs'))
+                            }
                             if(user.api_status=="enabled"){
                                 images=[];
                                 var filesSaved=0;
-                                for (i = 0; i < parseInt(req.files.length); i++) {
+                                for (i = 0; i < parseInt(req.files.length);i++) {
                                     filename=req.files[i].originalname
                                     filetype=req.files[i].mimetype
                                     var img=new UPLD_API_IMG({
@@ -174,9 +177,7 @@ router.post('/img-api/upload', upld.array('images', 1000), (req, res) => {
                                     })
                                     const tempfile = path.join(__dirname,"../tmp/"+(req.ip).replace(/[.: ]/g, '')+filename)
                     
-                                    if (!fs.existsSync(path.join(__dirname,'../ApiImgs'))) {
-                                        fs.mkdirSync(path.join(__dirname,'../ApiImgs'))
-                                    }
+                                    
                                     newName=img.id+".webp"
                                     const file = path.join(__dirname,"../ApiImgs/"+newName)
 
@@ -193,6 +194,7 @@ router.post('/img-api/upload', upld.array('images', 1000), (req, res) => {
                                                     ImgUrl:`https://mybooks-free.com/img-api/img/${user.api_key}/${newName}`,
                                                     uploadedAt:img.uploadedAt
                                                 })
+                                                img={}
                                                 
                                                 fs.unlink(tempfile, err => {
                                                     if (err) {

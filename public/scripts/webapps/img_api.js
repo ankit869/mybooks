@@ -135,6 +135,7 @@ function upload(files){
         processData: false,
         contentType:false,
         success:function(response){
+            console.log(response)
             response.forEach((res)=>{
                 createCard(res)
             })
