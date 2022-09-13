@@ -80,7 +80,7 @@ $(".copy_code").on('click',function copy_code(){
 })
 
 
-$(".upldImgLink").text(($(".upldImgLink").text()).substring(0,60)+" ...")
+// $(".upldImgLink").text(($(".upldImgLink").text()).substring(0,60)+" ...")
 
 dragArea_pdfImgs=$(".img_upld_container")
 dragStatus=$(".img_upld_container .DragStatus")
@@ -113,7 +113,13 @@ function choose_photos(){
     $("#api_imgs_input").click();
 }
 
-function upload(files){   
+function upload(files){  
+    upld_status_html=` <div class="d-flex justify-content-center text-primary align-content-center" id="upldSpinner" style="overflow:hidden;font-size:110%;">
+        <span class="spinner-border text-primary spinner-border-s" role="status" aria-hidden="true"></span>
+        &nbsp;&nbsp; Uploading...
+    </div>` 
+    $('.UpldImgView').append(upld_status_html)
+
     var formData=new FormData();
     for(i=0;i<files.length;i++){
         formData.append('images',files[i])
@@ -132,17 +138,17 @@ function upload(files){
             response.forEach((res)=>{
                 createCard(res)
             })
+            $('#upldSpinner').remove()
 
             function createCard(imgData){
                 response_html=`
                 
                 <div class="img_data">
                     <img src="${imgData.ImgUrl}" target="_blank" alt="">
-                    <a href="${imgData.ImgUrl}" class="upldImgLink dont-break-out">${imgData.ImgUrl}</a>
+                    <a href="${imgData.ImgUrl}" class="upldImgLink dont-break-out">${(imgData.ImgUrl).substring(0,60)}...</a>
                     <i class="fa-regular fa-copy" onclick="copy_imgurl('${imgData.ImgUrl}')"></i>
                 </div>`
                 $('.UpldImgView').append(response_html)
-                
             }
         },
         error:function(err){
