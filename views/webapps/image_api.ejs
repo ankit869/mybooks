@@ -227,8 +227,18 @@
                     <h2><i class="fas fa-key"></i> API</h2>
                     <div id="wrapper" align="center">		
                         <div class="switch">
-                            <input id="toggle-2" class="toggle toggle-round-flat" type="checkbox" onchange="toggle_img_api()"/>
-                            <label for="toggle-2" style="font-weight:bold"></label>
+                            <% if(api_user!="not_a_user") {%>
+                                <% if(api_user.api_status=="enabled"){ %>
+                                    <input id="toggle-2" class="toggle toggle-round-flat" type="checkbox" onchange="toggle_img_api()" checked/>
+                                    <label for="toggle-2" style="font-weight:bold"></label>
+                                <% } else { %>
+                                    <input id="toggle-2" class="toggle toggle-round-flat" type="checkbox" onchange="toggle_img_api()" />
+                                    <label for="toggle-2" style="font-weight:bold"></label>
+                                <% } %>
+                            <% } else {%>
+                                <input id="toggle-2" class="toggle toggle-round-flat" type="checkbox" onchange="toggle_img_api()" />
+                                <label for="toggle-2" style="font-weight:bold"></label>
+                            <% } %>
                         </div> 
                     </div>
                 </div>

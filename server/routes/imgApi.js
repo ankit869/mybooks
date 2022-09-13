@@ -178,10 +178,10 @@ router.post('/img-api/upload', upld.array('images', 1000), (req, res) => {
                                     const tempfile = path.join(__dirname,"../tmp/"+(req.ip).replace(/[.: ]/g, '')+filename)
                     
                                     
-                                    newName=img.id+".webp"
-                                    const file = path.join(__dirname,"../ApiImgs/"+newName)
+                                
+                                    const file = path.join(__dirname,"../ApiImgs/"+img.id+".webp")
 
-                                    sharp(req.files[0].path).toFile(path.join(__dirname,"../ApiImgs/"+newName), (err, info) => {
+                                    sharp(req.files[0].path).toFile(path.join(__dirname,"../ApiImgs/"+img.id+".webp"), (err, info) => {
                                         if (err) {
                                             log(err, path.join(__dirname,'../error.log'))
                                         }else{
@@ -191,7 +191,7 @@ router.post('/img-api/upload', upld.array('images', 1000), (req, res) => {
                                                     Id:img.id,
                                                     OriginalName:filename,
                                                     OriginalType:filetype,
-                                                    ImgUrl:`https://mybooks-free.com/img-api/img/${user.api_key}/${newName}`,
+                                                    ImgUrl:`https://mybooks-free.com/img-api/img/${user.api_key}/${img.id}.webp`,
                                                     uploadedAt:img.uploadedAt
                                                 })
                                                 img={}
