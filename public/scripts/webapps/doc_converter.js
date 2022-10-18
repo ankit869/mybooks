@@ -237,7 +237,7 @@ function convertIntoPdf(ismerge){
 
       prgHtml=`<div class="wrap-circles">
           <h4>Processing Files ...</h4>
-          <div class="circle" style="background-image: conic-gradient(#1846c9 ${percentComplete}, #c1d1ff 0);">
+          <div class="circle" style="background-image: conic-gradient(#1846c9 ${percentVal}, #c1d1ff 0);">
             <div class="inner">${percentVal}</div>
           </div>
       </div>`
