@@ -453,7 +453,7 @@ window.addEventListener('offline', function(e) {
         console.log(isupdated);
     })
     console.log('offline');
-    blurBg=`<div id="htmlblurbg" style="position:fixed;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.5);z-index:10000"></div>`
+    blurBg=`<div id="htmlblurbg" style="position:fixed;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.6);z-index:10000"></div>`
     $("body").append(blurBg)
     $("body").addClass("stop_body_scroll");
 
@@ -479,6 +479,11 @@ window.addEventListener('online', function(e) {
     toast_msg=$("div.internetStatus span")
     toast_msg.css({'color':'#155724','background-color':'#d4edda'})
     toast_msg.text("Connected to internet !")
+
+    socket = io.connect('http://localhost:8080'); 
+    socket.on("connect", () => {
+      console.log("socket connected to the server again !!");
+    });
 
     setTimeout(function(){
         toast.css({"opacity":0,"top":"-50px"})

@@ -196,25 +196,62 @@ function mergePdf(){
         return;
     }
     
-    $.LoadingOverlay("show",{
-        background  : "#3c436cc7"
-    });
+    prgBg=`<div id="progressBgBlur" style="position:fixed;display:flex;
+    align-items:center;justify-content:center;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.6);z-index:10000"></div>`
+    prgHtml=`<div class="wrap-circles">
+        <div style="display:flex;flex-direction:row">
+          <div class="spinner-grow text-primary" role="status" style="display:inline-block">
+            <span class="sr-only">Loading...</span>
+          </div>
+          <span style="font-size:140%;margin-left:10px"> Processing ...</span>
+        </div>
+   
+    </div>`
+
+    $("body").append(prgBg)
+    $("#progressBgBlur").append(prgHtml)
+    $("body").addClass("stop_body_scroll");
 
     var files=new Array();
     $(".doc_files .file").each(function (index, value) {       
-        files.push($(this).find(".fileCode").text())     
+        files.push($(this).find(".fileCode").text())    
     });
     var xhr   = new XMLHttpRequest();
 
     xhr.responseType = 'blob';
-    xhr.open("GET", "/doc-converter/mergepdf?filesToBeMerged="+JSON.stringify(files));
+
+    xhr.open("GET", "/doc-converter/mergepdf?filesToBeMerged="+encodeURIComponent(JSON.stringify(files)));
+
+    xhr.onprogress = e => {
+      
+      var percentComplete = (e.loaded / e.total) * 100;  
+      var percentVal = Math.floor(percentComplete) +"%";
+
+      prgHtml=`<div class="wrap-circles">
+          <div style="display:flex;flex-direction:row">
+            <div class="spinner-grow text-primary" role="status" style="display:inline-block">
+              <span class="sr-only">Loading...</span>
+            </div>
+            <span style="font-size:140%;margin-left:10px"> Processing ...</span>
+          </div>
+
+          <div class="circle" style="background-image: conic-gradient(#1846c9 ${percentVal}, #c1d1ff 0);">
+            <div class="inner">${percentVal}</div>
+          </div>
+      </div>`
+
+      $("#progressBgBlur").html(prgHtml)
+      
+    }
 
     xhr.send();
     
     xhr.onload= async function(){
 
         if(this.status==503){
-            $.LoadingOverlay("hide");
+            $("#progressBgBlur").remove()
+            $("body").removeClass("stop_body_scroll");
+
             setTimeout(function(){
             alert("Some Error Occured while Coverting your files try another")
             },600)
@@ -248,7 +285,9 @@ function mergePdf(){
                     </div>`
             
             if(filesConverted.length==entries.length){
-                $.LoadingOverlay("hide");
+                $("#progressBgBlur").remove()
+                $("body").removeClass("stop_body_scroll");
+    
                 $(".convertedFiles .files").html(filesHTML)
                 $(".convertedFiles").css("display", "block")
                 $("#pdfCreator").css("display", "none")

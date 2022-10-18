@@ -208,12 +208,15 @@ function convertIntoPdf(ismerge){
       }
     }
     prgBg=`<div id="progressBgBlur" style="position:fixed;display:flex;
-    align-items:center;justify-content:center;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.5);z-index:10000"></div>`
+    align-items:center;justify-content:center;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.6);z-index:10000"></div>`
     prgHtml=`<div class="wrap-circles">
-        <h4>Processing Files ...</h4>
-        <div class="circle" style="background-image: conic-gradient(#1846c9 0, #c1d1ff 0);">
-          <div class="inner">0%</div>
+        <div style="display:flex;flex-direction:row">
+          <div class="spinner-grow text-primary" role="status" style="display:inline-block">
+            <span class="sr-only">Loading...</span>
+          </div>
+          <span style="font-size:140%;margin-left:10px"> Processing ...</span>
         </div>
+   
     </div>`
 
     $("body").append(prgBg)
@@ -224,10 +227,11 @@ function convertIntoPdf(ismerge){
     $(".doc_files .file").each(function (index, value) {       
       files.push($(this).find(".fileCode").text())     
     });
+    
     var xhr   = new XMLHttpRequest();
   
     xhr.responseType = 'blob';
-    xhr.open("GET", "/doc-converter/convert_to_pdf?filesToBeConverted="+JSON.stringify(files)+"&ismerge="+ismerge);
+    xhr.open("GET", "/doc-converter/convert_to_pdf?filesToBeConverted="+encodeURIComponent(JSON.stringify(files))+"&ismerge="+ismerge);
     
     xhr.send();
     xhr.onprogress = e => {
@@ -236,7 +240,13 @@ function convertIntoPdf(ismerge){
       var percentVal = Math.floor(percentComplete) +"%";
 
       prgHtml=`<div class="wrap-circles">
-          <h4>Processing Files ...</h4>
+          <div style="display:flex;flex-direction:row">
+            <div class="spinner-grow text-primary" role="status" style="display:inline-block">
+              <span class="sr-only">Loading...</span>
+            </div>
+            <span style="font-size:140%;margin-left:10px"> Processing ...</span>
+          </div>
+
           <div class="circle" style="background-image: conic-gradient(#1846c9 ${percentVal}, #c1d1ff 0);">
             <div class="inner">${percentVal}</div>
           </div>

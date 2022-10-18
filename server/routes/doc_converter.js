@@ -79,13 +79,13 @@ async function convert_to_pdf(inputpath) {
     }
 }
 router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
+    directory=path.join(__dirname,`../tmp/PDFfolder${(req.ip).replace(/[.: ]/g, '')}`)
     try {
         var convertedFiles=[];
 
         var files=req.query.filesToBeConverted
         files = files.replace(/'/g, '"');
         files = JSON.parse(files);
-        directory=path.join(__dirname,`../tmp/PDFfolder${(req.ip).replace(/[.: ]/g, '')}`)
 
         if (!fs.existsSync(path.join(directory,"/output"))) {
             fs.mkdirSync(path.join(directory,"/output"), { recursive: true });
@@ -177,14 +177,15 @@ router.get("/doc-converter/convert_to_pdf",async (req, res, next) => {
 
 
 router.get("/doc-converter/mergepdf",async (req, res, next) => {
+    directory=path.join(__dirname,`../tmp/PDFfolder${(req.ip).replace(/[.: ]/g, '')}`)
+
     try{
         var filesToBeMerge=[]
 
         var files=req.query.filesToBeMerged
         files = files.replace(/'/g, '"');
         files = JSON.parse(files);
-        directory=path.join(__dirname,`../tmp/PDFfolder${(req.ip).replace(/[.: ]/g, '')}`)
-        
+
         var merger = new PDFMerger();
 
         if (!fs.existsSync(path.join(directory,"/output"))) {
