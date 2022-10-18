@@ -1,13 +1,21 @@
 var AUTH=false;
 
-
-  
 window.getCookie = function(name) {
     var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
     if (match) return match[2];
 }
 
+Date.prototype.addDays = function(days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+}
 
+var date = new Date();
+
+window.setCookie=function(name, value,expires) {
+    document.cookie=`${name}=${value},expires=${expires}`;
+}
 
 $("auth").css("display", "none");
 $("notauth").css("display", "none");
@@ -158,7 +166,8 @@ function sendotp(){
             url: '/reset/'+emailInput,
             method: 'POST',
             contentType: 'application/json',
-            success: function(response) {
+            async:true,
+        success: function(response) {
                 if(response){
                     $("#reset_opt").prop('disabled',false)
                     $("#reset_password").prop('disabled',false)
@@ -196,6 +205,7 @@ $(".admin-login-form").on("submit",(event)=>{
         url: '/admin-login',
         method: 'POST',
         data: $(".admin-login-form").serialize(),
+        async:true,
         success: function(response) {
             if(response.status=="401"){
                 $("#login-msg").text((response.message))
@@ -216,6 +226,7 @@ $(".admin-signup-form").on("submit",(event)=>{
         url: '/admin-signup',
         method: 'POST',
         data: $(".admin-signup-form").serialize(),
+        async:true,
         success: function(response) {
             
             $("#login-msg").text((response.message)) 
@@ -233,6 +244,7 @@ $(".login-form").on("submit",(event)=>{
         url: '/login',
         method: 'POST',
         data: $(".login-form").serialize(),
+        async:true,
         success: function(response) {
             if(response.status=="401"){
                 $("#login-msg").text((response.message))
@@ -255,6 +267,7 @@ $(".reset-form").on("submit",(event)=>{
         url: '/reset',
         method: 'POST',
         data: $(".reset-form").serialize(),
+        async:true,
         success: function(response) {
             if(response.status=="401"){
                 $("#login-msg").text((response.message))
@@ -282,7 +295,8 @@ function sendotp_admin(){
             url: '/admin_access/'+emailInput,
             method: 'POST',
             contentType: 'application/json',
-            success: function(response) {
+            async:true,
+        success: function(response) {
                 $("#reset_opt").prop('disabled',false)
                 $("#admin_unicode").prop('disabled',false)
                 $("#admin_key").prop('disabled',false)
@@ -316,6 +330,7 @@ function sendotp_tome(){
         url: '/admin_register',
         method: 'POST',
         contentType: 'application/json',
+        async:true,
         success: function(response) {
             console.log(response)
             if(response){
@@ -354,6 +369,7 @@ function add_to_fav(book_id){
         url: '/addTofav/'+book_id,
         method: 'POST',
         contentType: 'application/json',
+        async:true,
         success: function(response) {
                 console.log(response)
                 if(response=="unauthorized") {
@@ -415,35 +431,84 @@ function add_to_fav(book_id){
         }
     });
 }
-window.addEventListener('offline', function(e) { console.log('offline'); });
-window.addEventListener('online', function(e) { console.log('online'); });
+
+async function updateOnlineStatus(status,callback){
+    $.ajax({
+        type: "patch",
+        url:`/patch_online_status/${status}`,
+        success:(res)=>{
+            if(res.statusCode ===200){
+                callback(true);
+            }else{
+                callback(false);
+            }
+        }
+    })
+}
+
+
+
+window.addEventListener('offline', function(e) { 
+    updateOnlineStatus("offline",(isupdated)=>{
+        console.log(isupdated);
+    })
+    console.log('offline');
+    blurBg=`<div id="htmlblurbg" style="position:fixed;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.5);z-index:10000"></div>`
+    $("body").append(blurBg)
+    $("body").addClass("stop_body_scroll");
+
+    toast=$("div.internetStatus")
+    
+    toast_msg=$("div.internetStatus span")
+    toast_msg.text("! No Internet Connection")
+    toast_msg.css({'color':'#721c24','background-color':'#f8d7da'})
+
+    toast.css({"opacity":1,"top":"50px"})
+
+});
+
+window.addEventListener('online', function(e) { 
+    updateOnlineStatus("online",(isupdated)=>{
+        console.log(isupdated);
+    })
+    console.log('online');
+    $("#htmlblurbg").remove()
+    $("body").removeClass("stop_body_scroll");
+
+    toast=$("div.internetStatus")
+    toast_msg=$("div.internetStatus span")
+    toast_msg.css({'color':'#155724','background-color':'#d4edda'})
+    toast_msg.text("Connected to internet !")
+
+    setTimeout(function(){
+        toast.css({"opacity":0,"top":"-50px"})
+    },1500)
+
+});
 
 window.addEventListener('load', () => {
 
-    if(window.navigator.onLine){
-        console.log("Connection Established with server successfully")
-    }else{
-        console.log("No internet !!")
-    }
-
+    user_id=getCookie("user_id")
+    user_image=getCookie("user_image")
     $.ajax({
         url:'/private/user_detail',
         method: 'GET',
-        success: function(response) {
-            if(response!="unauthorized"){
-                $("#icon").html(`<img src="${response.userimage}" width="42px" title="account details" style="border:3px solid #6083e4;border-radius:50%;position:relative;bottom:9px;" onclick="location.href='/user/${response._id}'" onerror="/images/user-icon.png">`)
-                $(".nav-icon").html(`<img src="${response.userimage}" width="42px" title="account details" style="position:relative;top:7px;left:10px;border:3px solid #6083e4;border-radius:50%;position:relative;bottom:9px;" onclick="location.href='/user/${response._id}'" onerror="/images/user-icon.png">`)
-                response.fav_books.forEach(function(favBook){
+        async:true,
+        success: function(user) {
+            if(user!="unauthorized"){
+                $("#icon").html(`<img src="${user.userimage}" width="42px" title="account details" style="border:3px solid #6083e4;border-radius:50%;position:relative;bottom:9px;" onclick="location.href='/user/${user._id}'" onerror="/images/user-icon.png">`)
+                $(".nav-icon").html(`<img src="${user.userimage}" width="42px" title="account details" style="position:relative;top:7px;left:10px;border:3px solid #6083e4;border-radius:50%;position:relative;bottom:9px;" onclick="location.href='/user/${user._id}'" onerror="/images/user-icon.png">`)
+                user.fav_books.forEach(function(favBook){
                     $("."+favBook.book_id).css("color","rgb(204,0, 85)")   
                     $("."+favBook.book_id+"-fav").css("color","rgb(204,0, 85)")
                     $("."+favBook.book_id+"-fav").css("border-color","rgb(204,0, 85)")
                     $("."+favBook.book_id+"-fav i").addClass('fa-check-circle').removeClass('fa-heart');
                 })
-
+            
                 AUTH=true;
                 $("auth").css("display", "block");
                 $("notauth").css("display", "none");
-
+            
                 function notifyMe(){
                     Notification.requestPermission().then(function(result) {
                         if(result=="granted"){
@@ -454,8 +519,12 @@ window.addEventListener('load', () => {
                         }
                     });
                 }
-                notifyMe();
+                notifyMe()
+                setCookie("user_id",user.id,date.addDays(7));
+                setCookie("user_image",user.userimage,date.addDays(7));
             }else{
+                setCookie("user_id","none");
+                setCookie("user_image","none");
                 $("auth").css("display", "none");
                 $("notauth").css("display", "block");
             }
@@ -466,6 +535,7 @@ function favbooks(){
     $.ajax({
         url:'/private/user_detail',
         method: 'GET',
+        async:true,
         success: function(response) {
             if(response!="unauthorized"){
                 $("#icon").html(`<img src="${response.userimage}" width="42px" title="account details" style="border-radius:50%;position:relative;bottom:9px;" onclick="location.href='/user/${response._id}'" alt="user-image">`)
@@ -488,6 +558,7 @@ function books_under_review(){
     $.ajax({
         url:'/admin/books_under_review',
         method: 'GET',
+        async:true,
         success: function(response) {
             if(response!="unauthorized"){
                 response.forEach((book)=>{                   
@@ -508,6 +579,7 @@ $("#post-review").on('submit',(event)=>{
     $.ajax({
         url:'/review/'+book_id+'/'+message,
         method: 'POST',
+        async:true,
         success: function(response) {
         
             if(response=="unauthorized") {
@@ -540,6 +612,7 @@ $(".submitfd").on("submit",(event)=>{
         url: '/feedback/'+feedtxt,
         method: 'POST',
         contentType: 'application/json',
+        async:true,
         success: function(response) {
             console.log(response)
             $("#feedtxt").val("")
@@ -559,6 +632,7 @@ function addmember(id){
         $.ajax({
         url: '/admin/addmember/'+id,
         method: 'PATCH',
+        async:true,
         success: function(response) {
             if(response!="unauthorized"){
                 $("#snackbar").text("Successfully added as member")
@@ -581,6 +655,7 @@ function removecontact(id){
         $.ajax({
         url: '/admin/removemsg/'+id,
         method: 'DELETE',
+        async:true,
         success: function(response) {
             if(response!="unauthorized"){
                 $("#snackbar").text("Message removed Successfully.")
@@ -625,7 +700,8 @@ function removemember(id,unicode){
             $.ajax({  
             url: '/admin/removeadmin/'+id+'/'+key,
             method: 'DELETE',
-            success: function(response) {
+            async:true,
+        success: function(response) {
                 if(response!="unauthorized"){
                     $("#snackbar").text("Successfully removed admin")
                     myFunction();
@@ -646,7 +722,8 @@ function removemember(id,unicode){
             $.ajax({
             url: '/admin/removemember/'+id,
             method: 'DELETE',
-            success: function(response) {
+            async:true,
+        success: function(response) {
                 if(response!="unauthorized"){
                     $("#snackbar").text("Successfully removed member")
                     myFunction();
@@ -670,6 +747,7 @@ function submitwr(){
         url: '/request_withdraw',
         method: 'POST',
         data: $(".submitwr form").serialize(),
+        async:true,
         success: function(response) {
             console.log(response)
             if(response=="sent"){
@@ -693,7 +771,8 @@ function submitusr(userID){
             url: '/admin/edit_user/'+userID,
             method: 'POST',
             data: $("."+userID+" .editCredits form").serialize(),
-            success: function(response) {
+            async:true,
+        success: function(response) {
                 console.log(response)
                 if(response!="unauthorized"){
                     myFunction();
@@ -717,7 +796,8 @@ function submitmsg(userID){
             url: '/admin/notify_user/'+userID,
             method: 'POST',
             data: $("."+userID+" .sendMsg form").serialize(),
-            success: function(response) {
+            async:true,
+        success: function(response) {
                 console.log(response)
                 if(response!="unauthorized"){
                     $("#snackbar").text("Message sent to user successfully")
@@ -739,6 +819,7 @@ function removemsg(msgID){
     $.ajax({
         url: '/user/remove_msg/'+msgID,
         method: 'DELETE',
+        async:true,
         success: function(response) {
             console.log(response)
             if(response!="unauthorized"){
@@ -823,7 +904,8 @@ function remove_book(book_id){
             url: '/delete/'+book_id,
             method: 'DELETE',
             contentType: 'application/json',
-            success: function(response) {
+            async:true,
+        success: function(response) {
                 console.log(response);
                 if(response=="unauthorized"){
                     window.location.href="/admin-login-err";
@@ -847,7 +929,8 @@ function review_book(book_id){
             url: '/delete_under_review/'+book_id,
             method: 'DELETE',
             contentType: 'application/json',
-            success: function(response) {
+            async:true,
+        success: function(response) {
                 if(response=="unauthorized"){
                     window.location.href="/admin-login-err";
                 }
@@ -894,7 +977,8 @@ function add_to_review(book_id){
             url: '/admin/add_to_review/'+book_id,
             method: 'GET',
             contentType: 'application/json',
-            success: function(response) { 
+            async:true,
+        success: function(response) { 
                 // $("#"+book_id).css('display', 'none');
                 $('#snackbar').text('Successfully added to review section')
                 $("#"+book_id+" .isreviewed").html(`<button onclick="location.href='/admin/under-review?book_id=${book_id}'" class="floating-add2"><i class="fas fa-clipboard-list fa-2x"></i></button>`)
@@ -929,6 +1013,7 @@ function request(){
         url: '/request_access',
         method: 'GET',
         contentType: 'application/json',
+        async:true,
         success: function(response) {
             console.log("response :"+response);
             if(response=="Email sent"){

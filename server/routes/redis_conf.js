@@ -4,15 +4,15 @@ const schedule = require('node-schedule');
 https://app.redislabs.com/ for cloud redis-data
 
 // client = redis.createClient({
-//      host: 'redis-16992.c92.us-east-1-3.ec2.cloud.redislabs.com'
-//     ,port: 16992
-//     ,auth_pass:'5k0RI0ezxPpBhMxvkGX1zbIWGDKv0QJs'
+//      host: ""
+//     ,port: ""
+//     ,auth_pass:""
 // });
 
 client = redis.createClient({
-     host: 'containers-us-west-28.railway.app'
-    ,port: 8051
-    ,auth_pass:'f2oOm4ded25siaAZLR3x'
+     host: process.env.REDIS_HOST
+    ,port: process.env.REDIS_PORT
+    ,auth_pass:process.env.REDIS_PASS
 });
 
 // schedule.scheduleJob("*/60 * * * *",async function() {
@@ -32,14 +32,21 @@ client = redis.createClient({
 // });
 
 
-async function redis_setkey(key,value){
+async function redis_setkey(key,value,expire=60*10){
     client.set(key,value);
-    client.expire(key,60*10);
+    client.expire(key,expire);
+}
+async function redis_getkey(key){
+    return new Promise(function(resolve,reject){
+            client.get(key,(err,response)=>{
+            if(response) resolve(response);
+        });
+    });
 }
 async function redis_setotp(key,value){
     client.set(key,value);
     client.expire(key,60*10);
 }
 
-module.exports ={client,redis_setkey,redis_setotp}
+module.exports ={client,redis_setkey,redis_setotp,redis_getkey}
 

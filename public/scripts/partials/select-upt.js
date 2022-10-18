@@ -70,7 +70,7 @@ function initialize_selection(){
             temp_category=getCookie("temp_category")
             if($("input[name='category']:checked").val()!=temp_category){
                $("input[name='sub_category']:checked").prop('checked', false)
-               document.cookie = "temp_category=none ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+               setCookie("temp_category","none","Thu, 01 Jan 1970 00:00:00 GMT");
             }
           }
           document.cookie = "temp_category="+book_type_id;

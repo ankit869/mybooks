@@ -3,7 +3,7 @@ const log = require('log-to-file');
 const {USER}= require('./models.js');
 const sendmail= require('./mail.js');
 const otp_mail = require("../../mail_templates/otp_template.js")
-const {redis_setotp}=require('./redis_conf.js');
+const {redis_setotp,redis_getkey}=require('./redis_conf.js');
 const path = require("path")
 async function sendOTP(username, otp, msg) {
     try {
@@ -17,19 +17,10 @@ async function sendOTP(username, otp, msg) {
 async function validateOTP(username, otp) {
     try {
         isValidate=false;
-        return new Promise((resolve, reject) => { 
-            client.get(username+'-OTP', function(err, response) {
-                if(err){ 
-                    log(err.stack, path.join(__dirname,'../error.log'))
-                }else{
-                    if(response==otp){
-                        isValidate=true
-                    }
-                }
-                resolve(isValidate)
-            })
-        })
-        
+        response=await redis_getkey(username+'-OTP') 
+        if(response==otp){
+            isValidate=true
+        }
         
     } catch (err) {
         log(err.stack, path.join(__dirname,'../error.log'))

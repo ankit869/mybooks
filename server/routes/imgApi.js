@@ -19,12 +19,10 @@ async function api_requests(key) {
 }
 
 router.get('/img-api/img/:key/:image', (req, res) => {
-    imgID=path.parse(req.params.image).name;     //=> "hello"
-    imgExt=path.parse(req.params.image).ext;      //=> ".html"
-    IMGAPIUSER.findOne({ "api_key": req.params.key }, (err, user) => {
-        if(err){
-            log(err, path.join(__dirname,'../error.log'))
-        }else{
+    try{
+        imgID=path.parse(req.params.image).name;     //=> "hello"
+        imgExt=path.parse(req.params.image).ext;      //=> ".html"
+        IMGAPIUSER.findOne({ "api_key": req.params.key }, (err, user) => {
             if (user) {
                 if(user.api_status=="enabled"){
                     api_requests(req.params.key)
@@ -41,38 +39,48 @@ router.get('/img-api/img/:key/:image', (req, res) => {
             } else {
                 res.send("ERROR !! Please try again with correct api key.")
             }
-        }
-    })
+            
+        })
+    }catch(err){
+        log(err.stack, path.join(__dirname,'../error.log'))
+        sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
+    }
 })
 
 
 router.get('/img-api/images/:key', (req, res) => {
-    IMGAPIUSER.findOne({ "api_key": req.params.key }, (err, user) => {
-        if(err){
-            log(err, path.join(__dirname,'../error.log'))
-        }else{
-            if (user) {
-                if (user.api_status=="enabled") {
-                    imgs=[]
-                    user.images.forEach((img)=>{
-                        image={
-                            Id:img.id,
-                            name:img.ImgOriginalName,
-                            type:img.ImgOriginalType,
-                            url:`https://mybooks-free.com/img-api/img/${user.api_key}/${img.id+(img.ImgOriginalType).replace("image/",".")}`
-
-                        }
-                        imgs.push(image)
-                    })
-                    res.send(imgs)
+    try{
+        IMGAPIUSER.findOne({ "api_key": req.params.key }, (err, user) => {
+            if(err){
+                log(err, path.join(__dirname,'../error.log'))
+            }else{
+                if (user) {
+                    if (user.api_status=="enabled") {
+                        imgs=[]
+                        user.images.forEach((img)=>{
+                            image={
+                                Id:img.id,
+                                name:img.ImgOriginalName,
+                                type:img.ImgOriginalType,
+                                url:`https://mybooks-free.com/img-api/img/${user.api_key}/${img.id+(img.ImgOriginalType).replace("image/",".")}`
+    
+                            }
+                            imgs.push(image)
+                        })
+                        res.send(imgs)
+                    } else {
+                        res.send("Your API-KEY is currently disabled")
+                    }
                 } else {
-                    res.send("Your API-KEY is currently disabled")
+                    res.send("ERROR !! Please try again with correct api key")
                 }
-            } else {
-                res.send("ERROR !! Please try again with correct api key")
             }
-        }
-    })
+        })
+    }catch(err){
+        log(err.stack, path.join(__dirname,'../error.log'))
+        sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
+    }
+   
 })
 
 const findByName = async (dir, name) => {
@@ -93,11 +101,8 @@ const findByName = async (dir, name) => {
 
 router.delete("/img-api/img/delete/:key/:imageID",(req,res) => {
     if(req.isAuthenticated()){
-        IMGAPIUSER.findOneAndUpdate({ api_key: req.params.key }, { $pull: { images: { _id: req.params.imageID } } }, { new: true },(err,user)=>{
-            if(err){
-                log(err, path.join(__dirname,'../error.log'))
-                res.sendStatus(404)
-            }else{
+        try{
+            IMGAPIUSER.findOneAndUpdate({ api_key: req.params.key }, { $pull: { images: { _id: req.params.imageID } } }, { new: true },(err,user)=>{
                 findByName(path.join(__dirname,`../ApiImgs/`),req.params.imageID).then((files) => {
                     files.forEach((file) =>{
                         fs.unlink(path.join(__dirname,`../ApiImgs/`)+file, err => {
@@ -108,8 +113,13 @@ router.delete("/img-api/img/delete/:key/:imageID",(req,res) => {
                     })
                 });
                 res.sendStatus(200)
-            }
-        });  
+                
+            });  
+        }catch(err){
+            log(err.stack, path.join(__dirname,'../error.log'))
+            sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
+        }
+        
     }else{
         res.send("unauthorized")
     }

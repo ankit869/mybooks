@@ -207,9 +207,19 @@ function convertIntoPdf(ismerge){
         return;
       }
     }
-    $.LoadingOverlay("show",{
-        background  : "#3c436cc7"
-    });
+    prgBg=`<div id="progressBgBlur" style="position:fixed;display:flex;
+    align-items:center;justify-content:center;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.5);z-index:10000"></div>`
+    prgHtml=`<div class="wrap-circles">
+        <h4>Processing Files ...</h4>
+        <div class="circle" style="background-image: conic-gradient(#1846c9 0, #c1d1ff 0);">
+          <div class="inner">0%</div>
+        </div>
+    </div>`
+
+    $("body").append(prgBg)
+    $("#progressBgBlur").append(prgHtml)
+    $("body").addClass("stop_body_scroll");
+
     var files=new Array();
     $(".doc_files .file").each(function (index, value) {       
       files.push($(this).find(".fileCode").text())     
@@ -218,17 +228,36 @@ function convertIntoPdf(ismerge){
   
     xhr.responseType = 'blob';
     xhr.open("GET", "/doc-converter/convert_to_pdf?filesToBeConverted="+JSON.stringify(files)+"&ismerge="+ismerge);
-  
-    xhr.send();
     
+    xhr.send();
+    xhr.onprogress = e => {
+      
+      var percentComplete = (e.loaded / e.total) * 100;  
+      var percentVal = Math.floor(percentComplete) +"%";
+
+      prgHtml=`<div class="wrap-circles">
+          <h4>Processing Files ...</h4>
+          <div class="circle" style="background-image: conic-gradient(#1846c9 ${percentComplete}, #c1d1ff 0);">
+            <div class="inner">${percentVal}</div>
+          </div>
+      </div>`
+
+      $("#progressBgBlur").html(prgHtml)
+      
+    }
+
     xhr.onload= async function(){
   
         if(this.status==503){
-          $.LoadingOverlay("hide");
+          $("#progressBgBlur").remove()
+          $("body").removeClass("stop_body_scroll");
+
+          
           setTimeout(function(){
             alert("Some Error Occured while Coverting your files try another")
           },600)
         }else{
+
           var blob = new Blob([this.response], { type: "application/zip" });
           const zipReader = new zip.ZipReader(new zip.BlobReader(blob));
           const entries = await zipReader.getEntries();
@@ -258,8 +287,11 @@ function convertIntoPdf(ismerge){
                         </div>`
             
             if(filesConverted.length==entries.length){
-              $.LoadingOverlay("hide");
+              $("#progressBgBlur").remove()
+              $("body").removeClass("stop_body_scroll");
+
               filesHTML+="<br>"
+
               $(".convertedFiles .files").html(filesHTML)
               $(".convertedFiles").css("display", "block")
               $("#pdfCreator").css("display", "none")

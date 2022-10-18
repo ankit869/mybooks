@@ -135,9 +135,7 @@ router.get('/home',async (req, res) => {
         redis_setkey(req.ip+'-currloc', '/home')
         let books=await BOOK.find({});
         if (books) {
-            
             res.render("client/index", {  books: books })
-            
         }else{
             res.redirect("/error")
         }
@@ -153,10 +151,9 @@ router.get('/user/:userid',async (req, res) => {
     try {
         redis_setkey(req.ip+'-currloc', "/user/" + req.params.userid)
         if (req.isAuthenticated()) {
-
             let user=await USER.findOne({ _id: req.params.userid });;
             if (user) {
-                let apiuser=await APIUSER.findOne({userId:req.user.id});;
+                let apiuser=await APIUSER.findOne({userId:req.user.id});
                 if(apiuser){
                     res.render("client/user_details", { user: user, current_userid: req.user.id ,apiData:apiuser})
                 }else{
@@ -280,11 +277,7 @@ router.get('/sitemap.xml',async (req, res) => {
 router.get('/contact',async (req, res) => {
     try {
         redis_setkey(req.ip+'-currloc', '/contact')
-        if (req.isAuthenticated()) {
-            res.render("client/contact", { user_name: req.user.name, user_image: req.user.userimage, user_email: req.user.username})
-        } else {
-            res.render("client/contact", { user_name: "", user_image: "", user_email: ""})
-        }
+        res.render("client/contact",{"user_name":req.user.name, "user_email":req.user.username})
 
     } catch (err) {
         res.redirect("/error")
@@ -297,9 +290,7 @@ router.get('/contact',async (req, res) => {
 router.get('/about',async (req, res) => {
     try {
         redis_setkey(req.ip+'-currloc', '/about')
-        
         res.render("client/about")
-        
 
     } catch (err) {
         res.redirect("/error")
@@ -703,14 +694,14 @@ router.get('/private/user_detail',async (req, res) => {
             let user=await USER.findOne({ _id: req.user.id });
             if(user){ res.send(user) }
             else{ res.send("user not found")}
-
+          
         } else {
             res.send("unauthorized")
-        }
+        } 
     } catch (err) {
         log(err.stack, path.join(__dirname,'../error.log'))
         sendmail("ankitkohli181@gmail.com", 'Error Occured in (mybooks)', '', reply_mail(err.stack));
-    }
+    } 
 })
 
 
@@ -1009,7 +1000,14 @@ router.post('/feedback/:message',async (req, res) => {
     feed.save();
     res.send('ok');
 })
-
+router.patch('/patch_online_status/status',async (req, res) => {
+    if(res.isAuthenticated()){
+        USER.updateOne({_id:req.user.id},{ $set: { currStatus: req.query.status }})
+        setTimeout()
+    }else{
+        res.sendStatus(404)
+    }
+})
 router.post('/contact',async (req, res) => {
     try {
         if (req.isAuthenticated()) {

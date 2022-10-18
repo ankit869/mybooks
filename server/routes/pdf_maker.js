@@ -133,6 +133,4 @@ router.post('/doc_scanner/upload_PDF_IMG/:layout', upld.array('images', 1000), (
 
 });
 
-
-
 module.exports= router;

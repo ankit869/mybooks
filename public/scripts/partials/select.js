@@ -43,7 +43,7 @@ selectedAll.forEach((selected) => {
 
           $("#other-course").prop("checked", true)
           $("#other-course").prop("value", selected.innerHTML)
-          document.cookie = "temp_category="+book_type_id;
+          setCookie("temp_category",book_type_id);
           $(".sub-select").each(function(i,obj){
             var obj_id=String("#"+obj.id);
             if(obj.id==selectedTerm){
@@ -64,7 +64,7 @@ selectedAll.forEach((selected) => {
                document.cookie = "temp_category=none ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
             }
           }
-          document.cookie = "temp_category="+book_type_id;
+          setCookie("temp_category",book_type_id);
           $(".sub-select").each(function(i,obj){
             var obj_id=String("#"+obj.id);
             if(obj.id==selectedTerm){

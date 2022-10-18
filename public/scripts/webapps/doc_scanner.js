@@ -408,13 +408,18 @@ async function create_pdf(){
                 $("#progress-percent").text(percentVal)
                 $(".bar").css("width",percentVal);
                 console.log("percent :"+percentVal)
+
+                if(percentVal=="100%"){
+                    $(".status").html(`files uploaded successfully !! creating pdf...
+                    <div class="lds-spinner-sm-green" style="transform: scale(0.4);"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>`);
+                }
             }
         };
 
         xhr.responseType = 'blob';
         xhr.onreadystatechange = function(e) {
             if ( 4 == this.readyState ) {
-                $(".status").html(`files uploaded successfully !! creating pdf...
+                $(".status").html(`Almost done...
                 <div class="lds-spinner-sm-green" style="transform: scale(0.4);"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>`);
             }
         };

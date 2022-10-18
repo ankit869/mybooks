@@ -2,7 +2,8 @@ window.addEventListener('load', () => {
   $.ajax({
     url:'/private/user_detail',
     method: 'GET',
-    success: function(response) {
+    async:true,
+        success: function(response) {
         if(response!="unauthorized"){
           const publicVapidKey =
             "BBy7N9L2ORQ4lPl5IJsB8lQA8s-U2M3nyRnx-KtsHV3fvID9amn3Z9NBda8wx-ZKkKweSG6tUBO2dqnZ722oUhY";

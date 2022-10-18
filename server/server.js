@@ -16,11 +16,27 @@ const app = express();
 const sendmail = require('./routes/mail.js');
 const contact_mail = require("../mail_templates/contact_template.js");
 const reply_mail = require("../mail_templates/reply_template.js");
-const passport = require('./routes/passport.js');
 const execShellCommand =require('./routes/execute_shell_cmd.js');
 const exec = require("child_process").exec;
-app.use(cors());
+const passport = require('./routes/passport.js');
 
+user_session=session({
+    secret: "thisisourlittlesecret",
+    name: "session",
+    maxAge: 3.1536E+10,
+})
+
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+// io_redis=require("socket.io-redis")
+// io.adapter(io_redis({
+//     host:process.env.REDIS_HOST,
+//     port:process.env.REDIS_PORT,
+//     auth_pass:process.env.REDIS_PASS
+// }))
+
+
+app.use(cors());
 app.use(compression())
 app.use(express.static(path.join(__dirname, '../public')));
 app.set('views', path.join(__dirname, '../views'));
@@ -30,13 +46,7 @@ app.use(bodyParser.json({ limit: '2000mb' }))
     .use(bodyParser.urlencoded({ limit: '2000mb', extended: true, parameterLimit: 2000000 }))
 
 app.set('trust proxy', true)
-
-app.use(session({
-    secret: "thisisourlittlesecret",
-    name: "session",
-    maxAge: 3.1536E+10,
-}))
-
+app.use(user_session)
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -54,12 +64,13 @@ if (!fs.existsSync(path.join(__dirname,'./tmp'))) {
     console.log("/server/tmp -empty dir initialized successfully")
 }
 
-app.use('/',require('./routes/client_panel.js'))
-app.use('/',require('./routes/admin_panel.js'))
-app.use('/',require('./routes/api.js'))
-app.use('/',require('./routes/imgApi.js'))
-app.use('/',require('./routes/pdf_maker.js'))
-app.use('/',require('./routes/doc_converter.js'))
+app.use(require('./routes/client_panel.js'))
+app.use(require('./routes/admin_panel.js'))
+app.use(require('./routes/api.js'))
+app.use(require('./routes/socket-io.js')(io,passport,user_session))
+app.use(require('./routes/imgApi.js'))
+app.use(require('./routes/pdf_maker.js'))
+app.use(require('./routes/doc_converter.js'))
 
 schedule.scheduleJob({hour: 20, minute: 30, dayOfWeek: 0}, async function(){
     fs.truncate('./error.log', 0, function(){console.log('Error logs removed')})
@@ -130,7 +141,7 @@ if (cluster.isMaster) {
     cluster.fork();
   });
 } else {
-    app.listen(port, (err) => {
+    server.listen(port, (err) => {
         if (err) {
             console.log("ERROR !! occurred")
             log(err, 'error.log')
